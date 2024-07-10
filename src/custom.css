@@ -1,0 +1,903 @@
+/*
+ * Levels
+ */
+.show-level-buttons-info img {
+  max-width: 2em;
+  margin-right: 0.5em;
+  float: left;
+}
+
+/* clear float */
+.show-level-buttons-info:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/*
+ * Video
+ */
+
+/* TODO: better settings for width and height */
+.youtube-video {
+  display: block;
+  border: 1px solid pink;
+  margin: 0 auto 1em;
+  /* width: 300px; */
+  /* width: 300px; */
+  /* height: 200px; */
+}
+
+video {
+  width: 100%;
+}
+
+video[poster] {
+  object-fit: cover;
+}
+
+.video-inline {
+  background: #eef9fd;
+  border: 3px solid #b2beea;
+  border-radius: 7px;
+  width: 10em;
+  float: right;
+  margin: 0 1em 1em;
+  padding: 0.5em;
+}
+
+.subtitlecontainer {
+  font-size: 1.5em;
+}
+
+.video-test {
+  border: 1px solid #222;
+  margin: 1em 0 2em;
+}
+
+/*
+ * Cross Links
+ */
+.cross-link {
+  color: rgb(212, 109, 136);
+}
+
+/*
+ * External Links
+ * https://christianoliff.com/blog/styling-external-links-with-an-icon-in-css/
+ */
+
+article a[href^="http"]::after,
+article a[href^="https://"]::after {
+  content: '';
+  width: 18px;
+  height: 18px;
+  margin-left: 4px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z'/%3E%3Cpath fill-rule='evenodd' d='M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
+}
+
+/*
+ * Tables
+ */
+table th {
+  writing-mode: vertical-lr;
+}
+
+table td,
+table th {
+  vertical-align: top;
+}
+
+
+/*
+ * Tippy
+ */
+.tippy-box {
+  padding: 1em;
+}
+
+.definition-button {
+  background: rgb(155, 204, 242);
+  border-radius: 50%;
+  font-size: 1.2em;
+  padding: 0.1em 0.25em 0.15em;
+  /* Adjust vertical and horizontal padding separately */
+
+  margin-left: 0.3em;
+  line-height: 0.8;
+  /* Keep this to control the height */
+  border: none !important;
+  vertical-align: middle;
+  cursor: pointer;
+
+  /* Inline-flex for vertical and horizontal alignment */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+[aria-describedby='tippy-1'].definition-button {
+  transform: rotate(45deg);
+  /* CSS styles */
+}
+
+
+/*
+ * BEGIN HTML5 Boilerplate
+ * https://github.com/h5bp/html5-boilerplate
+ */
+
+/*
+ * Hide visually and from screen readers
+ */
+
+.hidden,
+[hidden] {
+  display: none !important;
+}
+
+/*
+ * Hide only visually, but have it available for screen readers:
+ * https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+ *
+ * 1. For long content, line feeds are not interpreted as spaces and small width
+ *    causes content to wrap 1 word per line:
+ *    https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+ */
+
+.sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/*
+ * Extends the .sr-only class to allow the element
+ * to be focusable when navigated to via the keyboard:
+ * https://www.drupal.org/node/897638
+ */
+
+.sr-only.focusable:active,
+.sr-only.focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  white-space: inherit;
+  width: auto;
+}
+
+/*
+ * Hide visually and from screen readers, but maintain layout
+ */
+
+.invisible {
+  visibility: hidden;
+}
+
+/*
+ * END HTML5 Boilerplate
+ */
+
+/*
+ * TYPESENSE INSTANTSEARCH
+*/
+
+:root {
+  --docusaurus-instantsearch-modal-bg: #222222bd;
+  --docusaurus-instantsearch-bg: #feffff;
+  --docusaurus-instantsearch-bg-hover: #f8fafb;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --docusaurus-instantsearch-modal-bg: #22222259;
+  --docusaurus-instantsearch-bg: #222;
+  --docusaurus-instantsearch-bg-hover: #393838;
+}
+
+.search-heading {
+  background-image: url("/img/stamp.png");
+  background-position: left top;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-size: contain;
+  /* background-size: clamp(30px, 4%, 160px) auto; */
+  /* background-origin: content-box; */
+  padding: 0 1em 0 2em;
+}
+
+#search a {
+  display: block;
+  text-decoration: none;
+}
+
+/* Fix: on iOS you cannot scroll horizontally in a pre tag in search results */
+#search pre {
+  overflow-x: scroll;
+  width: 100%;
+  position: relative;
+}
+
+#search pre {
+  overflow-x: scroll;
+}
+
+/* This forces the scrollbar to always be visible in WebKit browsers */
+#search pre::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 11px;
+}
+
+#search pre::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white;
+  /* should match the background of the container */
+  background-color: rgba(0, 0, 0, .5);
+}
+
+#search pre::-webkit-scrollbar-track {
+  background-color: #e5e5e5;
+}
+
+
+/* The icon at the top right, which starts the search modal */
+#search-start {
+  cursor: pointer;
+  padding: 0.5em;
+  line-height: normal;
+  width: 3em;
+  text-align: right;
+  font-size: 1.5em;
+  border: none;
+  background: none;
+}
+
+#search-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  padding: 0.5em;
+  font-size: 2em;
+  z-index: 1042;
+}
+
+/* .docs-doc-page #search-box .ais-SearchBox .ais-SearchBox-input { */
+#search-box .ais-SearchBox .ais-SearchBox-input {
+  margin: 0 auto;
+  padding: 0.1em 0.5em;
+  font-size: 1.5em;
+
+  /* Style copied from the card properties, via web inspector */
+  border-color: rgba(var(--bs-secondary-rgb), var(--bs-border-opacity)) !important;
+  max-width: 100%;
+}
+
+.column-refinement-filters {
+  background: #337dbe0c;
+}
+
+#clear-refinements .ais-ClearRefinements-button {
+  margin: 0 !important;
+  /* To override the classes that are assigned to typesense buttons, defined in typesenseInstantSearch.js */
+}
+
+#current-refinements-list {
+  font-size: 0.7em !important;
+}
+
+#current-refinements-list .ais-CurrentRefinements-label,
+#current-refinements-list .ais-CurrentRefinements-category {
+  display: block;
+}
+
+#current-refinements-list .ais-CurrentRefinements-label {
+  font-weight: bold;
+  margin-top: 1em;
+}
+
+
+.ais-Hits-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.ais-Pagination-list li {
+  display: inline-block;
+  margin: 0.5em;
+
+  font-size: 1.2em;
+}
+
+.ais-Pagination-list li a {
+  text-decoration: none;
+  padding: 0.5em;
+}
+
+.ais-Hits--empty {
+  background: transparent url('/img/travolta.gif') center center no-repeat;
+  min-height: 400px;
+}
+
+.ais-Pagination-item--selected .ais-Pagination-link {
+  border: 1px solid var(--ifm-color-primary);
+  border-radius: 7px;
+}
+
+.card {
+  transition: background 0.3s ease-in-out;
+  /* max-height: 20em; */
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* .card:hover {
+  transition: background 0.3s ease-in-out;
+  background: var(--docusaurus-instantsearch-bg-hover);
+} */
+
+
+
+/* html structure refinement list 
+  <li class="ais-RefinementList-item">
+    <div>
+      <label class="ais-RefinementList-label">
+        <input type="checkbox" class="ais-RefinementList-checkbox me-2" value="repo">
+          <span class="ais-RefinementList-labelText">
+            xxx
+          </span>			
+          <span class="ais-RefinementList-count badge badge-light bg-light-2 ml-2">
+            79
+          </span>
+      </label>
+    </div>
+  </li>
+*/
+.ais-RefinementList-count {
+  /* color: var(--ifm-color-primary) !important; */
+  color: #111;
+  background-color: #80b5ff76;
+  border-radius: 10px;
+  padding: 2px 5px;
+  position: relative;
+  top: -0.6em;
+  left: 0.5em;
+  font-size: 0.5em;
+}
+
+/* If an item wraps to a new line, the new line should not go under the checkbox. Solution: use text-indent */
+.ais-RefinementList-item {
+  margin-left: 2.8em;
+}
+
+.ais-RefinementList-item div {
+  text-indent: -1.3em;
+}
+
+/* .ais-RefinementList-item input {
+  margin-bottom: 2em;
+  display: inline-block;
+} */
+
+
+.contextual-info {
+  font-size: 0.9em;
+}
+
+/* #filters-section .row {
+  min-height: 15em;
+  border: 1px solid #cccccc56;
+  border-radius: 7px;
+  overflow: scroll;
+} */
+
+.card-header.gleif {
+  background-image: url("/img/logo-gleif.svg");
+}
+
+.card-header.essif-lab {
+  background-image: url("/img/logo-essif-lab.png");
+}
+
+.card-header.kerisse {
+  background-image: url("/img/stamp.png");
+}
+
+.card-header.gleif,
+.card-header.essif-lab,
+.card-header.kerisse {
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-size: contain;
+  background-origin: content-box;
+}
+
+.search-results-img {
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+#search mark {
+  /* background-color: transparent; */
+  color: #000;
+  position: relative;
+}
+
+#search mark {
+  position: relative;
+  border: 3px solid #337dbe8c;
+}
+
+/* Underlining search hits */
+#search mark::after {
+  content: "";
+  display: block;
+  height: 0.8em;
+  /* Adjust the height */
+  width: 100%;
+  position: absolute;
+  bottom: -0.3em;
+  left: 0;
+  background-size: cover;
+  background-repeat: repeat-x;
+}
+
+/*
+ * END TYPESENSE INSTANTSEARCH
+ */
+
+
+/* 
+Scroll Shadows
+
+https://css-tricks.com/books/greatest-css-tricks/scroll-shadows/ 
+*/
+.scroll-shadows {
+  overflow: auto;
+
+  background:
+    /* Shadow Cover TOP */
+    linear-gradient(white 30%,
+      rgba(255, 255, 255, 0)) center top,
+
+    /* Shadow Cover BOTTOM */
+    linear-gradient(rgba(255, 255, 255, 0),
+      white 70%) center bottom,
+
+    /* Shadow TOP */
+    radial-gradient(farthest-side at 50% 0,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0)) center top,
+
+    /* Shadow BOTTOM */
+    radial-gradient(farthest-side at 50% 100%,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0)) center bottom;
+
+  background-repeat: no-repeat;
+  background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+  background-attachment: local, local, scroll, scroll;
+}
+
+
+/* 
+  ToIP Glossary
+*/
+
+#glossary_content dt {
+  margin-top: 1.4em;
+  font-size: 125%;
+  font-family: Verdana, sans-serif;
+}
+
+#glossary_content dt,
+#glossary_content dt a {
+  color: #a3c74e;
+}
+
+#glossary_content dt.letter {
+  text-align: center;
+  font-weight: bold;
+  color: #999;
+  border-bottom: solid 1px #ddd;
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 2.2em;
+  color: #666;
+}
+
+#glossary_content dd {
+  margin-left: 2em;
+}
+
+#glossary_content dt>span.tag {
+  float: right;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 2px 4px;
+  margin-right: 4px;
+  font-size: 60%;
+  font-family: Verdana;
+  color: #666;
+}
+
+#glossary_content dd>p:first-child {
+  margin-top: 0.2em;
+}
+
+#glossary_content a {
+  color: #3061a8;
+  text-decoration: none;
+}
+
+#glossary_content a:hover {
+  border-bottom: solid 1px #3061a8;
+}
+
+#glossary_content a:active {
+  background-color: #eee;
+}
+
+#glossary_content a:visited {
+  color: #6161a8;
+}
+
+#glossary_content p.meta {
+  font-size: 80%;
+  color: #bbb;
+  text-align: right;
+  margin-top: -0.9em;
+}
+
+#glossary_content ._slf {
+  float: left;
+  padding-right: 4px;
+  padding-top: 4px;
+  margin-left: -20px;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  display: none;
+}
+
+#glossary_content dt:not(.letter):hover>._slf {
+  display: inline;
+}
+
+#glossary_content ._xl {
+  padding-right: 4px;
+  display: none;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+#glossary_content dt:not(.letter):hover>._xl {
+  display: inline;
+}
+
+/* 
+  END ToIP Glossary
+*/
+
+
+
+/* img.floatleft {
+  float: left !important;
+  margin-right: 1em !important;
+  margin-bottom: 1em !important;
+  width: 200px !important;
+} */
+
+img.floatleft {
+  float: left;
+  margin-right: 1em;
+  margin-bottom: 1em;
+  width: 200px;
+}
+
+
+
+/* #docusaurus_skipToContent_fallback > div > main > div > div > div > div > article > div.theme-doc-markdown.markdown > img {
+  float: left !important;
+  margin-right: 1em !important;
+  margin-bottom: 1em !important;
+  width: 200px !important;
+} */
+
+
+
+/*
+  SVG
+*/
+svg a {
+  fill: blue;
+  /* stroke: blue; */
+  /* stroke-width: 0.4; */
+  /* stroke-linecap: round; */
+  text-decoration: underline !important;
+}
+
+/* Animate SVG arrows */
+@keyframes drawSvgArrows {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* path { */
+/* path[stroke-dasharray] { */
+path[marker-end] {
+  stroke-dasharray: 10;
+  stroke-dashoffset: 40;
+  /* animation: drawSvgArrows 3.5s linear forwards; */
+  animation: drawSvgArrows 3.5s linear infinite;
+}
+
+/*
+  END SVG
+*/
+
+
+/* 
+  Images
+*/
+
+/* Default settings for images */
+article .markdown img,
+/* images in search results also need a shadow */
+#hits .card-body img {
+  width: 100%;
+
+  /* Since images often contain text, it is important to show where the image ends */
+  box-shadow:
+    0px 0px 3.9px rgba(0, 0, 0, 0.039),
+    0px 0px 9.4px rgba(0, 0, 0, 0.057),
+    0px 0px 17.8px rgba(0, 0, 0, 0.07),
+    0px 0px 31.7px rgba(0, 0, 0, 0.083),
+    0px 0px 59.3px rgba(0, 0, 0, 0.101),
+    0px 0px 142px rgba(0, 0, 0, 0.14);
+  margin-bottom: 2em;
+}
+
+/* Default settings, no media queries */
+article .markdown .inline-thumb-start,
+#hits img.inline-thumb-start,
+article .markdown .inline-thumb-end,
+#hits img.inline-thumb-end,
+article .markdown .inline-small-start,
+#hits img.inline-small-start,
+article .markdown .inline-small-end,
+#hits img.inline-small-end,
+article .markdown .inline-medium-start,
+#hits img.inline-medium-start,
+article .markdown .inline-medium-end,
+#hits img.inline-medium-end {
+  width: 100%;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+  article .markdown .inline-thumb-start,
+  #hits img.inline-thumb-start {
+    float: left;
+    width: 5em;
+    max-width: 15%;
+    margin: 0 1em 1em 0;
+  }
+
+  article .markdown .inline-thumb-end,
+  #hits img.inline-thumb-end {
+    float: right;
+    width: 5em;
+    max-width: 15%;
+    margin: 0 0 1em 1em;
+  }
+
+  article .markdown .inline-small-start,
+  #hits img.inline-small-start {
+    float: left;
+    width: 15em;
+    max-width: 25%;
+    margin: 0 1em 1em 0;
+  }
+
+  article .markdown .inline-small-end,
+  #hits img.inline-small-end {
+    float: right;
+    width: 15em;
+    max-width: 25%;
+    margin: 0 0 1em 1em;
+  }
+
+  article .markdown .inline-medium-start,
+  #hits img.inline-medium-start {
+    float: left;
+    width: 25em;
+    max-width: 50%;
+    margin: 0 1em 1em 0;
+  }
+
+  article .markdown .inline-medium-end,
+  #hits img.inline-medium-end {
+    float: right;
+    width: 25em;
+    max-width: 50%;
+    margin: 0 0 1em 1em;
+  }
+}
+
+/* Full page images */
+.markdown img {
+  cursor: pointer;
+}
+
+.image-container-full-page img {
+  margin: auto;
+  object-fit: contain;
+}
+
+.image-container-full-page {
+  z-index: 1041;
+  background: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll;
+}
+
+.image-container-full-page::after {
+  content: '×';
+  /* Unicode character for multiplication sign, resembles a cross */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 48px;
+  cursor: pointer;
+  /* Makes it obvious the element is clickable */
+}
+
+/* End full page images */
+
+/* 
+  End Images
+*/
+
+/* 
+  Various
+*/
+.ais-SearchBox-loadingIndicator {
+  display: none;
+}
+
+/* 
+  End Various
+*/
+
+
+/* 
+  Horizontal scrollable navbar in search results
+*/
+.scrollable-navbar {
+  overflow-x: auto !important;
+  width: 100% !important;
+}
+
+.nowrap {
+  white-space: nowrap !important;
+  display: inline-block !important;
+}
+
+.nav-item {
+  display: inline-block !important;
+  padding: 10px 5px !important;
+  text-decoration: none !important;
+}
+
+/* 
+  End Horizontal scrollable navbar in search results
+*/
+
+
+/* 
+  Glossary Menu
+*/
+.glossary-menu {
+  background: #ecf1f4;
+}
+
+.greyed-out {
+  color: #aaa;
+  pointer-events: none;
+}
+
+/* 
+  End Glossary Menu
+*/
+
+/* 
+  All Glossareis Combined
+*/
+.glossaries-combined h2 {
+  color: #a3c74e;
+  font-weight: 700;
+  font-size: 1.2em;
+  font-family: Verdana, sans-serif;
+}
+
+/* 
+  End all Glossareis Combined
+*/
+
+
+
+@keyframes outlineAnimation {
+  0% {
+    outline: 2px solid transparent;
+  }
+
+  50% {
+    outline: 2px solid blue;
+    /* Change color as needed */
+  }
+
+  100% {
+    outline: 2px solid transparent;
+  }
+}
+
+.animate-outline {
+  animation: outlineAnimation 1s ease-in-out;
+}
+
+/* 
+  Bookmarklets
+*/
+.bookmarklet {
+  animation: outlineAnimation 1s ease-in-out infinite;
+  outline: 3px dashed #222;
+}
+
+/* 
+  End Bookmarklets
+*/
+
+
+/* 
+  Auto-generated index links, for example on github issues page
+*/
+.generated-index-links {
+  width: 100%;
+  /* box-sizing: border-box; */
+}
+
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {
+  .generated-index-links {
+    /* width: calc(100% / 4 - 1em); */
+    width: calc(100%/3);
+  }
+}
+
+/* 
+  End Auto-generated index links
+*/

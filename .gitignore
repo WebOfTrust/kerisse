@@ -1,0 +1,33 @@
+# Dependencies
+/node_modules
+
+# Production
+/dist
+
+# Generated files
+.cache-loader
+
+# Misc
+.env
+.history
+.DS_Store
+.ds_store
+.idea
+.vscode/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# logs
+search-index-typesense/search-index-entries/*
+search-index-typesense/logs/*
+search-index-typesense/sitemaps/*
+search-index-typesense/overrides/overridesID.json
+search-index-typesense/singleUrlsFromWotTermsGoogleSheet/*
+.history
+# media
+# *.mp4
+
+copy-to-testsite.sh
+docusaurus.paths.*.js
+restore.jsonl
