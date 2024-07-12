@@ -64,10 +64,24 @@ function sortLinesInFile(fileName) {
     const currentTime = format(new Date(), 'dd MMMM yyyy HH:mm:ss');
 
     // Add a header
-    const header = '<h1>Indexed in KERISSE</h1>';
+    const header = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Kerisse search</title>
+        <meta name="description" content="Kerisse search through KERI documentation.">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="custom.css">
+      </head>
+      <body>
+      <h1>Indexed in KERISSE</h1>
+      `;
+    const footer = `</body></html>`;
 
     // Final string to write to the file
-    const contentWithHeader = `${header}\n<p id='index-created-timestamp-source'>Indexed at ${currentTime}</p>\n<p id='index-created-page-count-source'>Number of indexed pages: ${pagesCount}</p>\n${finalContent}`;
+    const contentWithHeader = `${header}\n<p id='index-created-timestamp-source'>Indexed at ${currentTime}</p>\n<p id='index-created-page-count-source'>Number of indexed pages: ${pagesCount}</p>\n${finalContent}\n${footer}`;
 
     // Write the final content back to the file
     fs.writeFile(fileName, contentWithHeader, 'utf8', (err) => {
