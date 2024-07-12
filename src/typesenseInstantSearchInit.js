@@ -11,10 +11,30 @@ const typesenseInstantSearchCreateDomElements = () => {
     const domStringSearchStart = `<button id="search-start">🔍</button>`;
     const domStringSearchResult = `
 <div id="search" class="container p-3" style="max-width: 70em;">
+    <div class="hero2 p-2">
     <h1 class="search-heading text-center fs-2">KERI Suite Search Engine (KERISSE)</h1>
-    <p class='text-center'><span id='index-created-timestamp-target-search-modal'>–</span>, <span
+        <p class='text-center'><span id='index-created-timestamp-target-search-modal'>–</span>, <span
         id='index-created-page-count-target-search-modal'>–</span></p>
-    <div id="search-box" class="mt-3 mb-2"></div>
+        <div id="search-box" class="mt-3 mb-2"></div>
+    </div>
+
+    <div class="hero p-2">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <a href="https://weboftrust.github.io/keridoc/"><img class="hero-image" src="icons/10119973341678815049.svg" alt="">
+                KERIDoc</a>
+            </div>
+            <div class="col-md-4 text-center">
+                <a href="https://weboftrust.github.io/WOT-terms/"><img class="hero-image" src="icons/9491177161682829258.svg" alt="">
+                KERI Suit Glossary</a>
+            </div>
+            <div class="col-md-4 text-center">
+                <a href="https://weboftrust.github.io/kerisse/"><img class="hero-image" src="icons/1626701221679047824.svg" alt="">
+                KERISSE</a>
+            </div>
+        </div>
+    </div>
+    
     
     <a href="#search-results" class="to-search-results btn btn-light btn-sm mt-3 mb-3 d-block d-md-none">
         To search results
