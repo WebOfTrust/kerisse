@@ -907,3 +907,18 @@ article .markdown .inline-medium-end,
 /* 
   End Auto-generated index links
 */
+
+.hero2 {
+  color: #fff;
+  background: #337DBE;
+  border-radius: 10px;
+}
+
+.hero2 a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.hero-image {
+  width: 2em;
+}
