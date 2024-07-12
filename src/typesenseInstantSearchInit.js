@@ -38,6 +38,12 @@ const typesenseInstantSearchCreateDomElements = () => {
         <li class="nav-item">
             <a target="_blank" rel="noopener" class="nav-link" href="https://docs.google.com/presentation/d/1lpzYcPrIox9V4hERtn4Kcf7uq01OVU9u3PuVm1aYzR0/edit#slide=id.ga411be7e84_0_0">KERI for Muggles</a>
         </li>
+        <li class="nav-item">
+            <a target="_blank" rel="noopener" class="nav-link" href="https://weboftrust.github.io/WOT-terms/">KERI Glossary</a>
+        </li>
+        <li class="nav-item">
+            <a target="_blank" rel="noopener" class="nav-link" href="https://weboftrust.github.io/keridoc/">KERI Doc</a>
+        </li>
     </ul>
     
     <div class="search-results-container container mt-3" style="z-index: 1999;">
