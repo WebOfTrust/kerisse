@@ -17,6 +17,9 @@ module.exports = {
     devServer: {
         static: './dist', // Folder to serve files from
         hot: true, // Enable hot module replacement
+        client: {
+            logging: 'none',
+        }
     },
     module: {
         rules: [
@@ -41,4 +44,6 @@ module.exports = {
         //     filename: '[name].css',
         // })
     ],
+    // mode: 'production'
+    mode: 'development'
 };
