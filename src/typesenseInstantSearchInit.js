@@ -154,7 +154,7 @@ const typesenseInstantSearchCreateDomElements = () => {
             if (timestampElement) {
                 // Extracting and logging the content of the paragraph
                 const timestampContent = timestampElement.textContent;
-                document.querySelector('#index-created-timestamp-target-search-modal').textContent = timestampContent;
+                document.querySelector('#index-created-timestamp-target-search-modal').textContent = `<a target="_blank" rel="noopener" href="indexed-in-KERISSE.html">` + timestampContent + `</a>`;
             } else {
                 console.log('Element with id "index-created-timestamp-source" not found.');
             }
