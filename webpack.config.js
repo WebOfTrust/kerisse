@@ -11,7 +11,7 @@ module.exports = {
         // additional2: './src/typesenseHandleSearchModal.js', // Path to another additional JS file
     },
     output: {
-        filename: '[name].bundle.js', // Generates main.bundle.js, additional1.bundle.js, etc.
+        filename: '[name].[contenthash].bundle.js', // Generates main.bundle.js, additional1.bundle.js, etc.
         path: path.resolve(__dirname, 'dist'), // Directory for the bundled file
     },
     devServer: {
