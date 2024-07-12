@@ -11,7 +11,8 @@ module.exports = {
         // additional2: './src/typesenseHandleSearchModal.js', // Path to another additional JS file
     },
     output: {
-        filename: '[name].[contenthash].bundle.js', // Generates main.bundle.js, additional1.bundle.js, etc.
+        // filename: '[name].[contenthash].bundle.js', // Generates main.bundle.js, additional1.bundle.js, etc.
+        filename: '[name].bundle.js', // Generates main.bundle.js, additional1.bundle.js, etc.
         path: path.resolve(__dirname, 'dist'), // Directory for the bundled file
     },
     devServer: {
@@ -36,6 +37,7 @@ module.exports = {
                 { from: 'index.html', to: './' }, // Adjust the 'from' path as necessary
                 { from: 'output/indexed-in-KERISSE.html', to: './' }, // Adjust the 'from' path as necessary
                 { from: 'src/custom.css', to: './custom.css' },
+                { from: 'src/*.svg', to: 'icons/[name][ext]' },
 
             ]
         })
