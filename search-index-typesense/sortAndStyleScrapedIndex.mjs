@@ -1,7 +1,7 @@
 /**
  * Sorts the lines in a file alphabetically and wraps them in HTML list elements.
  * The first line of the file is preserved as a header.
- * Usage: node sortFile.js <fileName>
+ * Usage: node sortAndStyleScrapedIndex.js <fileName>
  * Example:
  * $ node search-index-typesense/sortAndStyleScrapedIndex.mjs docs/overview/indexed-in-KERISSE.md
  * 
@@ -64,7 +64,7 @@ function sortLinesInFile(fileName) {
     const currentTime = format(new Date(), 'dd MMMM yyyy HH:mm:ss');
 
     // Add a header
-    const header = '# Indexed in KERISSE';
+    const header = '<h1>Indexed in KERISSE</h1>';
 
     // Final string to write to the file
     const contentWithHeader = `${header}\n<p id='index-created-timestamp-source'>Indexed at ${currentTime}</p>\n<p id='index-created-page-count-source'>Number of indexed pages: ${pagesCount}</p>\n${finalContent}`;
