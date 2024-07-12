@@ -34,7 +34,7 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'index.html', to: './' }, // Adjust the 'from' path as necessary
-                { from: 'indexed-in-KERISSE.html', to: './' }, // Adjust the 'from' path as necessary
+                { from: 'output/indexed-in-KERISSE.html', to: './' }, // Adjust the 'from' path as necessary
                 { from: 'src/custom.css', to: './custom.css' },
 
             ]
