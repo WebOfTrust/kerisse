@@ -154,7 +154,7 @@ const typesenseInstantSearchCreateDomElements = () => {
             if (timestampElement) {
                 // Extracting and logging the content of the paragraph
                 const timestampContent = timestampElement.textContent;
-                document.querySelector('#index-created-timestamp-target-search-modal').innerHTML = `<a target="_blank" rel="noopener" href="indexed-in-KERISSE.html">` + timestampContent + `</a>`;
+                document.querySelector('#index-created-timestamp-target-search-modal').textContent = timestampContent;
             } else {
                 console.log('Element with id "index-created-timestamp-source" not found.');
             }
@@ -162,7 +162,7 @@ const typesenseInstantSearchCreateDomElements = () => {
             if (pageCountElement) {
                 // Extracting and logging the content of the paragraph
                 const pageCountContent = pageCountElement.textContent;
-                document.querySelector('#index-created-page-count-target-search-modal').textContent = pageCountContent;
+                document.querySelector('#index-created-page-count-target-search-modal').innerHTML = `<a class="d-inline" target="_blank" rel="noopener" href="indexed-in-KERISSE.html">` + pageCountContent + `</a>`;
             } else {
                 console.log('Element with id "index-created-page-count-source" not found.');
             }
