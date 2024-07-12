@@ -809,7 +809,13 @@ article .markdown .inline-medium-end,
 
 .nav-item {
   display: inline-block !important;
-  padding: 10px 5px !important;
+  padding: 0 !important;
+  text-decoration: none !important;
+  font-size: 0.9em !important;
+}
+
+.nav-item a {
+  padding: 0 0.5em !important;
   text-decoration: none !important;
 }
 
