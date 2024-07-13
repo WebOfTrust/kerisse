@@ -81,7 +81,7 @@ function sortLinesInFile(fileName) {
     const footer = `</body></html>`;
 
     // Final string to write to the file
-    const contentWithHeader = `${header}\n<p id='index-created-timestamp-source'>Indexed at ${currentTime}</p>\n<p id='index-created-page-count-source'>Number of indexed pages: ${pagesCount}</p>\n${finalContent}\n${footer}`;
+    const contentWithHeader = `${header}\n<p>Indexed at <span id='index-created-timestamp-source'>${currentTime}</span></p>\n<p><span id='index-created-page-count-source'>${pagesCount}</span> indexed pages</p>\n${finalContent}\n${footer}`;
 
     // Write the final content back to the file
     fs.writeFile(fileName, contentWithHeader, 'utf8', (err) => {
