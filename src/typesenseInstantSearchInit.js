@@ -13,8 +13,8 @@ const typesenseInstantSearchCreateDomElements = () => {
 <div id="search" class="container p-3" style="max-width: 70em;">
     <div class="hero2 p-2">
     <h1 class="search-heading text-center fs-2">KERI Suite Search Engine (KERISSE)</h1>
-        <p class='text-center'><span id='index-created-timestamp-target-search-modal'>–</span>, <span
-        id='index-created-page-count-target-search-modal'>–</span></p>
+        <p class='text-center'><a class="d-inline" target="_blank" rel="noopener" href="indexed-in-KERISSE.html">Indexed: <span id='index-created-timestamp-target-search-modal'>–</span>, pages: <span
+        id='index-created-page-count-target-search-modal'>–</span></a></p>
         <div id="search-box" class="mt-3 mb-2"></div>
     </div>
 
@@ -182,7 +182,7 @@ const typesenseInstantSearchCreateDomElements = () => {
             if (pageCountElement) {
                 // Extracting and logging the content of the paragraph
                 const pageCountContent = pageCountElement.textContent;
-                document.querySelector('#index-created-page-count-target-search-modal').innerHTML = `<a class="d-inline" target="_blank" rel="noopener" href="indexed-in-KERISSE.html">` + pageCountContent + `</a>`;
+                document.querySelector('#index-created-page-count-target-search-modal').innerHTML = pageCountContent;
             } else {
                 console.log('Element with id "index-created-page-count-source" not found.');
             }
