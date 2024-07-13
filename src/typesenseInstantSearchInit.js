@@ -18,6 +18,11 @@ const typesenseInstantSearchCreateDomElements = () => {
         <div id="search-box" class="mt-3 mb-2"></div>
     </div>
 
+    <a href="#search-results" class="to-search-results btn btn-light btn-sm mt-3 mb-3 d-block d-md-none">
+        Jump to search results
+    </a>
+
+
     <div class="hero p-2">
         <div class="row">
             <div class="col text-center">
@@ -35,12 +40,7 @@ const typesenseInstantSearchCreateDomElements = () => {
         </div>
     </div>
     
-    
-    <a href="#search-results" class="to-search-results btn btn-light btn-sm mt-3 mb-3 d-block d-md-none">
-        To search results
-    </a>
-
-    <!--
+        <!--
     <p id="example-search-terms" class="mt-4 text-center"><small>Try:
       <a role="button" class="clickable-search-term btn btn-outline-secondary btn-sm d-inline">Keri</a>
       <a role="button" class="clickable-search-term btn btn-outline-secondary btn-sm d-inline">ACDC</a>
@@ -50,19 +50,13 @@ const typesenseInstantSearchCreateDomElements = () => {
 
     <ul class="nav justify-content-center">
         <li class="nav-item">
-            <a target="_blank" rel="noopener" class="nav-link" href="https://keri.one/keri-resources/">KERI resources</a>
-        </li>
-        <li class="nav-item">
-            <a target="_blank" rel="noopener" class="nav-link" href="https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf">KERI Whitepaper</a>
-        </li>
-        <li class="nav-item">
             <a target="_blank" rel="noopener" class="nav-link" href="https://docs.google.com/presentation/d/1lpzYcPrIox9V4hERtn4Kcf7uq01OVU9u3PuVm1aYzR0/edit#slide=id.ga411be7e84_0_0">KERI for Muggles</a>
         </li>
         <li class="nav-item">
-            <a target="_blank" rel="noopener" class="nav-link" href="https://weboftrust.github.io/WOT-terms/">KERI Suite Glossary</a>
+            <a target="_blank" rel="noopener" class="nav-link" href="https://keri.one/keri-resources/">Resources</a>
         </li>
         <li class="nav-item">
-            <a target="_blank" rel="noopener" class="nav-link" href="https://weboftrust.github.io/keridoc/">KERI Doc</a>
+            <a target="_blank" rel="noopener" class="nav-link" href="https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf">Whitepaper</a>
         </li>
     </ul>
     
