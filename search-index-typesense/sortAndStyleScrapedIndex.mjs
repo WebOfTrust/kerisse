@@ -61,7 +61,7 @@ function sortLinesInFile(fileName) {
     const finalContent = `<ol>\n${wrappedContent}\n</ol>`;
 
     // Get the current time
-    const currentTime = format(new Date(), 'dd MMMM yyyy HH:mm:ss');
+    const currentTime = format(new Date(), 'dd MMMM yyyy HH:mm');
 
     // Add a header
     const header = `
