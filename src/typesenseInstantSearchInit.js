@@ -11,19 +11,7 @@ const typesenseInstantSearchCreateDomElements = () => {
     const domStringSearchStart = `<button id="search-start">🔍</button>`;
     const domStringSearchResult = `
 <div id="search" class="container p-3" style="max-width: 70em;">
-    <div class="hero2 p-2">
-    <h1 class="search-heading text-center fs-2">KERI Suite Search Engine (KERISSE)</h1>
-        <p class='text-center'><a class="d-inline" target="_blank" rel="noopener" href="indexed-in-KERISSE.html">Indexed: <span id='index-created-timestamp-target-search-modal'>–</span>, pages: <span
-        id='index-created-page-count-target-search-modal'>–</span></a></p>
-        <div id="search-box" class="mt-3 mb-2"></div>
-    </div>
-
-    <a href="#search-results" class="to-search-results btn btn-light btn-sm mt-3 mb-3 d-block d-md-none">
-        Jump to search results
-    </a>
-
-
-    <div class="hero p-2">
+<div class="hero p-2">
         <div class="row">
             <div class="col text-center">
                 <a href="https://weboftrust.github.io/keridoc/"><img class="hero-image" src="icons/10119973341678815049.svg" alt="">
@@ -39,8 +27,21 @@ const typesenseInstantSearchCreateDomElements = () => {
             </div>
         </div>
     </div>
+
+    <div class="hero2 p-2">
+        <h1 class="search-heading text-center fs-2">KERISSE</h1>
+        <p class="text-center">KERI Suite Search Engine</p>
+        
+        <div id="search-box" class="mt-3 mb-2"></div>
+        <small class='d-block text-end'><a class="d-inline" target="_blank" rel="noopener" href="indexed-in-KERISSE.html">Indexed: <span id='index-created-timestamp-target-search-modal'>–</span>, pages: <span
+        id='index-created-page-count-target-search-modal'>–</span></a></small>
+    </div>
+
+    <a href="#search-results" class="to-search-results btn btn-light btn-sm mt-3 mb-3 d-block d-md-none">
+        Jump to search results
+    </a>
     
-        <!--
+    <!--
     <p id="example-search-terms" class="mt-4 text-center"><small>Try:
       <a role="button" class="clickable-search-term btn btn-outline-secondary btn-sm d-inline">Keri</a>
       <a role="button" class="clickable-search-term btn btn-outline-secondary btn-sm d-inline">ACDC</a>
