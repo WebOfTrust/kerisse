@@ -908,6 +908,7 @@ article .markdown .inline-medium-end,
   End Auto-generated index links
 */
 
+
 .hero2 {
   color: #fff;
   background: #337DBE;
@@ -917,6 +918,10 @@ article .markdown .inline-medium-end,
 .hero2 a {
   color: #fff;
   text-decoration: underline;
+}
+
+.hero {
+  font-size: 0.8em;
 }
 
 .hero-image {
