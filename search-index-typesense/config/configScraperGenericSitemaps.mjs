@@ -5,7 +5,7 @@ import getTextContent from '../modules/getTextContent.mjs';
 import logger from '../modules/logger.mjs';
 
 
-/**
+/*
  * ESSIFlabs
  * 
  * 
@@ -49,7 +49,7 @@ async function customScrapeESSIFlabs(page, domQueryForContent, pageUrl) {
 
 
 
-/**
+/*
  * Gleif
  * 
  * 
@@ -102,7 +102,7 @@ async function customScrapeGleif(page, domQueryForContent, pageUrl) {
 
 
 
-// /**
+// /*
 //  * gleifPDF
 //  * 
 //  * 
@@ -154,7 +154,7 @@ async function customScrapeGleif(page, domQueryForContent, pageUrl) {
 
 
 
-/**
+/*
  * ReadTheDocs Keripy
  * 
  * 
@@ -189,7 +189,7 @@ async function customScrapeReadTheDocsKeripy(page, domQueryForContent, pageUrl) 
 
 
 
-/**
+/*
  * ReadTheDocs Keria
  * 
  * 
@@ -224,7 +224,7 @@ async function customScrapeReadTheDocsKeria(page, domQueryForContent, pageUrl) {
 
 
 
-/**
+/*
  * ReadTheDocs Signifypy
  * 
  * 
@@ -259,7 +259,7 @@ async function customScrapeReadTheDocsSignifypy(page, domQueryForContent, pageUr
 
 
 
-/**
+/*
  * WOTterms
  * 
  * 
@@ -327,7 +327,7 @@ async function customScrapeWOTterms(page, domQueryForContent, pageUrl) {
 
 
 
-/**
+/*
  * Keridoc
  * 
  * 
@@ -400,7 +400,7 @@ async function customScrapeKeridoc(page, domQueryForContent, pageUrl) {
 
 
 
-// /**
+// /*
 //  * WOTgloss
 //  * 
 //  * 
@@ -439,7 +439,7 @@ async function customScrapeKeridoc(page, domQueryForContent, pageUrl) {
 
 
 
-/**
+/*
  * Slack Keri Archive
  * 
  * 
