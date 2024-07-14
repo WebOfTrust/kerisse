@@ -271,9 +271,9 @@ const configWOTterms = {
         sourcePath: 'https://weboftrust.github.io/WOT-terms/sitemap.xml',
         excludeURLs: 'search-index-typesense/config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json'
     }),
-    siteName: 'KERISSE (this site)',
-    source: 'KERISSE (this site)',
-    category: 'KERISSE (this site)',
+    siteName: 'KERI Suite Glossary',
+    source: 'KERI Suite Glossary',
+    category: 'KERI Suite Glossary',
     author: 'Henk van Cann',
     destinationFile: 'search-index-typesense/search-index-entries/WOT-terms.jsonl',
     domQueryForContent: 'article .markdown p, article .markdown h1, article .markdown h2, article .markdown h3, article .markdown h4, article .markdown h5, article .markdown h6, article .markdown li, article .markdown img, article .markdown pre, article .markdown code'
