@@ -326,6 +326,80 @@ async function customScrapeWOTterms(page, domQueryForContent, pageUrl) {
 
 
 
+
+/**
+ * Keridoc
+ * 
+ * 
+ */
+
+const configKeridoc = {
+    sitemap: await createInput({
+        sourceType: 'remoteXMLsitemap',
+        sourcePath: 'https://weboftrust.github.io/keridoc/sitemap.xml',
+        excludeURLs: 'search-index-typesense/config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json'
+    }),
+    siteName: 'KERIDoc',
+    source: 'KERIDoc',
+    category: 'KERIDoc',
+    author: 'Henk van Cann',
+    destinationFile: 'search-index-typesense/search-index-entries/keridoc.jsonl',
+    domQueryForContent: 'article .markdown p, article .markdown h1, article .markdown h2, article .markdown h3, article .markdown h4, article .markdown h5, article .markdown h6, article .markdown li, article .markdown img, article .markdown pre, article .markdown code'
+}
+
+async function customScrapeKeridoc(page, domQueryForContent, pageUrl) {
+    logger.setLogFile('success.log');
+    logger.log('pageUrl: ' + pageUrl);
+
+    const mainContent = await extractMainContent(page, domQueryForContent);
+
+    let type = await page.$eval('article', (element) => {
+        switch (element.getAttribute('data-type')) {
+            case 'G':
+                return 'General';
+            case 'S':
+                return 'SSI';
+            case 'K':
+                return 'KERI/ACDC specific';
+        }
+    });
+
+    // Find the breadcrumbs element and all its child <li> elements
+    let hierarchyLevels = await page.$$eval('.breadcrumbs__link', (nodes) =>
+        nodes.map((node) => node.textContent.trim())
+    );
+
+    // Get the value of the data-level attribute from the article element
+    let knowledgeLevel = await page.$eval('article', (element) => {
+        return element.getAttribute('data-level');
+    });
+
+    // let pageTitle = await page.$eval('article header h1', (element) => {
+    //     return element.textContent.trim()
+    // });
+    const pageTitle = await getTextContent(page, 'article h1:first-of-type');
+
+
+    let all = {};
+    all.mainContent = mainContent;
+    all.type = type;
+    all.hierarchyLevel0 = hierarchyLevels[0];
+    all.hierarchyLevel1 = hierarchyLevels[1];
+    all.hierarchyLevel2 = hierarchyLevels[2];
+    all.hierarchyLevel3 = hierarchyLevels[3];
+    all.knowledgeLevel = knowledgeLevel;
+    all.pageTitle = pageTitle;
+    return all;
+}
+
+
+
+
+
+
+
+
+
 // /**
 //  * WOTgloss
 //  * 
@@ -411,6 +485,7 @@ export default async function () {
     scrape(configReadTheDocsKeria, customScrapeReadTheDocsKeria);
     scrape(configReadTheDocsSignifypy, customScrapeReadTheDocsSignifypy);
     scrape(configWOTterms, customScrapeWOTterms);
+    scrape(configKeridoc, customScrapeKeridoc);
     // scrape(configWOTgloss, customScrapeWOTgloss);
     scrape(configSlackKeriArchive, customScrapeSlackKeriArchive);
 };
