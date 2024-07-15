@@ -63,7 +63,7 @@ log "Renaming files to lowercase finished"
 # Fetch external content from Google Sheets.
 setLogFile "success.log"
 log "Start fetching external content"
-node fetchExternalContent/fetchSingleUrlsFromWotTermsGoogleSheet/fetchSingleUrlsFromWotTermsGoogleSheet.js
+node fetchSingleUrlsFromWotTermsGoogleSheet/fetchSingleUrlsFromWotTermsGoogleSheet.js
 log "Fetching external content finished"
 
 #########################
