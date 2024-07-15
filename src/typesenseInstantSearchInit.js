@@ -19,7 +19,7 @@ const typesenseInstantSearchCreateDomElements = () => {
             </div>
             <div class="col text-center">
                 <a href="https://weboftrust.github.io/WOT-terms/"><img class="hero-image" src="icons/9491177161682829258.svg" alt="">
-                KERI Suit Glossary</a>
+                KERI Suite Glossary</a>
             </div>
             <div class="col text-center">
                 <a href="https://weboftrust.github.io/kerisse/"><img class="hero-image" src="icons/1626701221679047824.svg" alt="">
