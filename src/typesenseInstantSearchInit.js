@@ -15,15 +15,15 @@ const typesenseInstantSearchCreateDomElements = () => {
         <div class="row">
             <div class="col text-center">
                 <a href="https://weboftrust.github.io/keridoc/"><img class="hero-image" src="icons/10119973341678815049.svg" alt="">
-                KERIDoc</a>
+                KERIDoc<br>doc.kerisse.org</a>
             </div>
             <div class="col text-center">
                 <a href="https://weboftrust.github.io/WOT-terms/"><img class="hero-image" src="icons/9491177161682829258.svg" alt="">
-                KERI Suite Glossary</a>
+                KERI Suite Glossary<br>glossary.kerisse.org</a>
             </div>
             <div class="col text-center">
                 <a href="https://weboftrust.github.io/kerisse/"><img class="hero-image" src="icons/1626701221679047824.svg" alt="">
-                KERISSE</a>
+                KERISSE<br>search.kerisse.org</a>
             </div>
         </div>
     </div>
