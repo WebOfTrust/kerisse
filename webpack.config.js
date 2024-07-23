@@ -38,6 +38,7 @@ module.exports = {
                 { from: 'output/indexed-in-KERISSE.html', to: './' }, // Adjust the 'from' path as necessary
                 { from: 'src/custom.css', to: './custom.css' },
                 { from: 'src/*.svg', to: 'icons/[name][ext]' },
+                { from: 'src/*.png', to: '[name][ext]' },
 
             ]
         })
