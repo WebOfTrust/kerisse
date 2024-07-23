@@ -1,3 +1,29 @@
+/* General */
+
+/*
+KERI colors:
+#62783E
+#B4D070
+#A1C64D
+*/
+
+a {
+  color: #62783E !important;
+}
+
+a:hover {
+  color: #B4D070 !important;
+}
+
+.hero2 a {
+  color: #eee !important;
+}
+
+.hero2 a:hover {
+  color: #ccc !important;
+}
+
+
 /*
  * Levels
  */
@@ -37,8 +63,8 @@ video[poster] {
 }
 
 .video-inline {
-  background: #eef9fd;
-  border: 3px solid #b2beea;
+  background: #A1C64D;
+  border: 3px solid #62783E;
   border-radius: 7px;
   width: 10em;
   float: right;
@@ -210,14 +236,15 @@ table th {
 }
 
 .search-heading {
-  background-image: url("/img/stamp.png");
+  display: inline-block;
+  background-image: url("logo-keri-symbol.png");
   background-position: left top;
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: contain;
   /* background-size: clamp(30px, 4%, 160px) auto; */
   /* background-origin: content-box; */
-  padding: 0 1em 0 2em;
+  padding: 0 1em 0 1.5em;
 }
 
 #search a {
@@ -288,7 +315,7 @@ table th {
 }
 
 .column-refinement-filters {
-  background: #337dbe0c;
+  background: #a2c64d1c;
 }
 
 #clear-refinements .ais-ClearRefinements-button {
@@ -910,8 +937,9 @@ article .markdown .inline-medium-end,
 
 
 .hero2 {
+  text-align: center;
   color: #fff;
-  background: #337DBE;
+  background: #62783E;
   border-radius: 10px;
 }
 
@@ -927,3 +955,18 @@ article .markdown .inline-medium-end,
 .hero-image {
   width: 2em;
 }
+
+/* .hero__image {
+  max-width: 10em !important;
+  animation: rotation 12s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(359deg);
+  }
+} */
