@@ -102,3 +102,19 @@ import_jsonl_files_to_search_index() {
 
 # Start importing the files
 import_jsonl_files_to_search_index $output_dir $log_dir
+
+# After importing the data into Typesense, the meta info 
+# (when was de last scrape and how many pages were scraped)
+# must be pushed into the repository so it will be displayed
+# on the website.
+# ==> Add and commit /output/indexed-in-KERISSE.html
+# with the message "Update content"
+# Github Actions will then `npm run build` and push the changes to the website.
+git add ./search-index-typesense/search-index-entries
+git commit -m "Update content"
+git push origin main
+
+
+
+
+
