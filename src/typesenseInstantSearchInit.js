@@ -33,8 +33,14 @@ const typesenseInstantSearchCreateDomElements = () => {
         <p class="text-center">KERI Suite Search Engine</p>
         
         <div id="search-box" class="mt-3 mb-2"></div>
-        <small class='d-block text-end'><a class="d-inline" target="_blank" rel="noopener" href="indexed-in-KERISSE.html">Indexed: <span id='index-created-timestamp-target-search-modal'>–</span>, pages: <span
-        id='index-created-page-count-target-search-modal'>–</span></a></small>
+        <small class='d-block text-end'>
+            <a class="d-inline" target="_blank" rel="noopener" href="indexed-in-KERISSE.html">
+                Indexed:
+                <span id='index-created-timestamp-target-search-modal'>–</span>,
+                pages: <span
+                    id='index-created-page-count-target-search-modal'>–</span></a> | 
+                <a target="_blank" rel="noopener" class="d-inline text-end" href="https://github.com/weboftrust/kerisse/">GitHub repo</a>
+        </small>   
     </div>
 
     <a href="#search-results" class="to-search-results btn btn-light btn-sm mt-3 mb-3 d-block d-md-none">
