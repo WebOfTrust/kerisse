@@ -39,7 +39,8 @@ const typesenseInstantSearchCreateDomElements = () => {
                 <span id='index-created-timestamp-target-search-modal'>–</span>,
                 pages: <span
                     id='index-created-page-count-target-search-modal'>–</span></a> | 
-                <a target="_blank" rel="noopener" class="d-inline text-end" href="https://github.com/weboftrust/kerisse/">GitHub repo</a>
+                <a target="_blank" rel="noopener" class="d-inline text-end" href="https://github.com/weboftrust/kerisse/">GitHub repo</a> |
+                <a target="_blank" rel="noopener" class="d-inline text-end" href="https://chromewebstore.google.com/detail/kerific/ckbmkbbmnfbeecfmoiohobcdmopekgmp">Kerific Browser Extension</a>
         </small>   
     </div>
 
