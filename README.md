@@ -14,4 +14,8 @@ Apart from this, we still have:
 
 ## Information for developers
 
-To be written.
+- Add custom css in /src/assets/main.scss
+
+- The references in manifest.json point to files in the final distribution: `/dist`
+- `/dist` is generated from source via `npm run build`
+- Start local webserver: `npm start`, this will start a server on `http://localhost:8080/`
