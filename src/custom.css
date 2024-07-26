@@ -972,3 +972,7 @@ article .markdown .inline-medium-end,
     transform: rotate(359deg);
   }
 } */
+
+footer {
+  background: #313846;
+}
