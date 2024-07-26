@@ -950,13 +950,31 @@ article .markdown .inline-medium-end,
   text-decoration: underline;
 }
 
+
 .hero {
-  font-size: 0.8em;
+  margin-bottom: 1em;
+  font-size: 0.7em;
 }
 
 .hero-image {
-  width: 2em;
+  width: 1.5em;
 }
+
+
+/* Font sizes for small screens */
+@media (min-width: 576px) {
+  .hero {
+    font-size: 1em;
+  }
+
+  .hero-image {
+    width: 2.5em;
+  }
+
+}
+
+
+
 
 /* .hero__image {
   max-width: 10em !important;
