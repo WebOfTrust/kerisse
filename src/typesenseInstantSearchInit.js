@@ -9,20 +9,23 @@ import paths from "../paths";
 
 const typesenseInstantSearchCreateDomElements = () => {
     const domStringSearchResult = `
-<div id="search" class="container p-3" >
-<div class="hero p-2">
+<div id="search" class="container p-3">
+    <div class="hero">
         <div class="row">
             <div class="col text-center">
-                <a href="https://weboftrust.github.io/keridoc/"><img class="hero-image" src="icons/10119973341678815049.svg" alt="">
-                KERIDoc<br><small>doc.kerisse.org</small></a>
+                <a href="https://weboftrust.github.io/keridoc/"><img class="hero-image"
+                        src="icons/10119973341678815049.svg" alt="">
+                    KERIDoc<br><small>doc.kerisse.org</small></a>
             </div>
             <div class="col text-center">
-                <a href="https://weboftrust.github.io/WOT-terms/"><img class="hero-image" src="icons/9491177161682829258.svg" alt="">
-                KERI Suite Glossary<br><small>glossary.kerisse.org</small></a>
+                <a href="https://weboftrust.github.io/WOT-terms/"><img class="hero-image"
+                        src="icons/9491177161682829258.svg" alt="">
+                    KERI Suite Glossary<br><small>glossary.kerisse.org</small></a>
             </div>
             <div class="col text-center">
-                <a href="https://weboftrust.github.io/kerisse/"><img class="hero-image" src="icons/1626701221679047824.svg" alt="">
-                KERISSE<br><small>search.kerisse.org</small></a>
+                <a href="https://weboftrust.github.io/kerisse/"><img class="hero-image"
+                        src="icons/1626701221679047824.svg" alt="">
+                    KERISSE<br><small>search.kerisse.org</small></a>
             </div>
         </div>
     </div>
@@ -30,23 +33,25 @@ const typesenseInstantSearchCreateDomElements = () => {
     <div class="hero2 p-2">
         <h1 class="search-heading text-center fs-2">KERISSE</h1>
         <p class="text-center">KERI Suite Search Engine</p>
-        
+
         <div id="search-box" class="mt-3 mb-2"></div>
         <small class='d-block text-end'>
             <a class="d-inline" target="_blank" rel="noopener" href="indexed-in-KERISSE.html">
                 Indexed:
                 <span id='index-created-timestamp-target-search-modal'>–</span>,
-                pages: <span
-                    id='index-created-page-count-target-search-modal'>–</span></a> | 
-                <a target="_blank" rel="noopener" class="d-inline text-end" href="https://github.com/weboftrust/kerisse/">GitHub repo</a> |
-                <a target="_blank" rel="noopener" class="d-inline text-end" href="https://chromewebstore.google.com/detail/kerific/ckbmkbbmnfbeecfmoiohobcdmopekgmp">Kerific Browser Extension</a>
-        </small>   
+                pages: <span id='index-created-page-count-target-search-modal'>–</span></a> |
+            <a target="_blank" rel="noopener" class="d-inline text-end"
+                href="https://github.com/weboftrust/kerisse/">GitHub repo</a> |
+            <a target="_blank" rel="noopener" class="d-inline text-end"
+                href="https://chromewebstore.google.com/detail/kerific/ckbmkbbmnfbeecfmoiohobcdmopekgmp">Kerific Browser
+                Extension</a>
+        </small>
     </div>
 
     <a href="#search-results" class="to-search-results btn btn-light btn-sm mt-3 mb-3 d-block d-md-none">
         Jump to search results
     </a>
-    
+
     <!--
     <p id="example-search-terms" class="mt-4 text-center"><small>Try:
       <a role="button" class="clickable-search-term btn btn-outline-secondary btn-sm d-inline">Keri</a>
@@ -57,16 +62,19 @@ const typesenseInstantSearchCreateDomElements = () => {
 
     <ul class="nav justify-content-center">
         <li class="nav-item">
-            <a target="_blank" rel="noopener" class="nav-link" href="https://docs.google.com/presentation/d/1lpzYcPrIox9V4hERtn4Kcf7uq01OVU9u3PuVm1aYzR0/edit#slide=id.ga411be7e84_0_0">KERI for Muggles</a>
+            <a target="_blank" rel="noopener" class="nav-link"
+                href="https://docs.google.com/presentation/d/1lpzYcPrIox9V4hERtn4Kcf7uq01OVU9u3PuVm1aYzR0/edit#slide=id.ga411be7e84_0_0">KERI
+                for Muggles</a>
         </li>
         <li class="nav-item">
             <a target="_blank" rel="noopener" class="nav-link" href="https://keri.one/keri-resources/">Resources</a>
         </li>
         <li class="nav-item">
-            <a target="_blank" rel="noopener" class="nav-link" href="https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf">Whitepaper</a>
+            <a target="_blank" rel="noopener" class="nav-link"
+                href="https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf">Whitepaper</a>
         </li>
     </ul>
-    
+
     <div class="search-results-container container mt-3" style="z-index: 1999;">
 
         <!-- Column with refinement filters -->
@@ -139,14 +147,19 @@ const typesenseInstantSearchCreateDomElements = () => {
             <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                 <h5 class="text-light">More</h5>
                 <ul class="list-unstyled mb-0">
-                    <li><a target="_blank" rel="noopener" class="text-light" href="https://github.com/weboftrust/kerisse/">GitHub repo</a></li>
-                    <li><a href="https://weboftrust.github.io/keridoc/" class="text-light" target="_blank" rel="noopener">KERIDoc</a>
+                    <li><a target="_blank" rel="noopener" class="text-light"
+                            href="https://github.com/weboftrust/kerisse/">GitHub repo</a></li>
+                    <li><a href="https://weboftrust.github.io/keridoc/" class="text-light" target="_blank"
+                            rel="noopener">KERIDoc</a>
                     </li>
-                    <li><a href="https://weboftrust.github.io/WOT-terms/" class="text-light" target="_blank" rel="noopener">KERI Suite
+                    <li><a href="https://weboftrust.github.io/WOT-terms/" class="text-light" target="_blank"
+                            rel="noopener">KERI Suite
                             Glossary</a></li>
-                    <li><a href="https://weboftrust.github.io/kerisse/" class="text-light" target="_blank" rel="noopener">KERISSE</a>
+                    <li><a href="https://weboftrust.github.io/kerisse/" class="text-light" target="_blank"
+                            rel="noopener">KERISSE</a>
                     </li>
-                    <li><a href="https://chromewebstore.google.com/detail/kerific/ckbmkbbmnfbeecfmoiohobcdmopekgmp" class="text-light" target="_blank" rel="noopener">Kerific Browser Extension</a>
+                    <li><a href="https://chromewebstore.google.com/detail/kerific/ckbmkbbmnfbeecfmoiohobcdmopekgmp"
+                            class="text-light" target="_blank" rel="noopener">Kerific Browser Extension</a>
                     </li>
                 </ul>
             </div>
@@ -154,10 +167,13 @@ const typesenseInstantSearchCreateDomElements = () => {
             <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                 <h5 class="text-light">Important resources</h5>
                 <ul class="list-unstyled mb-0">
-                    <li><a href="https://docs.google.com/presentation/d/1lpzYcPrIox9V4hERtn4Kcf7uq01OVU9u3PuVm1aYzR0/edit#slide=id.ga411be7e84_0_0" class="text-light" target="_blank" rel="noopener">KERI for Muggles</a></li>
-                    <li><a href="https://keri.one/keri-resources/" class="text-light" target="_blank" rel="noopener">KERI Resources</a></li>
-                    <li><a href="https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf" class="text-light" target="_blank" rel="noopener">KERI Whitepaper</a></li>
-                    
+                    <li><a href="https://docs.google.com/presentation/d/1lpzYcPrIox9V4hERtn4Kcf7uq01OVU9u3PuVm1aYzR0/edit#slide=id.ga411be7e84_0_0"
+                            class="text-light" target="_blank" rel="noopener">KERI for Muggles</a></li>
+                    <li><a href="https://keri.one/keri-resources/" class="text-light" target="_blank"
+                            rel="noopener">KERI Resources</a></li>
+                    <li><a href="https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf"
+                            class="text-light" target="_blank" rel="noopener">KERI Whitepaper</a></li>
+
                 </ul>
             </div>
         </div>
