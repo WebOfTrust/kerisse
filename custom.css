@@ -10,19 +10,19 @@ KERI colors:
 */
 
 a {
-  color: #62783E !important;
+  color: #62783E;
 }
 
 a:hover {
-  color: #B4D070 !important;
+  color: #B4D070;
 }
 
 .hero2 a {
-  color: #eee !important;
+  color: #eee;
 }
 
 .hero2 a:hover {
-  color: #ccc !important;
+  color: #ccc;
 }
 
 
@@ -945,10 +945,6 @@ article .markdown .inline-medium-end,
   border-radius: 10px;
 }
 
-.hero2 a {
-  color: #fff;
-  text-decoration: underline;
-}
 
 
 .hero {
@@ -972,24 +968,6 @@ article .markdown .inline-medium-end,
   }
 
 }
-
-
-
-
-/* .hero__image {
-  max-width: 10em !important;
-  animation: rotation 12s infinite linear;
-}
-
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(359deg);
-  }
-} */
 
 footer {
   background: #313846;
