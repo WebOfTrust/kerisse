@@ -531,20 +531,26 @@ const typeSenseInstantSearch = () => {
     }),
   ]);
 
-  // function handleSearchTermClick(event) {
-  //   const searchBox = document.querySelector('#search-box input[type=search]');
-  //   search.helper.clearRefinements();
-  //   searchBox.val(event.currentTarget.textContent);
-  //   search.helper.setQuery(searchBox.val()).search();
-  // }
+  function debounce(func, delay) {
+    let debounceTimer;
+    return function () {
+      const context = this;
+      const args = arguments;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
+  }
 
-  // search.on('render', function () {
-  //   // Make artist names clickable
-  //   // $('#hits .clickable-search-term').on('click', handleSearchTermClick);
-  //   document.querySelectorAll('.hit-url a').forEach((el) => {
-  //     el.addEventListener('click', handleSearchTermClick);
-  //   });
-  // });
+  const debounceDelay = 600;
+  const loader = document.querySelector('#loader')
+
+  search.on('render', debounce(function () {
+    loader.textContent = 'Search results are loaded';
+    loader.classList.add('visible');
+    setTimeout(() => {
+      loader.classList.remove('visible');
+    }, 2000);
+  }, debounceDelay));
 
   search.start();
 };
