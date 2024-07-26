@@ -8,9 +8,8 @@
 import paths from "../paths";
 
 const typesenseInstantSearchCreateDomElements = () => {
-    const domStringSearchStart = `<button id="search-start">🔍</button>`;
     const domStringSearchResult = `
-<div id="search" class="container p-3" style="max-width: 70em;">
+<div id="search" class="container p-3" >
 <div class="hero p-2">
         <div class="row">
             <div class="col text-center">
@@ -125,6 +124,49 @@ const typesenseInstantSearchCreateDomElements = () => {
         </div>
     </div>
 </div>
+
+<!-- Footer Section -->
+<footer class="text-center text-lg-start mt-4">
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                <h5 class="text-light text-uppercase">KERISSE</h5>
+                <p class="text-light">
+                    KERI Suite Search Engine.
+                </p>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-light">More</h5>
+                <ul class="list-unstyled mb-0">
+                    <li><a target="_blank" rel="noopener" class="text-light" href="https://github.com/weboftrust/kerisse/">GitHub repo</a></li>
+                    <li><a href="https://weboftrust.github.io/keridoc/" class="text-light" target="_blank" rel="noopener">KERIDoc</a>
+                    </li>
+                    <li><a href="https://weboftrust.github.io/WOT-terms/" class="text-light" target="_blank" rel="noopener">KERI Suite
+                            Glossary</a></li>
+                    <li><a href="https://weboftrust.github.io/kerisse/" class="text-light" target="_blank" rel="noopener">KERISSE</a>
+                    </li>
+                    <li><a href="https://chromewebstore.google.com/detail/kerific/ckbmkbbmnfbeecfmoiohobcdmopekgmp" class="text-light" target="_blank" rel="noopener">Kerific Browser Extension</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-light">Important resources</h5>
+                <ul class="list-unstyled mb-0">
+                    <li><a href="https://docs.google.com/presentation/d/1lpzYcPrIox9V4hERtn4Kcf7uq01OVU9u3PuVm1aYzR0/edit#slide=id.ga411be7e84_0_0" class="text-light" target="_blank" rel="noopener">KERI for Muggles</a></li>
+                    <li><a href="https://keri.one/keri-resources/" class="text-light" target="_blank" rel="noopener">KERI Resources</a></li>
+                    <li><a href="https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf" class="text-light" target="_blank" rel="noopener">KERI Whitepaper</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="text-center p-3">
+      © 2024 Copyright:
+    </div>-->
+</footer>
   `;
 
     // Add search to dom
@@ -133,16 +175,6 @@ const typesenseInstantSearchCreateDomElements = () => {
             .querySelector('body')
             .insertAdjacentHTML('afterbegin', domStringSearchResult);
     }
-
-    // TODO: find out why check for null does not work
-    // if (document.querySelector('#search-start') === null) {
-    if (document.querySelector('#search-start')) {
-        document.querySelector('#search-start').remove();
-    }
-    document
-        .querySelector('body')
-        .insertAdjacentHTML('beforeend', domStringSearchStart);
-    // }
 
 
     /*
