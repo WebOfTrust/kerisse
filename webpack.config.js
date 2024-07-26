@@ -9,6 +9,7 @@ module.exports = {
         main: './src/typesenseInstantSearchInit.js',
         additional1: './src/typesenseInstantSearch.js',
         additional2: './src/scrollHorizontallyToKeyWordInSearchResults.js',
+        additional3: './src/backToTop.js'
     },
     output: {
         // filename: '[name].[contenthash].bundle.js', // Generates main.bundle.js, additional1.bundle.js, etc.
@@ -35,8 +36,8 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'index.html', to: './' }, // Adjust the 'from' path as necessary
-                { from: 'output/indexed-in-KERISSE.html', to: './' }, // Adjust the 'from' path as necessary
-                { from: 'src/custom.css', to: './custom.css' },
+                { from: 'output/indexed-in-KERISSE.html', to: './' },
+                { from: 'src/*.css', to: '[name][ext]' },
                 { from: 'src/*.svg', to: 'icons/[name][ext]' },
                 { from: 'src/*.png', to: '[name][ext]' },
 
