@@ -37,6 +37,7 @@ module.exports = {
             patterns: [
                 { from: 'index.html', to: './' }, // Adjust the 'from' path as necessary
                 { from: 'output/indexed-in-KERISSE.html', to: './' },
+                { from: 'output/search-index.orama.json.gz', to: './', noErrorOnMissing: true },
                 { from: 'src/*.css', to: '[name][ext]' },
                 { from: 'src/*.svg', to: 'icons/[name][ext]' },
                 { from: 'src/*.png', to: '[name][ext]' },

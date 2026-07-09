@@ -4,8 +4,9 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "start": "webpack serve --open",
+    "build:search-index": "node scripts/build-orama-index.mjs",
+    "build": "npm run build:search-index && webpack",
+    "start": "npm run build:search-index && webpack serve --open",
     "postinstall": "node node_modules/puppeteer/install.js || true"
   },
   "keywords": [],
@@ -21,6 +22,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
+    "@orama/orama": "^3.1.18",
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
@@ -29,7 +31,6 @@
     "puppeteer": "^19.11.1",
     "tesseract.js": "^4.1.1",
     "tracer": "^1.1.6",
-    "typesense-instantsearch-adapter": "^2.4.1",
     "xml2js": "^0.5.0"
   }
 }
