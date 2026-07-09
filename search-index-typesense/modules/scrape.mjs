@@ -5,7 +5,7 @@
   Description: Scrape websites using puppeteer.
 */
 
-import puppeteer from 'puppeteer';
+import launchBrowser from './launchBrowser.mjs';
 import createOutput from './createOutput.mjs';
 import appendToFile from './appendToFile.mjs';
 import fs from 'fs';
@@ -15,8 +15,8 @@ import { processPDF as generalPDF } from './general-pdf.mjs';
 import { getFileContent as githubContent } from './github-API.mjs';
 
 export default async function scrape(config, customScrape) {
-    const browser = await puppeteer.launch({ headless: "new" });// for production
-    // const browser = await puppeteer.launch({ headless: false });// for testing
+    const browser = await launchBrowser();// for production
+    // const browser = await launchBrowser({ headless: false });// for testing
     const page = await browser.newPage();
     // Set a custom user agent header
     await page.setUserAgent('KERISSE-Web-of-Trust-Scraper');
@@ -131,6 +131,12 @@ export default async function scrape(config, customScrape) {
                   -everything that is assigned via scraped, like scraped,knowledgeLevel, can be added via customScrape. But mediaType for example cannot be assigned via the custom Scraper but get its data via a local var.
                 */
 
+                if (!Array.isArray(scraped.mainContent) || scraped.mainContent.length === 0) {
+                    logger.setLogFile('error.log');
+                    logger.log(`No content extracted from ${pageUrl} (selector matched 0 elements)`);
+                    continue;
+                }
+
                 let strOutput = createOutput({
                     siteName: config.siteName,
                     source: config.source,
@@ -150,6 +156,11 @@ export default async function scrape(config, customScrape) {
                     mediaType: pageExtension
                 });
 
+                if (!strOutput.trim()) {
+                    logger.setLogFile('error.log');
+                    logger.log(`No index entries created for ${pageUrl}`);
+                    continue;
+                }
 
                 appendToFile(strOutput, config.destinationFile);
                 // Log the page URL to a log file and to a markdown file

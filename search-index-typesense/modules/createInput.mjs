@@ -5,7 +5,7 @@
   Description: Create input for the scraper, from xml sitemaps or a list of URLs on a page to JavaScript objects.
 */
 
-import puppeteer from 'puppeteer';
+import launchBrowser from './launchBrowser.mjs';
 import xml2js from 'xml2js';
 import fetch from 'node-fetch';
 import fs from 'fs';
@@ -75,7 +75,7 @@ export default async function createInput(input) {
 
   // If there is a list of URLs on a page, parse it
   if (input.sourceType === 'querySelector') {
-    const browser = await puppeteer.launch();
+    const browser = await launchBrowser();
     const page = await browser.newPage();
 
     // Get all page URLs

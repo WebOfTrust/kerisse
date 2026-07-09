@@ -162,8 +162,8 @@ async function customScrapeGleif(page, domQueryForContent, pageUrl) {
 
 const configReadTheDocsKeripy = {
     sitemap: await createInput({
-        sourceType: 'localXMLsitemap',
-        sourcePath: 'search-index-typesense/sitemaps/sitemap-keripy.readthedocs.io.xml',
+        sourceType: 'remoteXMLsitemap',
+        sourcePath: 'https://keripy.readthedocs.io/sitemap.xml',
     }),
     siteName: 'Python Implementation of the KERI Core Libraries',
     source: 'Python Implementation of the KERI Core Libraries',
@@ -197,8 +197,8 @@ async function customScrapeReadTheDocsKeripy(page, domQueryForContent, pageUrl) 
 
 const configReadTheDocsKeria = {
     sitemap: await createInput({
-        sourceType: 'localXMLsitemap',
-        sourcePath: 'search-index-typesense/sitemaps/sitemap-keria.readthedocs.io.xml',
+        sourceType: 'remoteXMLsitemap',
+        sourcePath: 'https://keria.readthedocs.io/sitemap.xml',
     }),
     siteName: 'Python Implementation of the KERI Core Libraries',
     source: 'Python Implementation of the KERI Core Libraries',
@@ -232,8 +232,8 @@ async function customScrapeReadTheDocsKeria(page, domQueryForContent, pageUrl) {
 
 const configReadTheDocsSignifypy = {
     sitemap: await createInput({
-        sourceType: 'localXMLsitemap',
-        sourcePath: 'search-index-typesense/sitemaps/sitemap-signifypy.readthedocs.io.xml',
+        sourceType: 'remoteXMLsitemap',
+        sourcePath: 'https://signifypy.readthedocs.io/sitemap.xml',
     }),
     siteName: 'Python Implementation of the KERI Core Libraries',
     source: 'Python Implementation of the KERI Core Libraries',

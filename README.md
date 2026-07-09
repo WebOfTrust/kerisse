@@ -19,3 +19,7 @@ Apart from this, we still have:
 - The references in manifest.json point to files in the final distribution: `/dist`
 - `/dist` is generated from source via `npm run build`
 - Start local webserver: `npm start`, this will start a server on `http://localhost:8080/`
+
+### Scraping (search index)
+
+The scraper uses Puppeteer and needs Chrome/Chromium. On macOS it uses the installed Google Chrome app by default. You can override the browser path with `PUPPETEER_EXECUTABLE_PATH` in `.env`. If no system browser is found, run `node node_modules/puppeteer/install.js` to download a bundled Chromium.

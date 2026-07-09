@@ -1,5 +1,5 @@
 /**
- * @file This module exports a function that scrapes data from a list of websites and saves it to a JSONL file.
+ * @file Scrapes data from a list of single URLs defined in a local config file.
  * @module scraper-generic
  */
 
@@ -10,90 +10,44 @@ import extractMainContent from './modules/extractMainContent.mjs';
 import { config as configDotEnv } from 'dotenv';
 configDotEnv();
 
-/**
- * The directory where the JSON file containing the list of websites to scrape is located.
- * @type {string}
- */
-const inputDirJSON = process.env.SEARCH_INDEX_DIR + "/singleUrlsFromWotTermsGoogleSheet";
+const configFilePath = path.join(
+    process.env.SEARCH_INDEX_DIR,
+    'config/config-scraper-single-urls/genericScraperSingleUrls.json'
+);
 
-/**
- * The name of the JSON file containing the list of websites to scrape.
- * @type {string}
- */
-const inputFileNameJSON = "singleUrlsFromWotTermsGoogleSheet.json";
-
-/**
- * The full path of the JSON file containing the list of websites to scrape.
- * @type {string}
- */
-const filePathJSON = path.join(inputDirJSON, inputFileNameJSON);
-
-/**
- * The contents of the JSON file containing the list of websites to scrape.
- * @type {string}
- */
-const data = fs.readFileSync(filePathJSON, 'utf-8');
-
-/**
- * The parsed JSON object containing the list of websites to scrape.
- * @type {Object}
- */
-const dataObj = JSON.parse(data);
-
-/**
- * The column names of the list of websites to scrape.
- * @type {Array<string>}
- */
-const entriesIndex = dataObj.values[0];
-
-/**
- * The entries of the list of websites to scrape.
- * @type {Array<Array<string>>}
- */
-const entries = dataObj.values.slice(1); // removes the first item in the array
-
-/**
- * Returns the position of a value in the entriesIndex array.
- * @param {string} value - The value to search for in the entriesIndex array.
- * @returns {number} - The position of the value in the entriesIndex array, or -1 if not found.
- */
-function positionInArray(value) {
-    for (let i = 0; i < entriesIndex.length; i++) {
-        if (entriesIndex[i] === value) return i;
-    }
-    return -1;
-}
+const entries = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
 
 /**
  * Scrapes data from all websites in the list and saves it to a JSONL file.
  * @async
  */
 async function scrapeAll() {
-    for (let i = 1; i < entries.length; i++) {
-        const urlPosition = positionInArray('url');
-
-        const sitemap = {
-            "urlset": {
-                "url": [{ "loc": [entries[i][urlPosition]] }]
-            }
+    for (let i = 0; i < entries.length; i++) {
+        const entry = entries[i];
+        if (!entry.url) {
+            continue;
         }
+
+        const pageTitleSlug = (entry.pageTitle || `entry-${i}`)
+            .replace(/\s+/g, '-')
+            .replace(/[/\\?%*:|"<>]/g, '-');
 
         const config = {
-            sitemap: sitemap,
-            siteName: entries[i][positionInArray('siteName')],
-            source: entries[i][positionInArray('source')],
-            category: entries[i][positionInArray('category')],
-            author: entries[i][positionInArray('author')],
-            destinationFile: process.env.SEARCH_INDEX_DIR + '/search-index-entries/site-' + i + '-' + entries[i][positionInArray('pageTitle')].replace(/\s+/g, '-') + '.jsonl',
-            domQueryForContent: entries[i][positionInArray('querySelector')]
-        }
+            sitemap: {
+                "urlset": {
+                    "url": [{ "loc": [entry.url] }]
+                }
+            },
+            siteName: entry.siteName,
+            source: entry.source,
+            category: entry.category,
+            author: entry.author,
+            destinationFile: process.env.SEARCH_INDEX_DIR + '/search-index-entries/site-' + i + '-' + pageTitleSlug + '.jsonl',
+            domQueryForContent: entry.querySelector
+        };
 
-        // Pass additional parameters to customScrape
-        const type = entries[i][positionInArray('type')];
-        const pageTitle = entries[i][positionInArray('pageTitle')];
-
-        scrape(config, (page, domQueryForContent, pageUrl) => {
-            return customScrape(page, domQueryForContent, pageUrl, type, pageTitle);
+        await scrape(config, (page, domQueryForContent, pageUrl) => {
+            return customScrape(page, domQueryForContent, pageUrl, entry.type, entry.pageTitle);
         });
     }
 }
@@ -120,5 +74,5 @@ async function customScrape(page, domQueryForContent, pageUrl, type, pageTitle) 
  * @async
  */
 export default async function () {
-    scrapeAll();
+    await scrapeAll();
 };
