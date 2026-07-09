@@ -1,7 +1,7 @@
 /**
- * @file This file instantiates the Typesense InstantSearch.js adapter and the InstantSearch.js search client.
+ * @file InstantSearch.js UI backed by a static Orama index (GitHub Pages).
  * @author Kor Dwarshuis
- * @version 1.0.0
+ * @version 2.0.0
  * @since 2023-05-19
  */
 
@@ -25,8 +25,7 @@ import {
   currentRefinements,
 } from 'instantsearch.js/es/widgets';
 
-import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
-// import { SearchClient as TypesenseSearchClient } from 'typesense'; // To get the total number of docs
+import { createOramaInstantSearchAdapter } from './oramaInstantSearchAdapter';
 
 // import { connectSearchBox } from 'instantsearch.js/es/connectors'
 import { connectRefinementList } from 'instantsearch.js/es/connectors';
@@ -53,7 +52,10 @@ const refinementListImageToggle = connectRefinementList((renderOptions, isFirstR
   }
 });
 
-const typeSenseInstantSearch = () => {
+const initKerisseSearch = async () => {
+  const loader = document.querySelector('#loader');
+  loader.textContent = 'Loading search index…';
+
   // "Try searching for:"
   function handleSearchTermClick(event) {
     const searchBox = document.querySelector('.ais-SearchBox-input');
@@ -66,70 +68,12 @@ const typeSenseInstantSearch = () => {
     el.addEventListener('click', handleSearchTermClick);
   });
 
-  // to be used in the future
-  // function applyCustomSorting(items) {
-  //   console.log('items: ', items);
-  //   const currentQuery = search.helper.state.query;
-
-  //   const matchingQueryObj = queriesWithSortAdjustment.find(
-  //     (obj) => obj.queryString === currentQuery
-  //   );
-
-  //   if (matchingQueryObj) {
-  //     const sortAdjustment = matchingQueryObj.sortAdjustment;
-  //     const urlSubstring = matchingQueryObj.urlSubstring;
-
-  //     return items.map((item) => {
-  //       item.sort_order = item.url && item.url.includes(urlSubstring) ? sortAdjustment : 0;
-  //       return item;
-  //     }).sort((a, b) => b.sort_order - a.sort_order);
-  //   }
-
-  //   return items;
-  // }
-
-
-
-
-
-  const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
-    server: {
-      apiKey: 'qy6mC9ZakKZ3C8GUD5T3iDrelDgpp5Zc', // Be sure to use an API key that only allows searches, in production
-      nodes: [
-        {
-          host: '9ktso7i1b8034azqp-1.a1.typesense.net',
-          port: '443',
-          protocol: 'https',
-        },
-      ],
-    },
-    // The following parameters are directly passed to Typesense's search API endpoint.
-    //  So you can pass any parameters supported by the search endpoint below.
-    //  queryBy is required.
-    //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
-    additionalSearchParameters: {
-      // query_by: 'title,authors',
-      // query_by: 'imgMeta, content, firstHeadingBeforeElement, pageTitle, siteName, source, url',
-      query_by: 'content, firstHeadingBeforeElement, pageTitle, siteName, source, url',
-      // weights: '10000,1,1,1,1,1,1',
-      // filter_by: 'tag:=[p]',
-      // filter_by: 'tag:[a]',
-      // filter_by: 'contentLength:>50',
-      // sort_by: 'contentLength:asc',//asc or desc
-
-      // sort_by: 'imgMetaLength:asc, contentLength:asc',//asc or desc
-      sort_by: 'imgWidth:desc,contentLength:desc,imgUrl(missing_values: last):desc',//asc or desc
-      // sort_by: 'imgWidth:desc,imgUrl(missing_values: last):desc',//asc or desc
-      group_by: 'url',
-      group_limit: 1
-    },
-  });
-  const searchClient = typesenseInstantsearchAdapter.searchClient;
+  const { searchClient } = await createOramaInstantSearchAdapter();
+  loader.textContent = 'Search index loaded';
 
   const search = instantsearch({
     searchClient,
-    indexName: 'Wot-terms',// production
-    // indexName: 'Wot-terms-test',// testing
+    indexName: 'kerisse',
     routing: true,
     // searchFunction(helper) {
     // if (helper.state.query === '') {
@@ -541,7 +485,6 @@ const typeSenseInstantSearch = () => {
   }
 
   const debounceDelay = 600;
-  const loader = document.querySelector('#loader')
 
   search.on('render', debounce(function () {
     loader.textContent = 'Search results are loaded';
@@ -554,7 +497,14 @@ const typeSenseInstantSearch = () => {
   search.start();
 };
 
-typeSenseInstantSearch();
+initKerisseSearch().catch((error) => {
+  const loader = document.querySelector('#loader');
+  if (loader) {
+    loader.textContent = 'Failed to load search index.';
+    loader.classList.add('alert-danger');
+  }
+  console.error('Failed to initialize search:', error);
+});
 
 // export function onRouteDidUpdate({ location, previousLocation }) {
 //   // Don't execute if we are still on the same page; the lifecycle may be fired

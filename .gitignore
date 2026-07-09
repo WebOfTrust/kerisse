@@ -6,6 +6,8 @@
 
 # Generated files
 .cache-loader
+output/search-index.orama.json.gz
+output/search-index.orama.json
 
 # Misc
 .env
