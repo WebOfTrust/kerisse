@@ -8,7 +8,7 @@ import {
   groupHitsByUrl,
   ORAMA_INDEX_FILENAME,
   SEARCH_PROPERTIES,
-} from './oramaShared';
+} from '../scripts/orama-shared.mjs';
 
 const MAX_RAW_HITS = 5000;
 const HIGHLIGHT_FIELDS = [
