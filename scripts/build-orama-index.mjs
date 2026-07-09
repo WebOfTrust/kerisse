@@ -18,7 +18,7 @@ import {
   ORAMA_INDEX_FILENAME,
   ORAMA_SCHEMA,
   shouldIncludeDocument,
-} from '../src/oramaShared.js';
+} from './orama-shared.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
