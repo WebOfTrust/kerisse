@@ -26,7 +26,12 @@ Search runs entirely in the browser. At build time, scraped JSONL entries are co
 
 - Rebuild only the index: `npm run build:search-index`
 - Full site build (index + webpack): `npm run build`
-- Requires scraped entries in `search-index-typesense/search-index-entries/` (`.jsonl` and `.json`)
+- Requires scraped entries in `search-index-typesense/search-index-entries/` (`.jsonl` and `.json`), **or** a committed `output/search-index.orama.json.gz` fallback for CI
+
+GitHub Actions needs one of these in the repo:
+
+1. **Preferred:** commit `search-index-typesense/search-index-entries/*.jsonl` after scraping (`.not-split` backups stay gitignored)
+2. **Alternative:** commit `output/search-index.orama.json.gz` (CI reuses it when entries are absent)
 
 ### Scraping (search index)
 
