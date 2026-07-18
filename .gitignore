@@ -6,7 +6,6 @@
 
 # Generated files
 .cache-loader
-output/search-index.orama.json.gz
 output/search-index.orama.json
 
 # Misc
@@ -21,7 +20,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # logs
-search-index-typesense/search-index-entries/*
+search-index-typesense/search-index-entries/*.not-split
 search-index-typesense/logs/*
 search-index-typesense/sitemaps/*
 search-index-typesense/overrides/overridesID.json
