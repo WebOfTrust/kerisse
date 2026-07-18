@@ -53,6 +53,15 @@ async function readJsonArrayFile(filePath, onDocument) {
   items.forEach(onDocument);
 }
 
+async function directoryHasIndexFiles(dir) {
+  try {
+    const files = await fs.readdir(dir);
+    return files.some((file) => file.endsWith('.jsonl') || file.endsWith('.json'));
+  } catch {
+    return false;
+  }
+}
+
 async function collectDocuments() {
   const documents = [];
   let nextId = 1;
@@ -83,6 +92,25 @@ async function collectDocuments() {
 }
 
 async function main() {
+  await fs.mkdir(entriesDir, { recursive: true });
+  await fs.mkdir(outputDir, { recursive: true });
+
+  const hasEntries = await directoryHasIndexFiles(entriesDir);
+
+  if (!hasEntries) {
+    try {
+      await fs.access(outputFile);
+      console.log(`No scraped entries in ${entriesDir}; using existing ${outputFile}`);
+      return;
+    } catch {
+      throw new Error(
+        `No scraped entries found in ${entriesDir} and no pre-built index at ${outputFile}. ` +
+          'Run the scraper locally, then commit search-index-entries/*.jsonl (and *.json), ' +
+          `or commit a pre-built ${ORAMA_INDEX_FILENAME} under output/.`,
+      );
+    }
+  }
+
   console.log('Reading scraped entries...');
   const documents = await collectDocuments();
   console.log(`Indexing ${documents.length} documents...`);
@@ -95,7 +123,6 @@ async function main() {
 
   const serialized = JSON.stringify(await save(db));
   const gzipped = gzipSync(Buffer.from(serialized, 'utf8'));
-  await fs.mkdir(outputDir, { recursive: true });
   await fs.writeFile(outputFile, gzipped);
 
   const sizeMb = (gzipped.length / (1024 * 1024)).toFixed(2);
