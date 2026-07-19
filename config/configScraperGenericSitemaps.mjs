@@ -474,6 +474,78 @@ async function customScrapeSlackKeriArchive(page, domQueryForContent, pageUrl) {
 
 
 
+/*
+ * KERI Foundation (WordPress block theme)
+ * 
+ * 
+ */
+
+const configKeriFoundation = {
+    // WordPress serves a sitemap index at /sitemap.xml; use the pages urlset directly
+    sitemap: await createInput({
+        sourceType: 'remoteXMLsitemap',
+        sourcePath: 'https://keri.foundation/wp-sitemap-posts-page-1.xml',
+    }),
+    siteName: 'KERI Foundation',
+    source: 'KERI Foundation',
+    category: 'Blogs',
+    author: '',
+    destinationFile: 'search-index-entries/keri-foundation.jsonl',
+    domQueryForContent: '.entry-content p, .entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6, .entry-content li, .entry-content img, .entry-content pre, .entry-content code'
+}
+
+async function customScrapeKeriFoundation(page, domQueryForContent, pageUrl) {
+    logger.setLogFile('success.log');
+    logger.log('pageUrl: ' + pageUrl);
+
+    const mainContent = await extractMainContent(page, domQueryForContent);
+
+    const pageTitle = await getTextContent(page, '.wp-block-post-title');
+
+    let all = {};
+    all.mainContent = mainContent;
+    all.pageTitle = pageTitle;
+    return all;
+}
+
+
+
+/*
+ * KERI Conference / kericonf.com (WordPress block theme)
+ * 
+ * 
+ */
+
+const configKericonf = {
+    // WordPress serves a sitemap index at /sitemap.xml; use the pages urlset directly
+    sitemap: await createInput({
+        sourceType: 'remoteXMLsitemap',
+        sourcePath: 'https://kericonf.com/wp-sitemap-posts-page-1.xml',
+    }),
+    siteName: 'KERI Conference',
+    source: 'KERI Conference',
+    category: 'Blogs',
+    author: '',
+    destinationFile: 'search-index-entries/kericonf.jsonl',
+    domQueryForContent: '.entry-content p, .entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6, .entry-content li, .entry-content img, .entry-content pre, .entry-content code'
+}
+
+async function customScrapeKericonf(page, domQueryForContent, pageUrl) {
+    logger.setLogFile('success.log');
+    logger.log('pageUrl: ' + pageUrl);
+
+    const mainContent = await extractMainContent(page, domQueryForContent);
+
+    const pageTitle = await getTextContent(page, '.wp-block-post-title');
+
+    let all = {};
+    all.mainContent = mainContent;
+    all.pageTitle = pageTitle;
+    return all;
+}
+
+
+
 
 
 
@@ -488,4 +560,6 @@ export default async function () {
     scrape(configKeridoc, customScrapeKeridoc);
     // scrape(configWOTgloss, customScrapeWOTgloss);
     scrape(configSlackKeriArchive, customScrapeSlackKeriArchive);
+    scrape(configKeriFoundation, customScrapeKeriFoundation);
+    scrape(configKericonf, customScrapeKericonf);
 };
