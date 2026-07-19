@@ -6,7 +6,7 @@
 */
 
 import scraperGithub from './prepareScraperGithub.mjs';
-import scraperGenericSingleUrls from './prepareScraperSingleUrlsFromWotTermsGoogleSheet.mjs';
+import scraperGenericSingleUrls from './prepareScraperSingleUrls.mjs';
 import scraperGenericSitemap from './config/configScraperGenericSitemaps.mjs';
 
 scraperGithub();

@@ -1,6 +1,6 @@
 # Generic scraper single URLs
 
-Local config for scraping individual blog posts and articles (formerly sourced from a Google Sheet).
+Local config for scraping individual blog posts and articles.
 
 Edit `genericScraperSingleUrls.json` to add or update URLs. Each entry needs at least a `url`; other fields match the scraper columns:
 
