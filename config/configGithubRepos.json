@@ -1,4 +1,5 @@
 [
+  { "owner": "keri-foundation", "repo": "CONF26-subtitles", "branch": "main", "category": "Code" },
   { "owner": "trustoverip", "repo": "tswg-acdc-specification", "branch": "main", "category": "Code" },
   { "owner": "trustoverip", "repo": "tswg-did-method-webs-specification", "branch": "main", "category": "Code" },
   { "owner": "trustoverip", "repo": "tswg-cesr-specification", "branch": "main", "category": "Code" },
