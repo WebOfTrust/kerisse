@@ -50,15 +50,15 @@
 # - jq: Lightweight and flexible command-line JSON processor.
 
 # Logger generates a log file with a timestamp and from which file the message comes from.
-source ./scrape-search-index/logger.sh
+source ./scraper/logger.sh
 
 ### CONFIGURATION
 source "$(pwd)/.env"
 local_TYPESENSE_ADMIN_API_KEY="${TYPESENSE_ADMIN_API_KEY}"
 local_TYPESENSE_HOST="${TYPESENSE_HOST}"
 local_TYPESENSE_COLLECTION_NAME="${TYPESENSE_COLLECTION_NAME}"
-input_file_path="scrape-search-index/config/configOverrides.json"
-output_file_path="scrape-search-index/overrides/overridesID.json"
+input_file_path="${SEARCH_INDEX_CONFIG_DIR}/configOverrides.json"
+output_file_path="scraper/overrides/overridesID.json"
 
 ### STEP 1: Convert URLs to IDs
 temp_file=$(mktemp)
@@ -161,8 +161,8 @@ process_json_data() {
     }'
   done
 }
-JSON_DATA1=$(<"scrape-search-index/overrides/overridesID.json")
+JSON_DATA1=$(<"scraper/overrides/overridesID.json")
 process_json_data "$JSON_DATA1"
 
 # # Cleanup if desired
-# rm scrape-search-index/overrides/overridesID.json
+# rm scraper/overrides/overridesID.json

@@ -11,7 +11,7 @@ source .env
 
 ############## COPY SCRAPED CONTENT (JSON) FROM HANDMADE DIR TO AUTOMATED DIR ##############
 # Handmade content entries
-search_index_entries_manual_dir="$(pwd)/${SEARCH_INDEX_DIR}/config/config-search-index-entries-manual"
+search_index_entries_manual_dir="$(pwd)/${SEARCH_INDEX_CONFIG_DIR}/config-search-index-entries-manual"
 
 # Automated entries
 search_index_entries_dir="$(pwd)/${SEARCH_INDEX_ENTRIES_DIR}"
@@ -27,7 +27,7 @@ done
 
 ############## COPY SITEMAP.XML FROM HANDMADE DIR TO AUTOMATED DIR ##############
 # Handmade sitemaps
-sitemaps_manual_dir="$(pwd)/${SEARCH_INDEX_DIR}/config/config-sitemaps-manual"
+sitemaps_manual_dir="$(pwd)/${SEARCH_INDEX_CONFIG_DIR}/config-sitemaps-manual"
 
 # Automated entries
 sitemaps_dir="$(pwd)/${SEARCH_INDEX_DIR}/sitemaps"

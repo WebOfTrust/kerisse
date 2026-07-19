@@ -6,7 +6,7 @@
 # Description: This script empties a Typesense collection (typesense.org). 
 
 # Logger generates a log file with a timestamp and from which file the message comes from.
-source ./scrape-search-index/logger.sh
+source ./scraper/logger.sh
 
 source "$(pwd)/.env"
 local_TYPESENSE_ADMIN_API_KEY="${TYPESENSE_ADMIN_API_KEY}"

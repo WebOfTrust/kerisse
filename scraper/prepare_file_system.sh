@@ -4,7 +4,7 @@
 # Author: Kor Dwarshuis
 # Created: 2023
 # Updated: 2023-08-13
-# Description: This script prepares the file system for the scrape-search-index project. It creates the necessary directories and files. It also removes the old files and directories. This script is meant to be run before the other scripts. 
+# Description: This script prepares the file system for the scraper project. It creates the necessary directories and files. It also removes the old files and directories. This script is meant to be run before the other scripts. 
 
 
 

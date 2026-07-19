@@ -39,7 +39,7 @@ import xml2js from 'xml2js';
 import logger from './modules/logger.mjs';
 
 // Sitemap directory
-const sitemapDir = 'scrape-search-index/sitemaps';
+const sitemapDir = 'scraper/sitemaps';
 
 // Array of extensions to filter out
 const unwantedExtensions = [

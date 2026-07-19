@@ -24,7 +24,7 @@
 
 
 # Define log directory and default log file
-logsDir="scrape-search-index/logs"
+logsDir="scraper/logs"
 currentLogFile="success.log"
 
 # Function to set the log file

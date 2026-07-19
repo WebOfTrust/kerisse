@@ -21,9 +21,9 @@ yarn-error.log*
 
 # logs
 search-index-entries/*.not-split
-scrape-search-index/logs/*
-scrape-search-index/sitemaps/*
-scrape-search-index/overrides/overridesID.json
+scraper/logs/*
+scraper/sitemaps/*
+scraper/overrides/overridesID.json
 .history
 # media
 # *.mp4

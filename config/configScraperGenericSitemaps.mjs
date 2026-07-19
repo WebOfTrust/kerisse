@@ -59,7 +59,7 @@ const configGleif = {
     // // 1: Use a local created sitemap
     // sitemap: await createInput({
     //     sourceType: 'localXMLsitemap',
-    //     sourcePath: 'scrape-search-index/sitemaps/sitemap-www.gleif.org.xml',
+    //     sourcePath: 'scraper/sitemaps/sitemap-www.gleif.org.xml',
     // }),
 
     // 2: Use html sitemap on website
@@ -67,7 +67,7 @@ const configGleif = {
         sourceType: 'querySelector',
         sourcePath: 'https://www.gleif.org/en/meta/sitemap',
         queryString: '.content ul li a',// must be an a element
-        excludeURLs: 'scrape-search-index/config/config-sitemaps-exlude-urls/gleifExcludeUrls.json'
+        excludeURLs: 'config/config-sitemaps-exlude-urls/gleifExcludeUrls.json'
     }),
     siteName: 'Gleif website',
     source: 'Gleif website',
@@ -112,7 +112,7 @@ async function customScrapeGleif(page, domQueryForContent, pageUrl) {
 //     // 1: Use a local created sitemap
 //     sitemap: await createInput({
 //         sourceType: 'localXMLsitemap',
-//         sourcePath: 'scrape-search-index/sitemaps/sitemap-www.gleif.org-pdf.xml',
+//         sourcePath: 'scraper/sitemaps/sitemap-www.gleif.org-pdf.xml',
 //     }),
 
 //     // // 2: Use html sitemap on website
@@ -120,7 +120,7 @@ async function customScrapeGleif(page, domQueryForContent, pageUrl) {
 //     //     sourceType: 'querySelector',
 //     //     sourcePath: 'https://www.gleif.org/en/meta/sitemap',
 //     //     queryString: '.content ul li a',// must be an a element
-//     //     excludeURLs: 'scrape-search-index/config/config-sitemaps-exlude-urls/gleifExcludeUrls.json'
+//     //     excludeURLs: 'config/config-sitemaps-exlude-urls/gleifExcludeUrls.json'
 //     // }),
 //     siteName: 'Gleif website',
 //     source: 'Gleif website',
@@ -269,7 +269,7 @@ const configWOTterms = {
     sitemap: await createInput({
         sourceType: 'remoteXMLsitemap',
         sourcePath: 'https://weboftrust.github.io/WOT-terms/sitemap.xml',
-        excludeURLs: 'scrape-search-index/config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json'
+        excludeURLs: 'config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json'
     }),
     siteName: 'KERI Suite Glossary',
     source: 'KERI Suite Glossary',
@@ -337,7 +337,7 @@ const configKeridoc = {
     sitemap: await createInput({
         sourceType: 'remoteXMLsitemap',
         sourcePath: 'https://weboftrust.github.io/keridoc/sitemap.xml',
-        excludeURLs: 'scrape-search-index/config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json'
+        excludeURLs: 'config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json'
     }),
     siteName: 'KERIDoc',
     source: 'KERIDoc',
@@ -448,7 +448,7 @@ async function customScrapeKeridoc(page, domQueryForContent, pageUrl) {
 const configSlackKeriArchive = {
     sitemap: await createInput({
         sourceType: 'localXMLsitemap',
-        sourcePath: 'scrape-search-index/sitemaps/slack-keri-archive.xml',
+        sourcePath: 'scraper/sitemaps/slack-keri-archive.xml',
     }),
     siteName: 'Slack Keri Archive',
     source: 'Slack Keri Archive',
