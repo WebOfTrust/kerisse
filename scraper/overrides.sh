@@ -58,7 +58,7 @@ local_TYPESENSE_ADMIN_API_KEY="${TYPESENSE_ADMIN_API_KEY}"
 local_TYPESENSE_HOST="${TYPESENSE_HOST}"
 local_TYPESENSE_COLLECTION_NAME="${TYPESENSE_COLLECTION_NAME}"
 input_file_path="${SEARCH_INDEX_CONFIG_DIR}/configOverrides.json"
-output_file_path="scraper/overrides/overridesID.json"
+output_file_path="${SEARCH_INDEX_CONFIG_DIR}/overrides/overridesID.json"
 
 ### STEP 1: Convert URLs to IDs
 temp_file=$(mktemp)
@@ -161,8 +161,8 @@ process_json_data() {
     }'
   done
 }
-JSON_DATA1=$(<"scraper/overrides/overridesID.json")
+JSON_DATA1=$(<"${SEARCH_INDEX_CONFIG_DIR}/overrides/overridesID.json")
 process_json_data "$JSON_DATA1"
 
 # # Cleanup if desired
-# rm scraper/overrides/overridesID.json
+# rm "${SEARCH_INDEX_CONFIG_DIR}/overrides/overridesID.json"
