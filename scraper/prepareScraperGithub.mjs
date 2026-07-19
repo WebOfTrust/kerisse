@@ -3,16 +3,12 @@ import scrape from './modules/scrape.mjs';
 import { config as dotenvConfig } from 'dotenv';
 import { promises as fs } from 'fs';
 import path from 'path';
+import {
+    githubDestinationFile,
+    githubSitemapFilename,
+} from './modules/githubEntryPaths.mjs';
 
 dotenvConfig();
-
-/**
- * Sitemap filename convention (must match createSitemapGithub.mjs):
- * sitemap.githubcom.<owner>.<repo>-<branch>.<category>.xml
- */
-function githubSitemapFilename({ owner, repo, branch, category }) {
-    return `sitemap.githubcom.${owner}.${repo}-${branch}.${category}.xml`;
-}
 
 const createConfig = async ({ owner, repo, branch, category }) => {
     const sitemapDir = path.join(process.env.SEARCH_INDEX_DIR, 'sitemaps/github');
@@ -30,9 +26,9 @@ const createConfig = async ({ owner, repo, branch, category }) => {
         source: `${owner} / ${repoWithBranch}`,
         category: category,
         author: owner,
-        destinationFile: path.join(
+        destinationFile: githubDestinationFile(
             process.env.SEARCH_INDEX_ENTRIES_DIR,
-            `${owner}-${repoWithBranch}.jsonl`
+            { owner, repo, branch }
         ),
     };
 };
@@ -46,6 +42,12 @@ export default async function () {
     try {
         const entries = JSON.parse(await fs.readFile(configPath, 'utf-8'));
         for (const entry of entries) {
+            if (entry.skipCrawl === true) {
+                console.log(
+                    `Skipping crawl (skipCrawl): ${entry.owner}/${entry.repo} (${entry.branch})`
+                );
+                continue;
+            }
             const config = await createConfig(entry);
             await scrape(config);
         }

@@ -19,7 +19,15 @@ if [ ! -f "$github_repos_config" ]; then
 fi
 
 # Single repo: node scraper/createSitemapGithub.mjs <owner> <repo> <branch> <category>
+# Entries with "skipCrawl": true keep existing JSONL and are not re-sitemap'd.
 jq -c '.[]' "$github_repos_config" | while read -r repo; do
+  skip=$(echo "$repo" | jq -r '.skipCrawl // false')
+  if [ "$skip" = "true" ]; then
+    owner=$(echo "$repo" | jq -r '.owner')
+    name=$(echo "$repo" | jq -r '.repo')
+    echo "Skipping sitemap (skipCrawl): ${owner}/${name}"
+    continue
+  fi
   owner=$(echo "$repo" | jq -r '.owner')
   name=$(echo "$repo" | jq -r '.repo')
   branch=$(echo "$repo" | jq -r '.branch')
