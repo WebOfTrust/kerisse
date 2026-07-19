@@ -110,7 +110,7 @@ function processJSONLFiles(directory, outputFile) {
 
 
 // Example usage:
-const directory = './search-index-typesense/search-index-entries'; // Specify directory
+const directory = './search-index-entries'; // Specify directory
 const outputFile = './static/json/all-images/all-images.json'; // Specify output file
 
 processJSONLFiles(directory, outputFile);

@@ -84,7 +84,7 @@ log "Counting number of lines finished"
 
 setLogFile "success.log"
 log "Start collecting urls and writing to index file"
-node "$SCRIPT_DIR/collectScrapedUrls.mjs" "${SEARCH_INDEX_DIR}/${SEARCH_INDEX_ENTRIES_DIR}" "${INDEX_OVERVIEW_FILE}"
+node "$SCRIPT_DIR/collectScrapedUrls.mjs" "${SEARCH_INDEX_ENTRIES_DIR}" "${INDEX_OVERVIEW_FILE}"
 log "Collecting urls and writing to index file finished"
 
 # Sort and style the index file.

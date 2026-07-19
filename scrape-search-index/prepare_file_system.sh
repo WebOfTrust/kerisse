@@ -4,7 +4,7 @@
 # Author: Kor Dwarshuis
 # Created: 2023
 # Updated: 2023-08-13
-# Description: This script prepares the file system for the search-index-typesense project. It creates the necessary directories and files. It also removes the old files and directories. This script is meant to be run before the other scripts. 
+# Description: This script prepares the file system for the scrape-search-index project. It creates the necessary directories and files. It also removes the old files and directories. This script is meant to be run before the other scripts. 
 
 
 
@@ -12,7 +12,8 @@
 source .env
 
 # Set the directory path
-dir_path="search-index-typesense"
+dir_path="${SEARCH_INDEX_DIR}"
+entries_dir="${SEARCH_INDEX_ENTRIES_DIR}"
 
 
 ### LOG FILES remove dir and recreate ###
@@ -29,10 +30,10 @@ touch "${dir_path}/logs/error.log" "${dir_path}/logs/import-into-search-index.lo
 
 
 ### SEARCH-INDEX-ENTRIES remove dir and recreate ###
-if [ -d "${dir_path}/search-index-entries" ]; then
-  rm -rf "${dir_path}/search-index-entries"
+if [ -d "${entries_dir}" ]; then
+  rm -rf "${entries_dir}"
 fi
-mkdir "${dir_path}/search-index-entries"
+mkdir "${entries_dir}"
 
 
 ### SITEMAPS remove dir and recreate ###

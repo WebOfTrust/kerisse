@@ -11,7 +11,7 @@
 # External libraries: jq (https://stedolan.github.io/jq/) and curl (https://curl.se/) are required to run this script.
 
 # Logger generates a log file with a timestamp and from which file the message comes from.
-source ./search-index-typesense/logger.sh
+source ./scrape-search-index/logger.sh
 
 source "$(pwd)/.env"
 local_TYPESENSE_ADMIN_API_KEY="${TYPESENSE_ADMIN_API_KEY}"
@@ -36,11 +36,11 @@ urlDelete="https://${local_TYPESENSE_HOST}.a1.typesense.net/collections/${local_
 urlImport="https://${local_TYPESENSE_HOST}.a1.typesense.net/collections/${local_TYPESENSE_COLLECTION_NAME}/documents/import?action=create"
 
 # Automated entries
-input_dir="$(pwd)/search-index-typesense/search-index-entries"
-output_dir="$(pwd)/search-index-typesense/search-index-entries"
+input_dir="$(pwd)/search-index-entries"
+output_dir="$(pwd)/search-index-entries"
 
 # log files
-log_dir="$(pwd)/search-index-typesense/logs"
+log_dir="$(pwd)/scrape-search-index/logs"
 
 ############## CONVERT JSON TO JSONL ##############
 
@@ -110,7 +110,7 @@ import_jsonl_files_to_search_index $output_dir $log_dir
 # ==> Add and commit /output/indexed-in-KERISSE.html
 # with the message "Update content"
 # Github Actions will then `npm run build` and push the changes to the website.
-git add ./search-index-typesense/search-index-entries
+git add ./search-index-entries
 git commit -m "Update content"
 git push origin main
 

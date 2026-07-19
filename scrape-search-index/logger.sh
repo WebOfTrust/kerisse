@@ -24,7 +24,7 @@
 
 
 # Define log directory and default log file
-logsDir="search-index-typesense/logs"
+logsDir="scrape-search-index/logs"
 currentLogFile="success.log"
 
 # Function to set the log file

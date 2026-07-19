@@ -20,10 +20,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # logs
-search-index-typesense/search-index-entries/*.not-split
-search-index-typesense/logs/*
-search-index-typesense/sitemaps/*
-search-index-typesense/overrides/overridesID.json
+search-index-entries/*.not-split
+scrape-search-index/logs/*
+scrape-search-index/sitemaps/*
+scrape-search-index/overrides/overridesID.json
 .history
 # media
 # *.mp4

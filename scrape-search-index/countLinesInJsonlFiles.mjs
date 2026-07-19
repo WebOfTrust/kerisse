@@ -16,8 +16,8 @@ import fs from 'fs/promises';
 import path from 'path';
 
 // Configurable input and output paths
-const inputDir = './search-index-typesense/search-index-entries'; // Directory containing .jsonl files
-const outputDir = './search-index-typesense/logs'; // Directory where the output file will be saved
+const inputDir = './search-index-entries'; // Directory containing .jsonl files
+const outputDir = './scrape-search-index/logs'; // Directory where the output file will be saved
 const outputFilename = 'entry_counts.txt'; // Output filename
 
 // Initialize grand total of lines

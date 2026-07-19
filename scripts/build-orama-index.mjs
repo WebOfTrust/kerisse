@@ -22,7 +22,7 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
-const entriesDir = path.join(projectRoot, 'search-index-typesense/search-index-entries');
+const entriesDir = path.join(projectRoot, 'search-index-entries');
 const outputDir = path.join(projectRoot, 'output');
 const outputFile = path.join(outputDir, ORAMA_INDEX_FILENAME);
 

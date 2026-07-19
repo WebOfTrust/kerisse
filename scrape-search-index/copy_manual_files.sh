@@ -14,7 +14,7 @@ source .env
 search_index_entries_manual_dir="$(pwd)/${SEARCH_INDEX_DIR}/config/config-search-index-entries-manual"
 
 # Automated entries
-search_index_entries_dir="$(pwd)/${SEARCH_INDEX_DIR}/search-index-entries"
+search_index_entries_dir="$(pwd)/${SEARCH_INDEX_ENTRIES_DIR}"
 
 # Copy all .json files from the handmade directory to the output directory
 for file in "$search_index_entries_manual_dir"/*.{json,jsonl}; do

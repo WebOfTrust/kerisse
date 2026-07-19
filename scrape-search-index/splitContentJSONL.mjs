@@ -3,7 +3,7 @@ import path from 'path';
 import readline from 'readline';
 import logger from './modules/logger.mjs';
 
-const directoryPath = './search-index-typesense/search-index-entries/';  // The path to the directory containing the .jsonl files
+const directoryPath = './search-index-entries/';  // The path to the directory containing the .jsonl files
 // Set it to your desired path
 const chunkSize = 2500;  // Adjust this value to change the chunk size
 

@@ -8,7 +8,7 @@
 import instantsearch from 'instantsearch.js/es';
 
 // to be used in the future
-// import { queriesWithSortAdjustment } from '/search-index-typesense/overrides/sortAdjustment.js';
+// import { queriesWithSortAdjustment } from '/scrape-search-index/overrides/sortAdjustment.js';
 
 import {
   searchBox,

@@ -42,7 +42,7 @@ async function scrapeAll() {
             source: entry.source,
             category: entry.category,
             author: entry.author,
-            destinationFile: process.env.SEARCH_INDEX_DIR + '/search-index-entries/site-' + i + '-' + pageTitleSlug + '.jsonl',
+            destinationFile: process.env.SEARCH_INDEX_ENTRIES_DIR + '/site-' + i + '-' + pageTitleSlug + '.jsonl',
             domQueryForContent: entry.querySelector
         };
 

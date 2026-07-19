@@ -20,7 +20,7 @@ const configESSIFlabs = {
     source: 'eSSIF-Lab',
     category: 'Blogs',
     author: '',
-    destinationFile: 'search-index-typesense/search-index-entries/eSSIF-Lab.jsonl',
+    destinationFile: 'search-index-entries/eSSIF-Lab.jsonl',
     domQueryForContent: 'article .markdown p, article .markdown h1, article .markdown h2, article .markdown h3, article .markdown h4, article .markdown h5, article .markdown h6, article .markdown li, article .markdown img, article .markdown pre, article .markdown code'
 }
 
@@ -59,7 +59,7 @@ const configGleif = {
     // // 1: Use a local created sitemap
     // sitemap: await createInput({
     //     sourceType: 'localXMLsitemap',
-    //     sourcePath: 'search-index-typesense/sitemaps/sitemap-www.gleif.org.xml',
+    //     sourcePath: 'scrape-search-index/sitemaps/sitemap-www.gleif.org.xml',
     // }),
 
     // 2: Use html sitemap on website
@@ -67,13 +67,13 @@ const configGleif = {
         sourceType: 'querySelector',
         sourcePath: 'https://www.gleif.org/en/meta/sitemap',
         queryString: '.content ul li a',// must be an a element
-        excludeURLs: 'search-index-typesense/config/config-sitemaps-exlude-urls/gleifExcludeUrls.json'
+        excludeURLs: 'scrape-search-index/config/config-sitemaps-exlude-urls/gleifExcludeUrls.json'
     }),
     siteName: 'Gleif website',
     source: 'Gleif website',
     category: 'Blogs',
     author: '',
-    destinationFile: 'search-index-typesense/search-index-entries/gleif.jsonl',
+    destinationFile: 'search-index-entries/gleif.jsonl',
     domQueryForContent: 'article .content p, article .content h1, article .content h2, article .content h3, article .content h4, article .content h5, article .content h6, article .content li, article .content img, article .content pre, article .content code'
 }
 
@@ -112,7 +112,7 @@ async function customScrapeGleif(page, domQueryForContent, pageUrl) {
 //     // 1: Use a local created sitemap
 //     sitemap: await createInput({
 //         sourceType: 'localXMLsitemap',
-//         sourcePath: 'search-index-typesense/sitemaps/sitemap-www.gleif.org-pdf.xml',
+//         sourcePath: 'scrape-search-index/sitemaps/sitemap-www.gleif.org-pdf.xml',
 //     }),
 
 //     // // 2: Use html sitemap on website
@@ -120,13 +120,13 @@ async function customScrapeGleif(page, domQueryForContent, pageUrl) {
 //     //     sourceType: 'querySelector',
 //     //     sourcePath: 'https://www.gleif.org/en/meta/sitemap',
 //     //     queryString: '.content ul li a',// must be an a element
-//     //     excludeURLs: 'search-index-typesense/config/config-sitemaps-exlude-urls/gleifExcludeUrls.json'
+//     //     excludeURLs: 'scrape-search-index/config/config-sitemaps-exlude-urls/gleifExcludeUrls.json'
 //     // }),
 //     siteName: 'Gleif website',
 //     source: 'Gleif website',
 //     category: 'Blogs',
 //     author: '',
-//     destinationFile: 'search-index-typesense/search-index-entries/gleifPDF.jsonl'
+//     destinationFile: 'search-index-entries/gleifPDF.jsonl'
 // }
 
 // async function customScrapeGleifPDF(page, domQueryForContent, pageUrl) {
@@ -169,7 +169,7 @@ const configReadTheDocsKeripy = {
     source: 'Python Implementation of the KERI Core Libraries',
     category: 'Blogs',
     author: 'Dr. Samuel Smith and contributors',
-    destinationFile: 'search-index-typesense/search-index-entries/readthedocs.keripy.io.jsonl',
+    destinationFile: 'search-index-entries/readthedocs.keripy.io.jsonl',
     domQueryForContent: '.document'
 }
 
@@ -204,7 +204,7 @@ const configReadTheDocsKeria = {
     source: 'Python Implementation of the KERI Core Libraries',
     category: 'Blogs',
     author: 'Dr. Samuel Smith and contributors',
-    destinationFile: 'search-index-typesense/search-index-entries/readthedocs.keria.io.jsonl',
+    destinationFile: 'search-index-entries/readthedocs.keria.io.jsonl',
     domQueryForContent: '.document'
 }
 
@@ -239,7 +239,7 @@ const configReadTheDocsSignifypy = {
     source: 'Python Implementation of the KERI Core Libraries',
     category: 'Blogs',
     author: 'Dr. Samuel Smith and contributors',
-    destinationFile: 'search-index-typesense/search-index-entries/readthedocs.signifypy.io.jsonl',
+    destinationFile: 'search-index-entries/readthedocs.signifypy.io.jsonl',
     domQueryForContent: '.document'
 }
 
@@ -269,13 +269,13 @@ const configWOTterms = {
     sitemap: await createInput({
         sourceType: 'remoteXMLsitemap',
         sourcePath: 'https://weboftrust.github.io/WOT-terms/sitemap.xml',
-        excludeURLs: 'search-index-typesense/config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json'
+        excludeURLs: 'scrape-search-index/config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json'
     }),
     siteName: 'KERI Suite Glossary',
     source: 'KERI Suite Glossary',
     category: 'KERI Suite Glossary',
     author: 'Henk van Cann',
-    destinationFile: 'search-index-typesense/search-index-entries/WOT-terms.jsonl',
+    destinationFile: 'search-index-entries/WOT-terms.jsonl',
     domQueryForContent: 'article .markdown p, article .markdown h1, article .markdown h2, article .markdown h3, article .markdown h4, article .markdown h5, article .markdown h6, article .markdown li, article .markdown img, article .markdown pre, article .markdown code'
 }
 
@@ -337,13 +337,13 @@ const configKeridoc = {
     sitemap: await createInput({
         sourceType: 'remoteXMLsitemap',
         sourcePath: 'https://weboftrust.github.io/keridoc/sitemap.xml',
-        excludeURLs: 'search-index-typesense/config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json'
+        excludeURLs: 'scrape-search-index/config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json'
     }),
     siteName: 'KERIDoc',
     source: 'KERIDoc',
     category: 'KERIDoc',
     author: 'Henk van Cann',
-    destinationFile: 'search-index-typesense/search-index-entries/keridoc.jsonl',
+    destinationFile: 'search-index-entries/keridoc.jsonl',
     domQueryForContent: 'article .markdown p, article .markdown h1, article .markdown h2, article .markdown h3, article .markdown h4, article .markdown h5, article .markdown h6, article .markdown li, article .markdown img, article .markdown pre, article .markdown code'
 }
 
@@ -416,7 +416,7 @@ async function customScrapeKeridoc(page, domQueryForContent, pageUrl) {
 //     source: 'WebofTrust glossary',
 //     category: 'Glossary',
 //     author: 'Henk van Cann',
-//     destinationFile: 'search-index-typesense/search-index-entries/wotgloss.jsonl',
+//     destinationFile: 'search-index-entries/wotgloss.jsonl',
 //     domQueryForContent: '.markdown-body p, .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6, .markdown-body li, .markdown-body img, .markdown-body pre, .markdown-body code'
 // }
 
@@ -448,13 +448,13 @@ async function customScrapeKeridoc(page, domQueryForContent, pageUrl) {
 const configSlackKeriArchive = {
     sitemap: await createInput({
         sourceType: 'localXMLsitemap',
-        sourcePath: 'search-index-typesense/sitemaps/slack-keri-archive.xml',
+        sourcePath: 'scrape-search-index/sitemaps/slack-keri-archive.xml',
     }),
     siteName: 'Slack Keri Archive',
     source: 'Slack Keri Archive',
     category: 'Slack Keri Archive',
     author: 'Slack Keri Members',
-    destinationFile: 'search-index-typesense/search-index-entries/slack-keri-archive.jsonl',
+    destinationFile: 'search-index-entries/slack-keri-archive.jsonl',
     domQueryForContent: 'body'
 }
 

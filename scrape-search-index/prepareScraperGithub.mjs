@@ -26,7 +26,7 @@ const createConfig = async (filename) => {
         source: `${repositoryOwner} / ${repositoryName}`,
         category: category,
         author: `${repositoryOwner}`,
-        destinationFile: `${process.env.SEARCH_INDEX_DIR}/search-index-entries/${repositoryOwner}-${repositoryName}.jsonl`
+        destinationFile: `${process.env.SEARCH_INDEX_ENTRIES_DIR}/${repositoryOwner}-${repositoryName}.jsonl`
         // branch: branchName
     };
 }

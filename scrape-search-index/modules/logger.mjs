@@ -19,7 +19,7 @@
 import fs from 'fs';
 import tracer from 'tracer';
 
-const logsDir = 'search-index-typesense/logs';
+const logsDir = 'scrape-search-index/logs';
 let currentLogFile = 'success.log'; // default log file
 
 const logger = tracer.console({

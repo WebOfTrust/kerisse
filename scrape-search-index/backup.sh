@@ -28,7 +28,7 @@ BACKUP_DIR="${KERISSE_BACKUPS_DIR}${TIMESTAMP}"
 mkdir -p "$BACKUP_DIR"
 
 # List of directories to backup
-declare -a dirsToBackup=("${SEARCH_INDEX_DIR}/logs" "${SEARCH_INDEX_DIR}/search-index-entries" "${SEARCH_INDEX_DIR}/sitemaps" "docs/${OVERVIEW_DIR}")
+declare -a dirsToBackup=("${SEARCH_INDEX_DIR}/logs" "${SEARCH_INDEX_ENTRIES_DIR}" "${SEARCH_INDEX_DIR}/sitemaps" "docs/${OVERVIEW_DIR}")
 
 for dir in "${dirsToBackup[@]}"; do
     SOURCE_DIR="${dir}"
@@ -73,7 +73,7 @@ log "Finished export from Typesense"
 setLogFile "success.log"
 log "Copy exported Typesense file to second location, for easy restore."
 
-# Copy the just exported file to a second location, namely a location inside the search-index-typesense directory where a restore from can be done
+# Copy the just exported file to a second location, namely a location inside the scrape-search-index directory where a restore from can be done
 # Copy the file ${TIMESTAMP}-typesense-export.jsonl from the ${BACKUP_DIR}/typesense-export/ directory
 # to the ${SEARCH_INDEX_DIR}/${KERISSE_RESTORE_DIR} directory and name it restore.jsonl.
 # If restore.jsonl already exists in the destination directory, it will be overwritten.
