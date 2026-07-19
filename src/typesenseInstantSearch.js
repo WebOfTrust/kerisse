@@ -129,20 +129,15 @@ const initKerisseSearch = async () => {
     searchClient,
     indexName: 'kerisse',
     routing: true,
-    // searchFunction(helper) {
-    // if (helper.state.query === '') {
-    //   document
-    //     .querySelector('.search-modal-backdrop')
-    //     .classList.add('hidden');
-    //   document.querySelector('#search').classList.add('hidden');
-    // } else {
-    //   document
-    //     .querySelector('.search-modal-backdrop')
-    //     .classList.remove('hidden');
-    //   document.querySelector('#search').classList.remove('hidden');
-    // }
-    // helper.search();
-    // },
+    searchFunction(helper) {
+      const resultsContainer = document.querySelector('.search-results-container');
+      if (!helper.state.query.trim()) {
+        resultsContainer?.classList.add('hidden');
+      } else {
+        resultsContainer?.classList.remove('hidden');
+      }
+      helper.search();
+    },
   });
 
   search.addWidgets([
