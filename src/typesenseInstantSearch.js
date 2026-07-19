@@ -52,8 +52,47 @@ const refinementListImageToggle = connectRefinementList((renderOptions, isFirstR
   }
 });
 
+const SEARCH_LOADING_MESSAGES = [
+  'Starting engines…',
+  'Warming up the KELs…',
+  'Untangling the key event log…',
+  'Consulting the witnesses…',
+  'Polishing the AIDs…',
+  'Asking the controllers politely…',
+  'Herding cryptographic cats…',
+  'Dusting off the whitepaper…',
+  'Counting endorsements…',
+  'Brewing fresh search results…',
+  'Reticulating splines…',
+  'Loading identifiers of identifiers…',
+  'Almost there — promise!',
+];
+
+function startSearchBoxLoadingMessages() {
+  const messageEl = document.querySelector('#search-box-loading-message');
+  if (!messageEl) {
+    return () => {};
+  }
+
+  let index = 0;
+  const intervalId = setInterval(() => {
+    index = (index + 1) % SEARCH_LOADING_MESSAGES.length;
+    messageEl.textContent = SEARCH_LOADING_MESSAGES[index];
+  }, 2200);
+
+  return () => clearInterval(intervalId);
+}
+
+function stopSearchBoxLoading() {
+  const loadingEl = document.querySelector('#search-box-loading');
+  if (loadingEl) {
+    loadingEl.remove();
+  }
+}
+
 const initKerisseSearch = async () => {
   const loader = document.querySelector('#loader');
+  const stopLoadingMessages = startSearchBoxLoadingMessages();
   loader.textContent = 'Loading search index…';
 
   // "Try searching for:"
@@ -68,8 +107,23 @@ const initKerisseSearch = async () => {
     el.addEventListener('click', handleSearchTermClick);
   });
 
-  const { searchClient } = await createOramaInstantSearchAdapter();
-  loader.textContent = 'Search index loaded';
+  let searchClient;
+  try {
+    ({ searchClient } = await createOramaInstantSearchAdapter());
+    stopLoadingMessages();
+    loader.textContent = 'Search index loaded';
+  } catch (error) {
+    stopLoadingMessages();
+    const loadingMessage = document.querySelector('#search-box-loading-message');
+    if (loadingMessage) {
+      loadingMessage.textContent = 'Failed to load search index.';
+    }
+    const spinner = document.querySelector('.search-box-spinner');
+    if (spinner) {
+      spinner.classList.add('search-box-spinner--stopped');
+    }
+    throw error;
+  }
 
   const search = instantsearch({
     searchClient,
@@ -487,6 +541,7 @@ const initKerisseSearch = async () => {
   const debounceDelay = 600;
 
   search.on('render', debounce(function () {
+    stopSearchBoxLoading();
     loader.textContent = 'Search results are loaded';
     loader.classList.add('visible');
     setTimeout(() => {
@@ -495,6 +550,7 @@ const initKerisseSearch = async () => {
   }, debounceDelay));
 
   search.start();
+  stopSearchBoxLoading();
 };
 
 initKerisseSearch().catch((error) => {
