@@ -83,6 +83,15 @@ function parseRequestParams(params) {
   return parsed;
 }
 
+function toOramaEnumFilter(values) {
+  return values.length === 1 ? { eq: values[0] } : { in: values };
+}
+
+/**
+ * InstantSearch facetFilters are either:
+ * - "attr:value" (AND with other top-level entries)
+ * - ["attr:a", "attr:b"] (OR within the same attribute)
+ */
 function parseFacetFilters(facetFilters) {
   if (!facetFilters?.length) {
     return {};
@@ -91,9 +100,14 @@ function parseFacetFilters(facetFilters) {
   const where = {};
 
   facetFilters.forEach((group) => {
+    const filters = Array.isArray(group) ? group : [group];
     const valuesByAttribute = {};
 
-    group.forEach((filter) => {
+    filters.forEach((filter) => {
+      if (typeof filter !== 'string') {
+        return;
+      }
+
       const separatorIndex = filter.indexOf(':');
       if (separatorIndex === -1) {
         return;
@@ -101,6 +115,12 @@ function parseFacetFilters(facetFilters) {
 
       const attribute = filter.slice(0, separatorIndex);
       const value = filter.slice(separatorIndex + 1);
+
+      // InstantSearch exclude syntax: "attr:-value"
+      if (value.startsWith('-') || !FACET_ATTRIBUTES.includes(attribute)) {
+        return;
+      }
+
       if (!valuesByAttribute[attribute]) {
         valuesByAttribute[attribute] = [];
       }
@@ -108,7 +128,7 @@ function parseFacetFilters(facetFilters) {
     });
 
     Object.entries(valuesByAttribute).forEach(([attribute, values]) => {
-      where[attribute] = values.length === 1 ? values[0] : values;
+      where[attribute] = toOramaEnumFilter(values);
     });
   });
 
@@ -178,9 +198,30 @@ function toInstantSearchFacets(oramaFacets) {
   );
 }
 
+/**
+ * InstantSearch sends facets as:
+ * - string[] for the main hits query
+ * - a single string for each disjunctive-facet follow-up query
+ * - ["*"] when all facets are requested
+ */
+function normalizeRequestedFacets(facets) {
+  if (facets == null || facets === '' || facets === '*') {
+    return FACET_ATTRIBUTES;
+  }
+
+  const list = Array.isArray(facets) ? facets : [facets];
+  if (!list.length || list.includes('*')) {
+    return FACET_ATTRIBUTES;
+  }
+
+  const known = list.filter((facet) => FACET_ATTRIBUTES.includes(facet));
+  return known.length ? known : FACET_ATTRIBUTES;
+}
+
 function buildFacetConfig(facets) {
-  const requestedFacets = facets?.length ? facets : FACET_ATTRIBUTES;
-  return Object.fromEntries(requestedFacets.map((facet) => [facet, { limit: 100 }]));
+  return Object.fromEntries(
+    normalizeRequestedFacets(facets).map((facet) => [facet, { limit: 100 }]),
+  );
 }
 
 async function runSearch(db, request) {
