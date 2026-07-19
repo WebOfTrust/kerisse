@@ -11,7 +11,7 @@
 # External libraries: jq (https://stedolan.github.io/jq/) and curl (https://curl.se/) are required to run this script.
 
 # Logger generates a log file with a timestamp and from which file the message comes from.
-source ./scrape-search-index/logger.sh
+source ./scraper/logger.sh
 
 source "$(pwd)/.env"
 local_TYPESENSE_ADMIN_API_KEY="${TYPESENSE_ADMIN_API_KEY}"
@@ -40,7 +40,7 @@ input_dir="$(pwd)/search-index-entries"
 output_dir="$(pwd)/search-index-entries"
 
 # log files
-log_dir="$(pwd)/scrape-search-index/logs"
+log_dir="$(pwd)/scraper/logs"
 
 ############## CONVERT JSON TO JSONL ##############
 

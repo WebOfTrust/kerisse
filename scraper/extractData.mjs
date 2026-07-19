@@ -7,7 +7,7 @@
 
 import scraperGithub from './prepareScraperGithub.mjs';
 import scraperGenericSingleUrls from './prepareScraperSingleUrls.mjs';
-import scraperGenericSitemap from './config/configScraperGenericSitemaps.mjs';
+import scraperGenericSitemap from '../config/configScraperGenericSitemaps.mjs';
 
 scraperGithub();
 scraperGenericSingleUrls();

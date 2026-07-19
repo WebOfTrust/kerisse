@@ -164,7 +164,7 @@ export default async function scrape(config, customScrape) {
 
                 appendToFile(strOutput, config.destinationFile);
                 // Log the page URL to a log file and to a markdown file
-                fs.appendFileSync('scrape-search-index/logs/scraped.log', `Scraped: ${pageUrl}\n`);
+                fs.appendFileSync('scraper/logs/scraped.log', `Scraped: ${pageUrl}\n`);
                 fs.appendFileSync(process.env.INDEX_OVERVIEW_FILE, `${pageUrl}\n\n`);
 
             } catch (err) {

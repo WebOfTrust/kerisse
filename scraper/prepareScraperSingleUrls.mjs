@@ -11,8 +11,8 @@ import { config as configDotEnv } from 'dotenv';
 configDotEnv();
 
 const configFilePath = path.join(
-    process.env.SEARCH_INDEX_DIR,
-    'config/config-scraper-single-urls/genericScraperSingleUrls.json'
+    process.env.SEARCH_INDEX_CONFIG_DIR,
+    'config-scraper-single-urls/genericScraperSingleUrls.json'
 );
 
 const entries = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));

@@ -3,7 +3,7 @@
  * The first line of the file is preserved as a header.
  * Usage: node sortAndStyleScrapedIndex.js <fileName>
  * Example:
- * $ node scrape-search-index/sortAndStyleScrapedIndex.mjs docs/overview/indexed-in-KERISSE.md
+ * $ node scraper/sortAndStyleScrapedIndex.mjs docs/overview/indexed-in-KERISSE.md
  * 
  */
 

@@ -73,7 +73,7 @@ log "Finished export from Typesense"
 setLogFile "success.log"
 log "Copy exported Typesense file to second location, for easy restore."
 
-# Copy the just exported file to a second location, namely a location inside the scrape-search-index directory where a restore from can be done
+# Copy the just exported file to a second location, namely a location inside the scraper directory where a restore from can be done
 # Copy the file ${TIMESTAMP}-typesense-export.jsonl from the ${BACKUP_DIR}/typesense-export/ directory
 # to the ${SEARCH_INDEX_DIR}/${KERISSE_RESTORE_DIR} directory and name it restore.jsonl.
 # If restore.jsonl already exists in the destination directory, it will be overwritten.
