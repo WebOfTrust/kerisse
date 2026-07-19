@@ -4,12 +4,12 @@
 
 export const ORAMA_INDEX_FILENAME = 'search-index.orama.json.gz';
 
+// Only full-text (string) fields — enum facet fields are not searchable as properties.
 export const SEARCH_PROPERTIES = [
   'content',
   'firstHeadingBeforeElement',
   'pageTitle',
   'siteName',
-  'source',
   'url',
   'imgMeta',
 ];
@@ -19,13 +19,15 @@ export const FACET_ATTRIBUTES = ['category', 'source', 'author', 'mediaType', 't
 export const ORAMA_SCHEMA = {
   id: 'string',
   siteName: 'string',
-  source: 'string',
-  author: 'string',
+  // Facet fields use enum so InstantSearch filters match exact values
+  // (string fields are tokenized and can over-match, e.g. "Sam" → "Sam Smith").
+  source: 'enum',
+  author: 'enum',
   creationDate: 'string',
   url: 'string',
   content: 'string',
   contentLength: 'number',
-  tag: 'string',
+  tag: 'enum',
   imgUrl: 'string',
   imgMeta: 'string',
   imgMetaLength: 'number',
@@ -36,8 +38,8 @@ export const ORAMA_SCHEMA = {
   type: 'string',
   pageTitle: 'string',
   firstHeadingBeforeElement: 'string',
-  mediaType: 'string',
-  category: 'string',
+  mediaType: 'enum',
+  category: 'enum',
   curated: 'boolean',
 };
 
