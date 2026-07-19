@@ -29,11 +29,17 @@ mkdir "${dir_path}/logs"
 touch "${dir_path}/logs/error.log" "${dir_path}/logs/import-into-search-index.log" "${dir_path}/logs/scraped.log" "${dir_path}/logs/success.log"
 
 
-### SEARCH-INDEX-ENTRIES remove dir and recreate ###
+### SEARCH-INDEX-ENTRIES: stash skipCrawl files, wipe, restore ###
+# Entries marked skipCrawl in configGithubRepos.json (e.g. PDF-heavy Papers)
+# keep their existing JSONL so they stay in the search index without re-scraping.
+node "${SEARCH_INDEX_DIR}/preserveFrozenEntries.mjs" preserve
+
 if [ -d "${entries_dir}" ]; then
   rm -rf "${entries_dir}"
 fi
 mkdir "${entries_dir}"
+
+node "${SEARCH_INDEX_DIR}/preserveFrozenEntries.mjs" restore
 
 
 ### SITEMAPS remove dir and recreate ###
