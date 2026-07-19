@@ -148,11 +148,6 @@ function do_import() {
     source "$SCRIPT_DIR/import.sh"
     setLogFile "success.log"
     log "Importing data finished"
-
-    # Import overrides into Typesense.
-    source "$SCRIPT_DIR/overrides.sh"
-    setLogFile "success.log"
-    log "Importing overrides finished"
 }
 
 function do_restore() {
