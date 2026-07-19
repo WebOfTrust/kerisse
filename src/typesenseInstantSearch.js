@@ -164,6 +164,10 @@ const initKerisseSearch = async () => {
     }),
     hits({
       container: '#hits',
+      // Orama adapter already escapes hit text and injects <mark> highlights.
+      // InstantSearch's default escapeHTML would escape those tags again,
+      // so they show as literal text instead of rendered markup.
+      escapeHTML: false,
 
       // to be used in the future
       // transformItems(items) {
