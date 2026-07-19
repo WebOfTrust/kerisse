@@ -7,9 +7,6 @@
 
 import instantsearch from 'instantsearch.js/es';
 
-// to be used in the future
-// import { queriesWithSortAdjustment } from '/config/overrides/sortAdjustment.js';
-
 import {
   searchBox,
   hits,

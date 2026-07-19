@@ -23,7 +23,6 @@ yarn-error.log*
 search-index-entries/*.not-split
 scraper/logs/*
 scraper/sitemaps/*
-config/overrides/overridesID.json
 .history
 # media
 # *.mp4
