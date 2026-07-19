@@ -6,7 +6,7 @@
 
   It then filters the tree to include only the blob-type items (files) and constructs the corresponding URLs. The resulting URLs are used to generate the sitemap.xml file.
 
-  Repo list lives in config/configGithubRepos.json (driven by config_sitemaps_create.sh).
+  Repo list lives in config/configGithubRepos.json (driven by scraper/sitemaps_create.sh).
 
   Run a single repo from the project root:
   $ node scraper/createSitemapGithub.mjs <repository-owner> <repository-name> <branch-name> <category>

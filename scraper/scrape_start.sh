@@ -44,7 +44,7 @@ log "Copying manual files finished"
 # Create sitemaps via sitemap-generator.
 setLogFile "success.log"
 log "Start creating sitemaps"
-source "$(pwd)/${SEARCH_INDEX_CONFIG_DIR}/config_sitemaps_create.sh"
+source "$SCRIPT_DIR/sitemaps_create.sh"
 log "Creating sitemaps finished"
 
 # Remove unwanted urls from the sitemaps (new sitemaps generated or not)
