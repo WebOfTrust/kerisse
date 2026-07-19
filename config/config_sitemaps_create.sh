@@ -18,52 +18,23 @@ source .env
 
 ########################################
 # Github repos - createSitemapGithub.mjs
+# Source of truth: config/configGithubRepos.json
 ########################################
 
-# How to use:
+# How to use (single repo):
 # $ node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs <repository-owner> <repository-name> <branch-name> <category>
 
-# Github owner: Trust over IP
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip tswg-acdc-specification main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip tswg-did-method-webs-specification main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip tswg-cesr-specification main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip tswg-cesr-proof-specification main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip tswg-oobi-specification main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip tswg-ipex-specification main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip tswg-acdc-specification-archived main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip acdc main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip TSS0033-technology-stack-acdc main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip tswg-keri-specification main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip tswg-ptel-specification main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs trustoverip keri main Code
+github_repos_config="$(pwd)/${SEARCH_INDEX_CONFIG_DIR}/configGithubRepos.json"
 
-# Github owner: Sam Smith
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs SmithSamuelM Papers master Whitepapers
+if [ ! -f "$github_repos_config" ]; then
+  echo "Missing GitHub repos config: $github_repos_config" >&2
+  exit 1
+fi
 
-# Github owner: WebOfTrust
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust cardano-backer main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust cesride main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust cesrpy main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust gcp-ksm-shim main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust ietf-did-keri main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust kara main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust kassh main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust keep main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust keri main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust keri-swift main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust keria main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust keride main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust keriox main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust keripy main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust parside main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust saidide main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust schema main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust scir main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust shkr main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust signifi main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust signifide main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust signify-ts main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust signifypy main Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust vlei dev Code
-node ${SEARCH_INDEX_DIR}/createSitemapGithub.mjs WebOfTrust ward main Code
-
+jq -c '.[]' "$github_repos_config" | while read -r repo; do
+  owner=$(echo "$repo" | jq -r '.owner')
+  name=$(echo "$repo" | jq -r '.repo')
+  branch=$(echo "$repo" | jq -r '.branch')
+  category=$(echo "$repo" | jq -r '.category')
+  node "${SEARCH_INDEX_DIR}/createSitemapGithub.mjs" "$owner" "$name" "$branch" "$category"
+done

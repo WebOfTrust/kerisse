@@ -6,16 +6,15 @@
 
   It then filters the tree to include only the blob-type items (files) and constructs the corresponding URLs. The resulting URLs are used to generate the sitemap.xml file.
 
-  Run it fromt the project-root using the following command:
-  node scraper/createSitemapGithub.mjs <repository-owner> <repository-name> <branch-name> <sitemap-directory>
-  
-  Example:
-  $ node scraper/createSitemapGithub.mjs WebOfTrust keripy main scraper/sitemaps
+  Repo list lives in config/configGithubRepos.json (driven by config_sitemaps_create.sh).
 
-  Example writing to root of project file system:
-  $ node scraper/createSitemapGithub.js WebOfTrust keripy main .
- 
-  The script will generate the sitemap.xml file in the specified sitemap directory.
+  Run a single repo from the project root:
+  $ node scraper/createSitemapGithub.mjs <repository-owner> <repository-name> <branch-name> <category>
+
+  Example:
+  $ node scraper/createSitemapGithub.mjs WebOfTrust keripy main Code
+
+  Output: scraper/sitemaps/github/sitemap.githubcom.<owner>.<repo>-<branch>.<category>.xml
 */
 
 import axios from 'axios';

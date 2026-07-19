@@ -6,41 +6,50 @@ import path from 'path';
 
 dotenvConfig();
 
-const sitemapDir = path.join(process.env.SEARCH_INDEX_DIR, '/sitemaps/github');
+/**
+ * Sitemap filename convention (must match createSitemapGithub.mjs):
+ * sitemap.githubcom.<owner>.<repo>-<branch>.<category>.xml
+ */
+function githubSitemapFilename({ owner, repo, branch, category }) {
+    return `sitemap.githubcom.${owner}.${repo}-${branch}.${category}.xml`;
+}
 
-
-// Function to create configuration
-const createConfig = async (filename) => {
-    const parts = filename.split('.');
-    const repositoryOwner = parts[2];
-    const repositoryName = parts[3];
-    // const branchName = parts[4];
-    const category = parts[4];
+const createConfig = async ({ owner, repo, branch, category }) => {
+    const sitemapDir = path.join(process.env.SEARCH_INDEX_DIR, 'sitemaps/github');
+    const filename = githubSitemapFilename({ owner, repo, branch, category });
+    // Keep naming consistent with the previous filename-derived scheme:
+    // destination was owner-(repo-branch).jsonl
+    const repoWithBranch = `${repo}-${branch}`;
 
     return {
         sitemap: await createInput({
             sourceType: 'localXMLsitemap',
-            sourcePath: `${sitemapDir}/${filename}`,
+            sourcePath: path.join(sitemapDir, filename),
         }),
-        siteName: `${repositoryOwner} / ${repositoryName}`,
-        source: `${repositoryOwner} / ${repositoryName}`,
+        siteName: `${owner} / ${repoWithBranch}`,
+        source: `${owner} / ${repoWithBranch}`,
         category: category,
-        author: `${repositoryOwner}`,
-        destinationFile: `${process.env.SEARCH_INDEX_ENTRIES_DIR}/${repositoryOwner}-${repositoryName}.jsonl`
-        // branch: branchName
+        author: owner,
+        destinationFile: path.join(
+            process.env.SEARCH_INDEX_ENTRIES_DIR,
+            `${owner}-${repoWithBranch}.jsonl`
+        ),
     };
-}
+};
 
 export default async function () {
+    const configPath = path.join(
+        process.env.SEARCH_INDEX_CONFIG_DIR,
+        'configGithubRepos.json'
+    );
+
     try {
-        const files = await fs.readdir(sitemapDir);
-        for (const filename of files) {
-            if (filename.endsWith('.xml')) { // Filter XML files
-                const config = await createConfig(filename);
-                await scrape(config);
-            }
+        const entries = JSON.parse(await fs.readFile(configPath, 'utf-8'));
+        for (const entry of entries) {
+            const config = await createConfig(entry);
+            await scrape(config);
         }
     } catch (err) {
-        console.error(`Error reading sitemap directory: ${err.message}`);
+        console.error(`Error preparing GitHub scraper from ${configPath}: ${err.message}`);
     }
 };

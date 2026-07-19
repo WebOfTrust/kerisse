@@ -5,7 +5,7 @@
   Description: 
 */
 
-// import scraperGithub from '../config/configScraperGithub.mjs';
+// import scraperGithub from './prepareScraperGithub.mjs'; // uses config/configGithubRepos.json
 // import scraperGenericSingleUrls from './prepareScraperSingleUrls.mjs';
 import scraperGenericSitemapTest from '../config/configScraperGenericSitemapsTest.mjs';
 
