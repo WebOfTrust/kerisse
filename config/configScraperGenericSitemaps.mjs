@@ -1,8 +1,8 @@
-import createInput from '../modules/createInput.mjs';
-import scrape from '../modules/scrape.mjs';
-import extractMainContent from '../modules/extractMainContent.mjs';
-import getTextContent from '../modules/getTextContent.mjs';
-import logger from '../modules/logger.mjs';
+import createInput from '../scraper/modules/createInput.mjs';
+import scrape from '../scraper/modules/scrape.mjs';
+import extractMainContent from '../scraper/modules/extractMainContent.mjs';
+import getTextContent from '../scraper/modules/getTextContent.mjs';
+import logger from '../scraper/modules/logger.mjs';
 
 
 /*
@@ -521,6 +521,8 @@ const configKericonf = {
     sitemap: await createInput({
         sourceType: 'remoteXMLsitemap',
         sourcePath: 'https://kericonf.com/wp-sitemap-posts-page-1.xml',
+        // Parent/nav shells with title only (no .entry-content body)
+        excludeURLs: 'config/config-sitemaps-exlude-urls/kericonfExcludeUrls.json'
     }),
     siteName: 'KERI Conference',
     source: 'KERI Conference',
