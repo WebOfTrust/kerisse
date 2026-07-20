@@ -18,10 +18,17 @@ function removeUrlsFromSitemap(sitemap, excludeURLs) {
     const strUrlsToRemove = fs.readFileSync(excludeURLs, 'utf8');
     const objUrlsToRemove = JSON.parse(strUrlsToRemove);
 
-    // Substring matching: if the URL contains any of the substrings in the objUrlsToRemove array, remove it from the sitemap
+    // Full http(s) URLs match exactly (trailing slash ignored).
+    // Other entries are substrings: if the URL contains the entry, remove it.
+    const normalizeUrl = (u) => u.replace(/\/$/, '');
     const updatedSitemap = sitemap.urlset.url.filter((url) => {
       const loc = url.loc[0];
-      return !objUrlsToRemove.some(substring => loc.includes(substring));
+      return !objUrlsToRemove.some((entry) => {
+        if (entry.startsWith('http://') || entry.startsWith('https://')) {
+          return normalizeUrl(loc) === normalizeUrl(entry);
+        }
+        return loc.includes(entry);
+      });
     });
 
     sitemap.urlset.url = updatedSitemap;
