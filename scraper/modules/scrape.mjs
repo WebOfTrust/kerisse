@@ -12,7 +12,10 @@ import fs from 'fs';
 import logger from './logger.mjs';
 import { githubPDF } from './github-pdf.mjs';
 import { processPDF as generalPDF } from './general-pdf.mjs';
-import { getFileContent as githubContent } from './github-API.mjs';
+import {
+    getFileContent as githubContent,
+    getIssueContent as githubIssueContent,
+} from './github-API.mjs';
 
 export default async function scrape(config, customScrape) {
     const browser = await launchBrowser();// for production
@@ -46,8 +49,24 @@ export default async function scrape(config, customScrape) {
         }
     }
 
+    function extractGithubIssueParts(url) {
+        const githubIssueRegex =
+            /^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/issues\/(\d+)\/?$/;
+        const match = url.match(githubIssueRegex);
+
+        if (!match) {
+            return null;
+        }
+
+        return {
+            owner: match[1],
+            repo: match[2],
+            issueNumber: match[3],
+        };
+    }
+
     function extractGithubParts(url) {
-        // Check if the URL is a valid GitHub URL
+        // Check if the URL is a valid GitHub blob URL
         const githubRegex = /^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)$/;
         const match = url.match(githubRegex);
 
@@ -98,25 +117,41 @@ export default async function scrape(config, customScrape) {
                 else {
                     // Not PDF + github.com (not wiki)
                     if (parsedUrl.hostname.includes('github.com') && !parsedUrl.pathname.includes('/wiki/')) {
-                        let mainContent = [];
-                        const parts = extractGithubParts(url.loc[0]);
+                        const issueParts = extractGithubIssueParts(url.loc[0]);
 
-                        const content = await githubContent(parts.owner, parts.repo, parts.branch, parts.path)
-                            .then(content => {
-                                return content;
-                            })
-                            .catch(error => {
-                                console.error(`Failed to fetch file content: ${error.message}`);
+                        if (issueParts) {
+                            const issue = await githubIssueContent(
+                                issueParts.owner,
+                                issueParts.repo,
+                                issueParts.issueNumber
+                            );
+                            scraped.mainContent = [{
+                                content: issue.content,
+                                contentLength: issue.content.length,
+                                tag: 'issue',
+                            }];
+                            scraped.pageTitle = issue.title;
+                        } else {
+                            let mainContent = [];
+                            const parts = extractGithubParts(url.loc[0]);
+
+                            const content = await githubContent(parts.owner, parts.repo, parts.branch, parts.path)
+                                .then(content => {
+                                    return content;
+                                })
+                                .catch(error => {
+                                    console.error(`Failed to fetch file content: ${error.message}`);
+                                });
+
+                            // return content;
+                            mainContent.push({
+                                content: content,
+                                contentLength: content.length,
+                                tag: 'textarea',
                             });
-
-                        // return content;
-                        mainContent.push({
-                            content: content,
-                            contentLength: content.length,
-                            tag: 'textarea',
-                        });
-                        scraped.mainContent = mainContent;
-                        scraped.pageTitle = parts.path;
+                            scraped.mainContent = mainContent;
+                            scraped.pageTitle = parts.path;
+                        }
                     }
 
                     // Not PDF + not github.com
