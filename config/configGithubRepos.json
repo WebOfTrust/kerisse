@@ -1,5 +1,7 @@
 [
   { "owner": "keri-foundation", "repo": "CONF26-subtitles", "branch": "main", "category": "Code" },
+  { "owner": "keri-foundation", "repo": "subtitles", "branch": "main", "category": "Code" },
+  { "owner": "keri-foundation", "repo": "locksmith", "branch": "main", "category": "Code" },
   { "owner": "trustoverip", "repo": "tswg-acdc-specification", "branch": "main", "category": "Code" },
   { "owner": "trustoverip", "repo": "tswg-did-method-webs-specification", "branch": "main", "category": "Code" },
   { "owner": "trustoverip", "repo": "tswg-cesr-specification", "branch": "main", "category": "Code" },
