@@ -36,6 +36,9 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'index.html', to: './' }, // Adjust the 'from' path as necessary
+                { from: 'favicon.svg', to: './' },
+                { from: 'favicon.ico', to: './' },
+                { from: 'favicon.png', to: './' },
                 { from: 'output/indexed-in-KERISSE.html', to: './' },
                 { from: 'output/search-index.orama.json.gz', to: './', noErrorOnMissing: true },
                 { from: 'src/*.css', to: '[name][ext]' },
