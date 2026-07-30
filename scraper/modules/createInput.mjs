@@ -14,6 +14,11 @@ import logger from './logger.mjs';
 
 function removeUrlsFromSitemap(sitemap, excludeURLs) {
   if (excludeURLs !== undefined) {
+    if (!fs.existsSync(excludeURLs)) {
+      logger.setLogFile('error.log');
+      logger.log(`Exclude URLs file not found: ${excludeURLs}`);
+      return sitemap;
+    }
     // Fetch the URLs to remove from the sitemap
     const strUrlsToRemove = fs.readFileSync(excludeURLs, 'utf8');
     const objUrlsToRemove = JSON.parse(strUrlsToRemove);
