@@ -126,15 +126,6 @@ const initKerisseSearch = async () => {
     searchClient,
     indexName: 'kerisse',
     routing: true,
-    searchFunction(helper) {
-      const resultsContainer = document.querySelector('.search-results-container');
-      if (!helper.state.query.trim()) {
-        resultsContainer?.classList.add('hidden');
-      } else {
-        resultsContainer?.classList.remove('hidden');
-      }
-      helper.search();
-    },
   });
 
   search.addWidgets([

@@ -230,29 +230,40 @@ async function runSearch(db, request) {
   const page = Number.isInteger(params.page) ? params.page : 0;
   const hitsPerPage = params.hitsPerPage || 10;
   const where = parseFacetFilters(params.facetFilters);
-
-  if (!query.trim()) {
-    return {
-      hits: [],
-      nbHits: 0,
-      page,
-      nbPages: 0,
-      hitsPerPage,
-      facets: Object.fromEntries(FACET_ATTRIBUTES.map((facet) => [facet, {}])),
-      exhaustiveNbHits: true,
-      query,
-      params: typeof request.params === 'string' ? request.params : JSON.stringify(params),
-      processingTimeMS: 1,
-    };
-  }
+  const hasQuery = Boolean(query.trim());
+  const hasFilters = Object.keys(where).length > 0;
+  // Empty term matches all docs so facet options stay populated without a query.
+  // Skip collecting hits until the user searches or applies a filter.
+  const wantHits = hasQuery || hasFilters;
 
   const searchResult = await oramaSearch(db, {
     term: query,
     properties: SEARCH_PROPERTIES,
     where,
     facets: buildFacetConfig(params.facets),
-    limit: MAX_RAW_HITS,
+    limit: wantHits ? MAX_RAW_HITS : 0,
   });
+
+  const processingTimeMS = searchResult.elapsed?.raw
+    ? Math.round(searchResult.elapsed.raw / 1000)
+    : 1;
+  const paramsString =
+    typeof request.params === 'string' ? request.params : JSON.stringify(params);
+
+  if (!wantHits) {
+    return {
+      hits: [],
+      nbHits: 0,
+      page,
+      nbPages: 0,
+      hitsPerPage,
+      facets: toInstantSearchFacets(searchResult.facets),
+      exhaustiveNbHits: true,
+      query,
+      params: paramsString,
+      processingTimeMS,
+    };
+  }
 
   const groupedHits = groupHitsByUrl(searchResult.hits);
   const nbHits = groupedHits.length;
@@ -271,8 +282,8 @@ async function runSearch(db, request) {
     facets: toInstantSearchFacets(searchResult.facets),
     exhaustiveNbHits: searchResult.hits.length < MAX_RAW_HITS,
     query,
-    params: typeof request.params === 'string' ? request.params : JSON.stringify(params),
-    processingTimeMS: searchResult.elapsed?.raw ? Math.round(searchResult.elapsed.raw / 1000) : 1,
+    params: paramsString,
+    processingTimeMS,
   };
 }
 
