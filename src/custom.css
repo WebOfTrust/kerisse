@@ -221,7 +221,7 @@ table th {
  */
 
 /*
- * TYPESENSE INSTANTSEARCH
+ * INSTANTSEARCH
 */
 
 :root {
@@ -322,7 +322,7 @@ table th {
 
 #clear-refinements .ais-ClearRefinements-button {
   margin: 0 !important;
-  /* To override the classes that are assigned to typesense buttons, defined in typesenseInstantSearch.js */
+  /* To override the classes that are assigned to search UI buttons, defined in typesenseInstantSearch.js */
 }
 
 #current-refinements-list {
@@ -463,7 +463,7 @@ table th {
 }
 
 /*
- * END TYPESENSE INSTANTSEARCH
+ * END INSTANTSEARCH
  */
 
 

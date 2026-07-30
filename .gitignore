@@ -29,4 +29,3 @@ scraper/sitemaps/*
 
 copy-to-testsite.sh
 docusaurus.paths.*.js
-restore.jsonl

@@ -285,7 +285,7 @@ const initKerisseSearch = async () => {
             siteBrandingClass = "kerisse";
           }
           return `
-            <div class="card border-secondary mt-5 scroll-shadows" data-typesense-id="${item.id}">
+            <div class="card border-secondary mt-5 scroll-shadows" data-search-result-id="${item.id}">
               <div class="card-header ${siteBrandingClass}">
                 ${itemCurated}<p class="d-inline"> Found on: ${itemSiteNameTemplateString}</p>
               </div>

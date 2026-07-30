@@ -35,7 +35,7 @@ log "Start preparing file system"
 source "$SCRIPT_DIR/prepare_file_system.sh"
 log "Preparing file system finished"
 
-# Copy handmade stuff: entries for direct import into Typesense, manual files, sitemaps.
+# Copy handmade stuff: manual search-index entries, manual files, sitemaps.
 setLogFile "success.log"
 log "Start copying manual files"
 source "$SCRIPT_DIR/copy_manual_files.sh"
@@ -70,7 +70,7 @@ log "Start extracting data"
 node "$SCRIPT_DIR/extractData.mjs"
 log "Extracting data finished"
 
-# Split the content.jsonl file into multiple files so the size is optimal for Typesense.
+# Split the content.jsonl file into multiple files so the size is optimal for indexing.
 setLogFile "success.log"
 log "Start splitting content"
 node "$SCRIPT_DIR/splitContentJSONL.mjs"
@@ -99,7 +99,7 @@ log "Sorting and styling index file finished"
 # BACKING UP
 #########################
 
-# Backup output (scrape results, handmade stuff, sitemaps, logs, webpage overview, typesense export).
+# Backup output (scrape results, handmade stuff, sitemaps, logs, webpage overview).
 setLogFile "success.log"
 log "Start creating backup"
 source "$SCRIPT_DIR/backup.sh"

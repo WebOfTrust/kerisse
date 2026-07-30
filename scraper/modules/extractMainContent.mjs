@@ -26,6 +26,15 @@ export default async function (page, domQueryForContent) {
                 return null;
             }
 
+            function elementInnerText(el) {
+                // SVG and some other nodes have no innerText in Chromium
+                if (!el) {
+                    return '';
+                }
+                const value = el.innerText ?? el.textContent ?? '';
+                return String(value).trim();
+            }
+
             function getTextAroundImage(element, maxCharacters) {
                 // Check if the element is an image
                 if (element.tagName !== 'IMG') {
@@ -38,7 +47,7 @@ export default async function (page, domQueryForContent) {
                 // Find the nearest previous sibling node that contains text
                 let prevSibling = element.previousElementSibling;
                 while (prevSibling && remainingCharacters > 0) {
-                    const prevText = prevSibling.innerText.trim();
+                    const prevText = elementInnerText(prevSibling);
                     const charsToAdd = Math.min(remainingCharacters, prevText.length);
                     text = prevText.slice(-charsToAdd) + ' ' + text; // Add the text to the beginning of the extracted text
                     remainingCharacters -= charsToAdd;
@@ -48,7 +57,7 @@ export default async function (page, domQueryForContent) {
                 // Find the nearest next sibling node that contains text
                 let nextSibling = element.nextElementSibling;
                 while (nextSibling && remainingCharacters > 0) {
-                    const nextText = nextSibling.innerText.trim();
+                    const nextText = elementInnerText(nextSibling);
                     const charsToAdd = Math.min(remainingCharacters, nextText.length);
                     text += ' ' + nextText.slice(0, charsToAdd); // Add the text to the end of the extracted text
                     remainingCharacters -= charsToAdd;
@@ -63,7 +72,7 @@ export default async function (page, domQueryForContent) {
                     let nextSib = parent.nextElementSibling;
                     while (remainingCharacters > 0) {
                         if (prevSib) {
-                            const prevSibText = prevSib.innerText.trim();
+                            const prevSibText = elementInnerText(prevSib);
                             const prevCharsToAdd = Math.min(remainingCharacters, prevSibText.length);
                             text = prevSibText.slice(-prevCharsToAdd) + ' ' + text; // Add the text to the beginning of the extracted text
                             remainingCharacters -= prevCharsToAdd;
@@ -71,7 +80,7 @@ export default async function (page, domQueryForContent) {
                         }
 
                         if (nextSib) {
-                            const nextSibText = nextSib.innerText.trim();
+                            const nextSibText = elementInnerText(nextSib);
                             const nextCharsToAdd = Math.min(remainingCharacters, nextSibText.length);
                             text += ' ' + nextSibText.slice(-nextCharsToAdd); // Add the text to the end of the extracted text
                             remainingCharacters -= nextCharsToAdd;

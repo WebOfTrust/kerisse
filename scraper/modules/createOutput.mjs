@@ -2,7 +2,7 @@
   Author: Kor Dwarshuis
   Created: 2023-03-16
   Updated: -
-  Description: Create output, ready to be written to a file, and be imported into Typesense.
+  Description: Create output, ready to be written to a search-index JSONL file.
 */
 
 
