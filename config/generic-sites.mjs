@@ -13,7 +13,7 @@ import {
  * How to add a site:
  * 1. Copy a block below that matches the template (Docusaurus, WordPress, ReadTheDocs, …).
  * 2. Set sitemap sourcePath, siteName, destinationFile, and DOM_QUERY.*.
- * 3. Add scrape(configX, scrapeSimple.*) to the export at the bottom — only those calls run.
+ * 3. Append [configX, scrapeSimple.*] to the sites array — only those entries run.
  * 4. Optional: excludeURLs → config/exclude-urls/<name>.json
  * 5. npm run diagram:scrape
  *
@@ -187,17 +187,20 @@ const configKericonf = {
     domQueryForContent: DOM_QUERY.wordpressEntryContent,
 };
 
+/** Active scrapes — add [config, scraper] here when you add a site above. */
+const sites = [
+    [configESSIFlabs, scrapeSimple.docusaurus],
+    [configGleif, scrapeSimple.gleif],
+    [configReadTheDocsKeripy, scrapeSimple.readTheDocs],
+    [configReadTheDocsKeria, scrapeSimple.readTheDocs],
+    [configReadTheDocsSignifypy, scrapeSimple.readTheDocs],
+    [configWOTterms, scrapeDocusaurusWithMeta],
+    [configKeridoc, scrapeDocusaurusWithMeta],
+    [configSlackKeriArchive, scrapeSimple.body],
+    [configKeriFoundation, scrapeSimple.wordpress],
+    [configKericonf, scrapeSimple.wordpress],
+];
+
 export default async function () {
-    await Promise.all([
-        scrape(configESSIFlabs, scrapeSimple.docusaurus),
-        scrape(configGleif, scrapeSimple.gleif),
-        scrape(configReadTheDocsKeripy, scrapeSimple.readTheDocs),
-        scrape(configReadTheDocsKeria, scrapeSimple.readTheDocs),
-        scrape(configReadTheDocsSignifypy, scrapeSimple.readTheDocs),
-        scrape(configWOTterms, scrapeDocusaurusWithMeta),
-        scrape(configKeridoc, scrapeDocusaurusWithMeta),
-        scrape(configSlackKeriArchive, scrapeSimple.body),
-        scrape(configKeriFoundation, scrapeSimple.wordpress),
-        scrape(configKericonf, scrapeSimple.wordpress),
-    ]);
+    await Promise.all(sites.map(([config, scrapeFn]) => scrape(config, scrapeFn)));
 }

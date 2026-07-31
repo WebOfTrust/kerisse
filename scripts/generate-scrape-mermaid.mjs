@@ -55,22 +55,20 @@ function field(objSrc, name) {
   return m ? m[1] : '';
 }
 
-/** Active generic sites from generic-sites.mjs (export scrape() calls). */
+/** Active generic sites from generic-sites.mjs (sites array entries). */
 function parseGenericSites() {
   const src = fs.readFileSync(
     path.join(configDir, 'generic-sites.mjs'),
     'utf8'
   );
-  const exportBody = src.match(
-    /export default async function\s*\(\)\s*\{([\s\S]*?)\n\};?\s*$/
-  );
-  if (!exportBody) throw new Error('Could not find export in generic-sites.mjs');
+  const sitesBody = src.match(/const sites\s*=\s*\[([\s\S]*?)\];/);
+  if (!sitesBody) throw new Error('Could not find sites array in generic-sites.mjs');
 
   const active = [];
-  for (const line of exportBody[1].split('\n')) {
+  for (const line of sitesBody[1].split('\n')) {
     const trimmed = line.trim();
     if (trimmed.startsWith('//')) continue;
-    const m = trimmed.match(/^scrape\((\w+)/);
+    const m = trimmed.match(/^\[(\w+)\s*,/);
     if (m) active.push(m[1]);
   }
 

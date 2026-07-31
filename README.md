@@ -84,13 +84,13 @@ Typical for Docusaurus, ReadTheDocs, many docs sites. You **point at their sitem
    - `sourcePath: 'https://…/sitemap.xml'`
    - `siteName`, `source`, `category`, `destinationFile`
    - `domQueryForContent: DOM_QUERY.docusaurus` (or `.readTheDocs` / `.wordpressEntryContent`)
-5. In the **export at the bottom**, add:
+5. Append to the **`sites` array**:
 
 ```js
-scrape(configYourSite, scrapeSimple.docusaurus); // or readTheDocs / wordpress
+[configYourSite, scrapeSimple.docusaurus], // or readTheDocs / wordpress
 ```
 
-Only lines in that export actually run.
+Only entries in that array actually run.
 
 6. Optional: skip unwanted URLs — see [Skip some URLs](#i-want-to-skip-some-urls-from-a-site).
 7. `npm run diagram:scrape`, then `npm run scrape`.
@@ -130,7 +130,7 @@ const configMySite = {
 };
 ```
 
-3. Add to the export: `scrape(configMySite, scrapeSimple.body);`
+3. Append to the `sites` array: `[configMySite, scrapeSimple.body],`
 4. `npm run diagram:scrape`, then `npm run scrape`.
 
 ---
