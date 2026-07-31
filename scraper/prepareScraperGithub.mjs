@@ -39,19 +39,31 @@ export default async function () {
         'github-repos.json'
     );
 
+    let entries;
     try {
-        const entries = JSON.parse(await fs.readFile(configPath, 'utf-8'));
-        for (const entry of entries) {
-            if (entry.skipCrawl === true) {
-                console.log(
-                    `Skipping crawl (skipCrawl): ${entry.owner}/${entry.repo} (${entry.branch})`
-                );
-                continue;
-            }
+        entries = JSON.parse(await fs.readFile(configPath, 'utf-8'));
+    } catch (err) {
+        console.error(`Error reading GitHub repos config ${configPath}: ${err.message}`);
+        return;
+    }
+
+    for (const entry of entries) {
+        if (entry.skipCrawl === true) {
+            console.log(
+                `Skipping crawl (skipCrawl): ${entry.owner}/${entry.repo} (${entry.branch})`
+            );
+            continue;
+        }
+
+        try {
             const config = await createConfig(entry);
             await scrape(config);
+        } catch (err) {
+            // Keep scraping other repos when one sitemap/config fails
+            // (e.g. invalid XML from unescaped characters in file paths).
+            console.error(
+                `Error scraping GitHub repo ${entry.owner}/${entry.repo} (${entry.branch}): ${err.message}`
+            );
         }
-    } catch (err) {
-        console.error(`Error preparing GitHub scraper from ${configPath}: ${err.message}`);
     }
 };

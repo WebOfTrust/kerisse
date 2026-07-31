@@ -12,7 +12,7 @@
   $ node scraper/createSitemapGithub.mjs <repository-owner> <repository-name> <branch-name> <category>
 
   Example:
-  $ node scraper/createSitemapGithub.mjs WebOfTrust keripy main Code
+  $ node scraper/createSitemapGithub.mjs WebOfTrust keripy main Repository
 
   Output: scraper/sitemaps/github/sitemap.githubcom.<owner>.<repo>-<branch>.<category>.xml
 */
@@ -62,13 +62,28 @@ async function generateSitemap() {
 
   const fileUrls = repositoryTree
     .filter((item) => item.type === 'blob')
-    .map((item) => `https://github.com/${repositoryOwner}/${repositoryName}/blob/${branchName}/${item.path}`);
+    .map((item) => {
+      // Encode each path segment so spaces, &, etc. are valid in URL and XML.
+      const encodedPath = item.path
+        .split('/')
+        .map((segment) => encodeURIComponent(segment))
+        .join('/');
+      return `https://github.com/${repositoryOwner}/${repositoryName}/blob/${branchName}/${encodedPath}`;
+    });
 
   const allUrls = [...fileUrls, ...issueUrls];
 
+  const escapeXml = (value) =>
+    value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-      ${allUrls.map((url) => `<url><loc>${url}</loc></url>`).join('\n')}
+      ${allUrls.map((url) => `<url><loc>${escapeXml(url)}</loc></url>`).join('\n')}
     </urlset>
   `;
 

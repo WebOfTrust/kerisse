@@ -418,6 +418,7 @@ const initKerisseSearch = async () => {
       searchablePlaceholder: 'Category',
       showMore: false,
       // max_facet_values: 100, TODO: does this work?
+      transformItems: (items) => items.filter((item) => item.label.trim() !== ''),
       cssClasses: {
         searchableInput: 'form-control form-control-sm mb-2 border-light-2',
         searchableSubmit: 'hidden',
@@ -438,6 +439,7 @@ const initKerisseSearch = async () => {
       searchablePlaceholder: 'Source',
       showMore: true,
       // max_facet_values: 100, TODO: does this work?
+      transformItems: (items) => items.filter((item) => item.label.trim() !== ''),
       cssClasses: {
         searchableInput: 'form-control form-control-sm mb-2 border-light-2',
         searchableSubmit: 'hidden',
@@ -458,6 +460,7 @@ const initKerisseSearch = async () => {
       searchablePlaceholder: 'Author',
       showMore: true,
       // max_facet_values: 100,TODO: does this work?
+      transformItems: (items) => items.filter((item) => item.label.trim() !== ''),
       cssClasses: {
         searchableInput: 'form-control form-control-sm mb-2 border-light-2',
         searchableSubmit: 'hidden',
@@ -478,6 +481,7 @@ const initKerisseSearch = async () => {
       searchablePlaceholder: 'File type',
       showMore: true,
       // max_facet_values: 100,TODO: does this work?
+      transformItems: (items) => items.filter((item) => item.label.trim() !== ''),
       cssClasses: {
         searchableInput: 'form-control form-control-sm mb-2 border-light-2',
         searchableSubmit: 'hidden',

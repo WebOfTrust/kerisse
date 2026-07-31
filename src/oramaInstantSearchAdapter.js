@@ -193,7 +193,13 @@ function toInstantSearchFacets(oramaFacets) {
   }
 
   return Object.fromEntries(
-    Object.entries(oramaFacets).map(([attribute, facet]) => [attribute, facet.values || {}]),
+    Object.entries(oramaFacets).map(([attribute, facet]) => {
+      const values = facet.values || {};
+      const cleaned = Object.fromEntries(
+        Object.entries(values).filter(([label]) => label.trim() !== ''),
+      );
+      return [attribute, cleaned];
+    }),
   );
 }
 

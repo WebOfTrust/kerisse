@@ -188,14 +188,16 @@ const configKericonf = {
 };
 
 export default async function () {
-    scrape(configESSIFlabs, scrapeSimple.docusaurus);
-    scrape(configGleif, scrapeSimple.gleif);
-    scrape(configReadTheDocsKeripy, scrapeSimple.readTheDocs);
-    scrape(configReadTheDocsKeria, scrapeSimple.readTheDocs);
-    scrape(configReadTheDocsSignifypy, scrapeSimple.readTheDocs);
-    scrape(configWOTterms, scrapeDocusaurusWithMeta);
-    scrape(configKeridoc, scrapeDocusaurusWithMeta);
-    scrape(configSlackKeriArchive, scrapeSimple.body);
-    scrape(configKeriFoundation, scrapeSimple.wordpress);
-    scrape(configKericonf, scrapeSimple.wordpress);
+    await Promise.all([
+        scrape(configESSIFlabs, scrapeSimple.docusaurus),
+        scrape(configGleif, scrapeSimple.gleif),
+        scrape(configReadTheDocsKeripy, scrapeSimple.readTheDocs),
+        scrape(configReadTheDocsKeria, scrapeSimple.readTheDocs),
+        scrape(configReadTheDocsSignifypy, scrapeSimple.readTheDocs),
+        scrape(configWOTterms, scrapeDocusaurusWithMeta),
+        scrape(configKeridoc, scrapeDocusaurusWithMeta),
+        scrape(configSlackKeriArchive, scrapeSimple.body),
+        scrape(configKeriFoundation, scrapeSimple.wordpress),
+        scrape(configKericonf, scrapeSimple.wordpress),
+    ]);
 }
