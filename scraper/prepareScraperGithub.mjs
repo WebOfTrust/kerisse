@@ -36,7 +36,7 @@ const createConfig = async ({ owner, repo, branch, category }) => {
 export default async function () {
     const configPath = path.join(
         process.env.SEARCH_INDEX_CONFIG_DIR,
-        'configGithubRepos.json'
+        'github-repos.json'
     );
 
     try {

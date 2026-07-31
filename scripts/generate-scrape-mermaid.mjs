@@ -55,16 +55,16 @@ function field(objSrc, name) {
   return m ? m[1] : '';
 }
 
-/** Active generic sites from configScraperGenericSitemaps.mjs (export scrape() calls). */
+/** Active generic sites from generic-sites.mjs (export scrape() calls). */
 function parseGenericSites() {
   const src = fs.readFileSync(
-    path.join(configDir, 'configScraperGenericSitemaps.mjs'),
+    path.join(configDir, 'generic-sites.mjs'),
     'utf8'
   );
   const exportBody = src.match(
     /export default async function\s*\(\)\s*\{([\s\S]*?)\n\};?\s*$/
   );
-  if (!exportBody) throw new Error('Could not find export in configScraperGenericSitemaps.mjs');
+  if (!exportBody) throw new Error('Could not find export in generic-sites.mjs');
 
   const active = [];
   for (const line of exportBody[1].split('\n')) {
@@ -150,7 +150,7 @@ function buildMermaid({ sites, singles, repos, manualEntries, manualSitemaps }) 
   lines.push('');
 
   const genIds = [];
-  lines.push('  subgraph GEN["Generic sites — configScraperGenericSitemaps.mjs"]');
+  lines.push('  subgraph GEN["Generic sites — generic-sites.mjs"]');
   lines.push('    direction TB');
   for (const s of sites) {
     const id = mermaidId('g', s.configName);
@@ -179,7 +179,7 @@ function buildMermaid({ sites, singles, repos, manualEntries, manualSitemaps }) 
   }
   const singleIds = [];
   lines.push(
-    `  subgraph SINGLE["Single URLs — genericScraperSingleUrls.json (${singles.length})"]`
+    `  subgraph SINGLE["Single URLs — single-urls/urls.json (${singles.length})"]`
   );
   lines.push('    direction TB');
   for (const [source, items] of bySource) {
@@ -206,7 +206,7 @@ function buildMermaid({ sites, singles, repos, manualEntries, manualSitemaps }) 
   const frozen = repos.filter((r) => r.skipCrawl);
   const ghIds = [];
   lines.push(
-    `  subgraph GH["GitHub — configGithubRepos.json (${crawl.length} crawl${frozen.length ? `, ${frozen.length} skipCrawl` : ''})"]`
+    `  subgraph GH["GitHub — github-repos.json (${crawl.length} crawl${frozen.length ? `, ${frozen.length} skipCrawl` : ''})"]`
   );
   lines.push('    direction TB');
   for (const [owner, items] of byOwner) {
@@ -276,6 +276,8 @@ function buildMarkdown(data) {
 
   return `# What will be scraped
 
+Start here for how to edit sources: [README.md](README.md).
+
 Generated from \`config/\` by \`scripts/generate-scrape-mermaid.mjs\`.
 Re-run after editing scrape config:
 
@@ -287,12 +289,12 @@ npm run diagram:scrape
 
 | Channel | Count | Config |
 |--------|------:|--------|
-| Generic sites | ${sites.length} | \`configScraperGenericSitemaps.mjs\` |
-| Single URLs | ${singles.length} | \`config-scraper-single-urls/genericScraperSingleUrls.json\` |
-| GitHub repos (crawl) | ${crawl.length} | \`configGithubRepos.json\` |
-| GitHub repos (skipCrawl) | ${frozen.length} | \`configGithubRepos.json\` |
-| Manual index entries | ${manualEntries.length} | \`config-search-index-entries-manual/\` |
-| Manual sitemaps | ${manualSitemaps.length} | \`config-sitemaps-manual/\` |
+| Generic sites | ${sites.length} | \`generic-sites.mjs\` |
+| Single URLs | ${singles.length} | \`single-urls/urls.json\` |
+| GitHub repos (crawl) | ${crawl.length} | \`github-repos.json\` |
+| GitHub repos (skipCrawl) | ${frozen.length} | \`github-repos.json\` |
+| Manual index entries | ${manualEntries.length} | \`manual-entries/\` |
+| Manual sitemaps | ${manualSitemaps.length} | \`manual-sitemaps/\` |
 
 ## Diagram
 
@@ -327,10 +329,10 @@ ${repoRows}
 
 function main() {
   const sites = parseGenericSites();
-  const singles = readJson('config-scraper-single-urls/genericScraperSingleUrls.json');
-  const repos = readJson('configGithubRepos.json');
-  const manualEntries = listFiles('config-search-index-entries-manual', ['.json', '.jsonl']);
-  const manualSitemaps = listFiles('config-sitemaps-manual', ['.xml']);
+  const singles = readJson('single-urls/urls.json');
+  const repos = readJson('github-repos.json');
+  const manualEntries = listFiles('manual-entries', ['.json', '.jsonl']);
+  const manualSitemaps = listFiles('manual-sitemaps', ['.xml']);
 
   const mermaid = buildMermaid({
     sites,

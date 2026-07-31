@@ -5,13 +5,13 @@
 # Updated: 2026
 # Description: Create GitHub repo sitemaps via createSitemapGithub.mjs.
 #   Not every scraped site needs a sitemap from here — some already publish
-#   sitemap.xml (e.g. ReadTheDocs; see configScraperGenericSitemaps.mjs).
-#   Repo list: config/configGithubRepos.json
+#   sitemap.xml (e.g. ReadTheDocs; see config/generic-sites.mjs).
+#   Repo list: config/github-repos.json
 
 # Import variables from .env file
 source .env
 
-github_repos_config="$(pwd)/${SEARCH_INDEX_CONFIG_DIR}/configGithubRepos.json"
+github_repos_config="$(pwd)/${SEARCH_INDEX_CONFIG_DIR}/github-repos.json"
 
 if [ ! -f "$github_repos_config" ]; then
   echo "Missing GitHub repos config: $github_repos_config" >&2

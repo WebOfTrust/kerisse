@@ -30,7 +30,7 @@ touch "${dir_path}/logs/error.log" "${dir_path}/logs/import-into-search-index.lo
 
 
 ### SEARCH-INDEX-ENTRIES: stash skipCrawl files, wipe, restore ###
-# Entries marked skipCrawl in configGithubRepos.json (e.g. PDF-heavy Papers)
+# Entries marked skipCrawl in config/github-repos.json (e.g. PDF-heavy Papers)
 # keep their existing JSONL so they stay in the search index without re-scraping.
 node "${SEARCH_INDEX_DIR}/preserveFrozenEntries.mjs" preserve
 
