@@ -52,7 +52,7 @@ Indexes **source files + issues** via the GitHub API. You do **not** add a sitem
 2. Append an object:
 
 ```json
-{ "owner": "WebOfTrust", "repo": "keripy", "branch": "main", "category": "Code" }
+{ "owner": "WebOfTrust", "repo": "keripy", "branch": "main", "category": "Repository" }
 ```
 
 | Field | Required | Meaning |
@@ -60,7 +60,7 @@ Indexes **source files + issues** via the GitHub API. You do **not** add a sitem
 | `owner` | yes | GitHub org/user |
 | `repo` | yes | Repository name |
 | `branch` | yes | Branch to index |
-| `category` | yes | Search facet (e.g. `Code`) |
+| `category` | yes | Search facet (e.g. `Repository`) |
 | `skipCrawl` | no | `true` = keep existing JSONL; skip sitemap + scrape |
 
 3. Run `npm run scrape` (builds the sitemap, then scrapes).
