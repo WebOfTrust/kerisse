@@ -23,92 +23,124 @@ GitHub Actions needs one of these in the repo:
 
 ### Scraping (search index)
 
-Scraper tooling lives in `scraper/` (run via `npm run scrape` or `sh scraper/main.sh`). Sources are declared under `config/`; scraped JSONL goes to `search-index-entries/`.
+Run a full scrape with `npm run scrape` (or `sh scraper/main.sh`). Output goes to `search-index-entries/`.
 
-The scraper uses Puppeteer and needs Chrome/Chromium. On macOS it uses the installed Google Chrome app by default. You can override the browser path with `PUPPETEER_EXECUTABLE_PATH` in `.env`. If no system browser is found, run `node node_modules/puppeteer/install.js` to download a bundled Chromium.
+Browser: Puppeteer needs Chrome/Chromium. On macOS it uses Google Chrome by default; override with `PUPPETEER_EXECUTABLE_PATH` in `.env`, or run `node node_modules/puppeteer/install.js`.
 
-After changing scrape sources, regenerate the overview:
+Current inventory (generated): [`config/scrape-sources.md`](config/scrape-sources.md) — refresh with `npm run diagram:scrape`.
 
-```bash
-npm run diagram:scrape
+---
+
+#### Pick your goal
+
+| I want to… | Sitemap? | Where to edit |
+|------------|----------|---------------|
+| [Index a GitHub repository](#i-want-to-index-a-github-repository) | **Automatic** — built during scrape | `config/github-repos.json` |
+| [Index a website that already has `sitemap.xml`](#i-want-to-index-a-website-that-already-has-sitemapxml) | **Use theirs** — point at the URL | `config/generic-sites.mjs` |
+| [Index a website with no sitemap](#i-want-to-index-a-website-with-no-sitemap) | **You create one** | `config/manual-sitemaps/` **and** `config/generic-sites.mjs` |
+| [Index one page only](#i-want-to-index-one-page-only) | None | `config/single-urls/urls.json` |
+| [Skip some URLs from a site](#i-want-to-skip-some-urls-from-a-site) | (uses that site’s sitemap) | `config/exclude-urls/` **and** `config/generic-sites.mjs` |
+| [Add content without scraping](#i-want-to-add-content-without-scraping) | None | `config/manual-entries/` |
+
+---
+
+#### I want to… index a GitHub repository
+
+Indexes **source files + issues** via the GitHub API. You do **not** add a sitemap file — scrape generates it.
+
+1. Open [`config/github-repos.json`](config/github-repos.json).
+2. Append an object:
+
+```json
+{ "owner": "WebOfTrust", "repo": "keripy", "branch": "main", "category": "Code" }
 ```
-
-See [`config/scrape-sources.md`](config/scrape-sources.md) for the current inventory.
-
-#### What do you want to add?
-
-| I want to… | Edit |
-|------------|------|
-| Index a **GitHub repository** (source + issues) | [`config/github-repos.json`](config/github-repos.json) |
-| Index a **whole website** (sitemap / docs site) | [`config/generic-sites.mjs`](config/generic-sites.mjs) |
-| Index a **single page** (blog post, HackMD, …) | [`config/single-urls/urls.json`](config/single-urls/urls.json) |
-| **Skip URLs** from a site’s sitemap | [`config/exclude-urls/`](config/exclude-urls/) |
-| Supply a **hand-made sitemap** XML | [`config/manual-sitemaps/`](config/manual-sitemaps/) |
-| Drop in **ready-made index entries** (no crawl) | [`config/manual-entries/`](config/manual-entries/) |
-
-Shared DOM selectors for generic sites: `scraper/modules/genericSiteScrape.mjs` (`DOM_QUERY`, `makeScraper`).
-
-```
-config/
-├── scrape-sources.md     ← generated overview
-├── github-repos.json     ← GitHub API scrape list
-├── generic-sites.mjs     ← websites with sitemaps
-├── single-urls/          ← one-off pages (urls.json)
-├── exclude-urls/         ← URL skip lists
-├── manual-sitemaps/      ← hand-crafted sitemap XML
-└── manual-entries/       ← pre-built JSON/JSONL entries
-```
-
-#### GitHub repos
-
-Edit `config/github-repos.json`. Each entry:
 
 | Field | Required | Meaning |
 |-------|----------|---------|
 | `owner` | yes | GitHub org/user |
 | `repo` | yes | Repository name |
 | `branch` | yes | Branch to index |
-| `category` | yes | Search facet (e.g. `Code`, `Whitepapers`) |
-| `skipCrawl` | no | When `true`, keep existing JSONL; do not regenerate sitemap or re-scrape |
+| `category` | yes | Search facet (e.g. `Code`) |
+| `skipCrawl` | no | `true` = keep existing JSONL; skip sitemap + scrape |
 
-```json
-{ "owner": "WebOfTrust", "repo": "keripy", "branch": "main", "category": "Code" }
-```
-
-For each crawlable repo, the sitemap includes all file blob URLs on the branch plus all issues (open and closed; pull requests excluded). Issues are fetched via the GitHub API (title, body, comments).
+3. Run `npm run scrape` (builds the sitemap, then scrapes).
+4. Optional: `npm run diagram:scrape`.
 
 Output: `search-index-entries/{owner}-{repo}-{branch}.jsonl`.
 
-This indexes **repository source**, not GitHub Pages. For `*.github.io` docs sites, use generic sites below.
+**Not for GitHub Pages** (`*.github.io`). Those are normal websites — use the website recipes below.
 
-#### Websites (generic sites)
+---
 
-1. Open `config/generic-sites.mjs`.
-2. Copy a block that matches the site type:
-   - Docusaurus / GitHub Pages → `DOM_QUERY.docusaurus`
-   - ReadTheDocs → `DOM_QUERY.readTheDocs`
-   - WordPress (block theme) → `DOM_QUERY.wordpressEntryContent`
-3. Set `sourcePath` (usually `…/sitemap.xml`), `siteName`, `destinationFile`.
-4. Add `scrape(configYourSite, scrapeSimple.…)` in the **export at the bottom** — only those calls run.
-5. Optional: create `config/exclude-urls/<name>.json` and set `excludeURLs: 'config/exclude-urls/<name>.json'`.
-6. `npm run diagram:scrape`
+#### I want to… index a website that already has `sitemap.xml`
 
-#### Single URLs
+Typical for Docusaurus, ReadTheDocs, many docs sites. You **point at their sitemap** — you do not create one.
 
-One-off pages without a useful site-wide sitemap. Edit `config/single-urls/urls.json`:
+1. Confirm the site publishes a sitemap (try `https://example.com/sitemap.xml`).
+2. Open [`config/generic-sites.mjs`](config/generic-sites.mjs).
+3. Copy a similar block (e.g. eSSIF-Lab for Docusaurus, keripy for ReadTheDocs, keri.foundation for WordPress).
+4. Set at least:
+   - `sourceType: 'remoteXMLsitemap'`
+   - `sourcePath: 'https://…/sitemap.xml'`
+   - `siteName`, `source`, `category`, `destinationFile`
+   - `domQueryForContent: DOM_QUERY.docusaurus` (or `.readTheDocs` / `.wordpressEntryContent`)
+5. In the **export at the bottom**, add:
 
-| Field | Required | Meaning |
-|-------|----------|---------|
-| `url` | yes | Page to scrape |
-| `querySelector` | yes* | CSS selector(s) for main content |
-| `pageTitle` | yes* | Title in the search index and output filename |
-| `siteName` | recommended | Display name of the site |
-| `source` | recommended | e.g. `Blogposts`, `Hackmd` |
-| `author` | optional | |
-| `category` | recommended | e.g. `Blogs`, `Tutorials` |
-| `type` | optional | Extra tag(s) |
+```js
+scrape(configYourSite, scrapeSimple.docusaurus); // or readTheDocs / wordpress
+```
 
-\* Practically required for useful index entries.
+Only lines in that export actually run.
+
+6. Optional: skip unwanted URLs — see [Skip some URLs](#i-want-to-skip-some-urls-from-a-site).
+7. `npm run diagram:scrape`, then `npm run scrape`.
+
+---
+
+#### I want to… index a website with no sitemap
+
+You must **create a sitemap and wire it** — dropping an XML file alone does nothing.
+
+1. Create an XML sitemap, e.g. `config/manual-sitemaps/my-site.xml`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://example.com/page-a</loc></url>
+  <url><loc>https://example.com/page-b</loc></url>
+</urlset>
+```
+
+(At scrape start this is copied to `scraper/sitemaps/`.)
+
+2. Open [`config/generic-sites.mjs`](config/generic-sites.mjs) and add a config like Slack archive:
+
+```js
+const configMySite = {
+    sitemap: await createInput({
+        sourceType: 'localXMLsitemap',
+        sourcePath: 'scraper/sitemaps/my-site.xml',
+    }),
+    siteName: 'My Site',
+    source: 'My Site',
+    category: 'Blogs',
+    author: '',
+    destinationFile: 'search-index-entries/my-site.jsonl',
+    domQueryForContent: DOM_QUERY.body, // or another DOM_QUERY.* that fits
+};
+```
+
+3. Add to the export: `scrape(configMySite, scrapeSimple.body);`
+4. `npm run diagram:scrape`, then `npm run scrape`.
+
+---
+
+#### I want to… index one page only
+
+No sitemap. One JSON object per page.
+
+1. Open [`config/single-urls/urls.json`](config/single-urls/urls.json).
+2. Append:
 
 ```json
 {
@@ -122,37 +154,59 @@ One-off pages without a useful site-wide sitemap. Edit `config/single-urls/urls.
 }
 ```
 
+| Field | Required | Meaning |
+|-------|----------|---------|
+| `url` | yes | Page to scrape |
+| `querySelector` | yes | CSS selector(s) for main content |
+| `pageTitle` | yes | Title in index + output filename |
+| `siteName` / `source` / `category` | recommended | Facets in search |
+| `author` / `type` | optional | |
+
+3. `npm run scrape`.
+
 Output: `search-index-entries/site-{index}-{pageTitle-slug}.jsonl`  
-(`{index}` is the entry’s position in the JSON array — inserting in the middle renumbers later files.)
+(`{index}` = position in the array — inserting in the middle renumbers later files.)
 
-#### Exclude URLs
+---
 
-JSON arrays under `config/exclude-urls/` to drop URLs from a site’s discovered list. Wire from `generic-sites.mjs`:
+#### I want to… skip some URLs from a site
 
-```js
-excludeURLs: 'config/exclude-urls/gleif.json',
-```
+Only applies to sites configured in `generic-sites.mjs`.
 
-- Path fragments use **substring** matching: `"newsroom"` drops every URL containing `newsroom`.
-- Full `http://` / `https://` URLs match **exactly** (trailing slash ignored).
+1. Create `config/exclude-urls/my-site.json`:
 
 ```json
 [
-    "https://kericonf.com/archive/"
+  "newsroom",
+  "https://example.com/exact-page/"
 ]
 ```
 
-If the file is missing, the scraper logs an error and continues with no excludes. Current files: `gleif.json`, `wot-terms.json`, `kericonf.json`.
+- Fragments like `"newsroom"` = substring match (drops any URL containing it).
+- Full `http(s)://…` URLs = exact match (trailing slash ignored).
 
-#### Manual sitemaps
+2. In that site’s `createInput({…})` in `generic-sites.mjs`, set:
 
-Hand-crafted `sitemap.xml` for sources that do not publish one. **Both steps required:**
+```js
+excludeURLs: 'config/exclude-urls/my-site.json',
+```
 
-1. Add the XML under `config/manual-sitemaps/` (copied to `scraper/sitemaps/` at scrape start).
-2. Wire a scrape config in `generic-sites.mjs` with `sourceType: 'localXMLsitemap'` and `sourcePath: 'scraper/sitemaps/<your-file>.xml'`, then add `scrape(...)` to the export.
+3. `npm run scrape`.
 
-Step 1 alone does not scrape anything. Example: `slack-keri-archive.xml` is a one-time archive. `sitemap-www.gleif.org-pdf.xml` is historical; Gleif PDFs currently come from `manual-entries/gleifPDF.jsonl`.
+If the file is missing, the scraper logs an error and continues with no excludes.
 
-#### Manual index entries
+---
 
-Pre-built `.json` / `.jsonl` files under `config/manual-entries/` are copied into `search-index-entries/` at scrape start (no crawl). Schema should match other scraper output (`url`, `content`, `pageTitle`, `category`, …). Examples: `handmade.json`, `gleifPDF.jsonl`.
+#### I want to… add content without scraping
+
+1. Put a `.json` or `.jsonl` file in [`config/manual-entries/`](config/manual-entries/).
+2. Match the usual entry shape (`url`, `content`, `pageTitle`, `category`, …).
+3. Run `npm run scrape` (or at least the copy step) — files are copied into `search-index-entries/`.
+
+Examples already there: `handmade.json`, `gleifPDF.jsonl`.
+
+---
+
+#### Shared helpers
+
+DOM presets live in `scraper/modules/genericSiteScrape.mjs`: `DOM_QUERY.docusaurus`, `.readTheDocs`, `.wordpressEntryContent`, `.gleif`, `.body`, plus `makeScraper` / `scrapeSimple.*`.
