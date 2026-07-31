@@ -259,9 +259,6 @@ const initKerisseSearch = async () => {
           // Only if type is not empty, show it
           let itemTypeTemplateString = item.type !== '' ? `• ${item.type}` : '';
 
-          // Only if hierarchy.lvl1 is not empty, show it
-          let itemHierarchyLvl1TemplateString = item['hierarchy.lvl1'] !== '' ? `• ${item['hierarchy.lvl1']}` : '';
-
           // Only if firstHeadingBeforeElement is not empty, show it
           let itemFirstHeadingBeforeElementTemplateString = item.firstHeadingBeforeElement !== '' ? `<h4 class="first-heading-before-element ms-5">${item.firstHeadingBeforeElement}</h4>` : '';
 
@@ -287,7 +284,6 @@ const initKerisseSearch = async () => {
                   ${itemCreationDateTemplateString}
                   ${itemKnowledgeLevelTemplateString}
                   ${itemTypeTemplateString}
-                  ${itemHierarchyLvl1TemplateString}
                 </div>
                 <hr>
                 ${itemTitleTemplateString}
@@ -401,25 +397,6 @@ const initKerisseSearch = async () => {
     //     checkbox: 'me-2',
     //   },
 
-    //   sortBy: ['name:asc', 'count:desc'],
-    // }),
-    // // SUBJECT
-    // refinementList({
-    //   container: '#subject-refinement-list',
-    //   attribute: 'hierarchy.lvl1',
-    //   searchable: false,
-    //   searchablePlaceholder: 'Subject',
-    //   showMore: false,
-    //   cssClasses: {
-    //     searchableInput: 'form-control form-control-sm mb-2 border-light-2',
-    //     searchableSubmit: 'hidden',
-    //     searchableReset: 'hidden',
-    //     showMore: 'btn btn-secondary btn-sm align-content-center',
-    //     list: 'list-unstyled',
-    //     count: '',
-    //     label: '',
-    //     checkbox: 'me-2',
-    //   },
     //   sortBy: ['name:asc', 'count:desc'],
     // }),
     // TAG
