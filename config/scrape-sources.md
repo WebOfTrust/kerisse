@@ -1,6 +1,6 @@
 # What will be scraped
 
-Start here for how to edit sources: [README.md](README.md).
+How to edit sources: [README.md](../README.md#scraping-search-index).
 
 Generated from `config/` by `scripts/generate-scrape-mermaid.mjs`.
 Re-run after editing scrape config:
