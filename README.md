@@ -35,6 +35,6 @@ GitHub Actions needs one of these in the repo:
 
 ### Scraping (search index)
 
-Scraper tooling lives in `scraper/` (run via `sh scraper/main.sh`). Scrape sources and related settings live in `config/`. Scraped JSONL output goes to `search-index-entries/` at the repo root.
+Scraper tooling lives in `scraper/` (run via `npm run scrape` or `sh scraper/main.sh`). Scrape sources live in [`config/`](config/README.md) — start with that README for how to add a site, GitHub repo, or single URL. Scraped JSONL output goes to `search-index-entries/` at the repo root.
 
 The scraper uses Puppeteer and needs Chrome/Chromium. On macOS it uses the installed Google Chrome app by default. You can override the browser path with `PUPPETEER_EXECUTABLE_PATH` in `.env`. If no system browser is found, run `node node_modules/puppeteer/install.js` to download a bundled Chromium.

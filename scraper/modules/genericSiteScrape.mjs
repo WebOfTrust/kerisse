@@ -1,6 +1,6 @@
 /*
   Shared DOM selectors and scrape helpers for generic (non-GitHub-API) sites.
-  Used by config/configScraperGenericSitemaps.mjs.
+  Used by config/generic-sites.mjs.
 */
 
 import extractMainContent from './extractMainContent.mjs';

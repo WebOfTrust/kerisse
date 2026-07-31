@@ -12,7 +12,7 @@ configDotEnv();
 
 const configFilePath = path.join(
     process.env.SEARCH_INDEX_CONFIG_DIR,
-    'config-scraper-single-urls/genericScraperSingleUrls.json'
+    'single-urls/urls.json'
 );
 
 const entries = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));

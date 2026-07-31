@@ -24,7 +24,7 @@ const entriesDir = process.env.SEARCH_INDEX_ENTRIES_DIR;
 const stashDir = path.join(process.env.SEARCH_INDEX_TEMP_DIR || 'scraper/temp', 'frozen-entries');
 const configPath = path.join(
     process.env.SEARCH_INDEX_CONFIG_DIR,
-    'configGithubRepos.json'
+    'github-repos.json'
 );
 
 async function frozenBasenames() {

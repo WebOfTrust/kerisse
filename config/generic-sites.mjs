@@ -7,6 +7,19 @@ import {
     scrapeDocusaurusWithMeta,
 } from '../scraper/modules/genericSiteScrape.mjs';
 
+/**
+ * Generic websites (not GitHub API repos).
+ *
+ * How to add a site:
+ * 1. Copy a block below that matches the template (Docusaurus, WordPress, ReadTheDocs, …).
+ * 2. Set sitemap sourcePath, siteName, destinationFile, and DOM_QUERY.*.
+ * 3. Add scrape(configX, scrapeSimple.*) to the export at the bottom — only those calls run.
+ * 4. Optional: excludeURLs → config/exclude-urls/<name>.json
+ * 5. npm run diagram:scrape
+ *
+ * See config/README.md for all scrape channels.
+ */
+
 const scrapeSimple = {
     docusaurus: makeScraper({ titleSelector: TITLE_QUERY.docusaurus }),
     gleif: makeScraper({
@@ -42,7 +55,7 @@ const configGleif = {
         sourceType: 'querySelector',
         sourcePath: 'https://www.gleif.org/en/meta/sitemap',
         queryString: '.content ul li a', // must be an a element
-        excludeURLs: 'config/config-sitemaps-exlude-urls/gleifExcludeUrls.json',
+        excludeURLs: 'config/exclude-urls/gleif.json',
     }),
     siteName: 'Gleif website',
     source: 'Gleif website',
@@ -101,7 +114,7 @@ const configWOTterms = {
     sitemap: await createInput({
         sourceType: 'remoteXMLsitemap',
         sourcePath: 'https://weboftrust.github.io/WOT-terms/sitemap.xml',
-        excludeURLs: 'config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json',
+        excludeURLs: 'config/exclude-urls/wot-terms.json',
     }),
     siteName: 'KERI Suite Glossary',
     source: 'KERI Suite Glossary',
@@ -115,7 +128,7 @@ const configKeridoc = {
     sitemap: await createInput({
         sourceType: 'remoteXMLsitemap',
         sourcePath: 'https://weboftrust.github.io/keridoc/sitemap.xml',
-        excludeURLs: 'config/config-sitemaps-exlude-urls/wotTermsExcludeUrls.json',
+        excludeURLs: 'config/exclude-urls/wot-terms.json',
     }),
     siteName: 'KERIDoc',
     source: 'KERIDoc',
@@ -126,7 +139,8 @@ const configKeridoc = {
 };
 
 /*
- * Slack Keri Archive (static HTML)
+ * Slack Keri Archive (static HTML + manual sitemap)
+ * Sitemap file lives in config/manual-sitemaps/ and is copied to scraper/sitemaps/.
  */
 const configSlackKeriArchive = {
     sitemap: await createInput({
@@ -145,7 +159,7 @@ const configSlackKeriArchive = {
  * WordPress block themes
  */
 const configKeriFoundation = {
-    // WordPress serves a sitemap index at /sitemap.xml; use the pages urlset directly
+    // WordPress sitemap index is /sitemap.xml; use the pages urlset directly
     sitemap: await createInput({
         sourceType: 'remoteXMLsitemap',
         sourcePath: 'https://keri.foundation/wp-sitemap-posts-page-1.xml',
@@ -159,12 +173,11 @@ const configKeriFoundation = {
 };
 
 const configKericonf = {
-    // WordPress serves a sitemap index at /sitemap.xml; use the pages urlset directly
     sitemap: await createInput({
         sourceType: 'remoteXMLsitemap',
         sourcePath: 'https://kericonf.com/wp-sitemap-posts-page-1.xml',
         // Parent/nav shells with title only (no .entry-content body)
-        excludeURLs: 'config/config-sitemaps-exlude-urls/kericonfExcludeUrls.json',
+        excludeURLs: 'config/exclude-urls/kericonf.json',
     }),
     siteName: 'KERI Conference',
     source: 'KERI Conference',

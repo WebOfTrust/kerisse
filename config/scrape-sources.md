@@ -1,5 +1,7 @@
 # What will be scraped
 
+Start here for how to edit sources: [README.md](README.md).
+
 Generated from `config/` by `scripts/generate-scrape-mermaid.mjs`.
 Re-run after editing scrape config:
 
@@ -11,12 +13,12 @@ npm run diagram:scrape
 
 | Channel | Count | Config |
 |--------|------:|--------|
-| Generic sites | 10 | `configScraperGenericSitemaps.mjs` |
-| Single URLs | 26 | `config-scraper-single-urls/genericScraperSingleUrls.json` |
-| GitHub repos (crawl) | 38 | `configGithubRepos.json` |
-| GitHub repos (skipCrawl) | 1 | `configGithubRepos.json` |
-| Manual index entries | 2 | `config-search-index-entries-manual/` |
-| Manual sitemaps | 2 | `config-sitemaps-manual/` |
+| Generic sites | 10 | `generic-sites.mjs` |
+| Single URLs | 26 | `single-urls/urls.json` |
+| GitHub repos (crawl) | 40 | `github-repos.json` |
+| GitHub repos (skipCrawl) | 1 | `github-repos.json` |
+| Manual index entries | 2 | `manual-entries/` |
+| Manual sitemaps | 2 | `manual-sitemaps/` |
 
 ## Diagram
 
@@ -25,7 +27,7 @@ flowchart TB
   ROOT["config/"]
   OUT["search-index-entries/*.jsonl"]
 
-  subgraph GEN["Generic sites — configScraperGenericSitemaps.mjs"]
+  subgraph GEN["Generic sites — generic-sites.mjs"]
     direction TB
     g_configESSIFlabs["eSSIF-Lab<br/><small>remote XML · essif-lab.github.io/framework/sitemap.xml</small>"]
     g_configGleif["Gleif website<br/><small>HTML querySelector · www.gleif.org/en/meta/sitemap<br/>− excludes</small>"]
@@ -39,15 +41,15 @@ flowchart TB
     g_configKericonf["KERI Conference<br/><small>remote XML · kericonf.com/wp-sitemap-posts-page-1.xml<br/>− excludes</small>"]
   end
 
-  subgraph SINGLE["Single URLs — genericScraperSingleUrls.json (26)"]
+  subgraph SINGLE["Single URLs — single-urls/urls.json (26)"]
     direction TB
     su_Hackmd["Hackmd (1)<br/>• Security in KERI/ACDC"]
     su_Blogposts["Blogposts (25)<br/>• Self Sovereign Identity can do just fine, blockchain-less<br/>• KERI Tutorial Series: Treasure Hunting in Abydos! Issuing and Verifying a Credential (ACDC)<br/>• KERI Tutorial Series – KLI: Sign and Verify with Heartnet<br/>• Reading Mind Map: Key Event Receipt Infrastructure – KERI<br/>… +21 more"]
   end
 
-  subgraph GH["GitHub — configGithubRepos.json (38 crawl, 1 skipCrawl)"]
+  subgraph GH["GitHub — github-repos.json (40 crawl, 1 skipCrawl)"]
     direction TB
-    gh_keri_foundation["keri-foundation<br/>CONF26-subtitles@main"]
+    gh_keri_foundation["keri-foundation<br/>CONF26-subtitles@main<br/>subtitles@main<br/>locksmith@main"]
     gh_trustoverip["trustoverip<br/>tswg-acdc-specification@main<br/>tswg-did-method-webs-specification@main<br/>tswg-cesr-specification@main<br/>tswg-cesr-proof-specification@main<br/>tswg-oobi-specification@main<br/>tswg-ipex-specification@main<br/>tswg-acdc-specification-archived@main<br/>acdc@main<br/>TSS0033-technology-stack-acdc@main<br/>tswg-keri-specification@main<br/>tswg-ptel-specification@main<br/>keri@main"]
     gh_SmithSamuelM["SmithSamuelM<br/>Papers@master ⊘"]
     gh_WebOfTrust["WebOfTrust<br/>cardano-backer@main<br/>cesride@main<br/>cesrpy@main<br/>gcp-ksm-shim@main<br/>ietf-did-keri@main<br/>kara@main<br/>kassh@main<br/>keep@main<br/>keri@main<br/>keri-swift@main<br/>keria@main<br/>keride@main<br/>keriox@main<br/>keripy@main<br/>parside@main<br/>saidide@main<br/>schema@main<br/>scir@main<br/>shkr@main<br/>signifi@main<br/>signifide@main<br/>signify-ts@main<br/>signifypy@main<br/>vlei@dev<br/>ward@main"]
@@ -67,15 +69,15 @@ flowchart TB
 | Site | Discovery | Source path | Excludes | Destination |
 |------|-----------|-------------|----------|-------------|
 | eSSIF-Lab | `remoteXMLsitemap` | https://essif-lab.github.io/framework/sitemap.xml | — | `search-index-entries/eSSIF-Lab.jsonl` |
-| Gleif website | `querySelector` | https://www.gleif.org/en/meta/sitemap | `gleifExcludeUrls.json` | `search-index-entries/gleif.jsonl` |
+| Gleif website | `querySelector` | https://www.gleif.org/en/meta/sitemap | `gleif.json` | `search-index-entries/gleif.jsonl` |
 | Python Implementation of the KERI Core Libraries | `remoteXMLsitemap` | https://keripy.readthedocs.io/sitemap.xml | — | `search-index-entries/readthedocs.keripy.io.jsonl` |
 | Python Implementation of the KERI Core Libraries | `remoteXMLsitemap` | https://keria.readthedocs.io/sitemap.xml | — | `search-index-entries/readthedocs.keria.io.jsonl` |
 | Python Implementation of the KERI Core Libraries | `remoteXMLsitemap` | https://signifypy.readthedocs.io/sitemap.xml | — | `search-index-entries/readthedocs.signifypy.io.jsonl` |
-| KERI Suite Glossary | `remoteXMLsitemap` | https://weboftrust.github.io/WOT-terms/sitemap.xml | `wotTermsExcludeUrls.json` | `search-index-entries/WOT-terms.jsonl` |
-| KERIDoc | `remoteXMLsitemap` | https://weboftrust.github.io/keridoc/sitemap.xml | `wotTermsExcludeUrls.json` | `search-index-entries/keridoc.jsonl` |
+| KERI Suite Glossary | `remoteXMLsitemap` | https://weboftrust.github.io/WOT-terms/sitemap.xml | `wot-terms.json` | `search-index-entries/WOT-terms.jsonl` |
+| KERIDoc | `remoteXMLsitemap` | https://weboftrust.github.io/keridoc/sitemap.xml | `wot-terms.json` | `search-index-entries/keridoc.jsonl` |
 | Slack Keri Archive | `localXMLsitemap` | scraper/sitemaps/slack-keri-archive.xml | — | `search-index-entries/slack-keri-archive.jsonl` |
 | KERI Foundation | `remoteXMLsitemap` | https://keri.foundation/wp-sitemap-posts-page-1.xml | — | `search-index-entries/keri-foundation.jsonl` |
-| KERI Conference | `remoteXMLsitemap` | https://kericonf.com/wp-sitemap-posts-page-1.xml | `kericonfExcludeUrls.json` | `search-index-entries/kericonf.jsonl` |
+| KERI Conference | `remoteXMLsitemap` | https://kericonf.com/wp-sitemap-posts-page-1.xml | `kericonf.json` | `search-index-entries/kericonf.jsonl` |
 
 ## Single URLs
 
@@ -113,6 +115,8 @@ flowchart TB
 | Repo | Branch | Category | Mode |
 |------|--------|----------|------|
 | keri-foundation/CONF26-subtitles | main | Code | crawl |
+| keri-foundation/subtitles | main | Code | crawl |
+| keri-foundation/locksmith | main | Code | crawl |
 | trustoverip/tswg-acdc-specification | main | Code | crawl |
 | trustoverip/tswg-did-method-webs-specification | main | Code | crawl |
 | trustoverip/tswg-cesr-specification | main | Code | crawl |
