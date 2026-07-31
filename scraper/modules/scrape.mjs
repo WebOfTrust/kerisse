@@ -81,7 +81,8 @@ export default async function scrape(config, customScrape) {
             owner: match[1],
             repo: match[2],
             branch: match[3],
-            path: match[4]
+            // Sitemap URLs may be percent-encoded; API helper re-encodes safely.
+            path: match[4],
         };
     }
 
@@ -132,24 +133,34 @@ export default async function scrape(config, customScrape) {
                             }];
                             scraped.pageTitle = issue.title;
                         } else {
-                            let mainContent = [];
                             const parts = extractGithubParts(url.loc[0]);
+                            let content;
+                            try {
+                                content = await githubContent(
+                                    parts.owner,
+                                    parts.repo,
+                                    parts.branch,
+                                    parts.path,
+                                );
+                            } catch (error) {
+                                logger.setLogFile('error.log');
+                                logger.log(
+                                    `Failed to fetch file content for ${pageUrl}: ${error.message}`,
+                                );
+                                continue;
+                            }
 
-                            const content = await githubContent(parts.owner, parts.repo, parts.branch, parts.path)
-                                .then(content => {
-                                    return content;
-                                })
-                                .catch(error => {
-                                    console.error(`Failed to fetch file content: ${error.message}`);
-                                });
+                            if (typeof content !== 'string' || content.length === 0) {
+                                logger.setLogFile('error.log');
+                                logger.log(`Empty content for ${pageUrl}`);
+                                continue;
+                            }
 
-                            // return content;
-                            mainContent.push({
-                                content: content,
+                            scraped.mainContent = [{
+                                content,
                                 contentLength: content.length,
                                 tag: 'textarea',
-                            });
-                            scraped.mainContent = mainContent;
+                            }];
                             scraped.pageTitle = parts.path;
                         }
                     }

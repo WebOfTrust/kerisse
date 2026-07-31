@@ -21,7 +21,7 @@ import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import logger from './modules/logger.mjs';
-import { listIssueUrls } from './modules/github-API.mjs';
+import { authorizationHeader, listIssueUrls } from './modules/github-API.mjs';
 import { config } from 'dotenv';
 config();
 
@@ -32,12 +32,24 @@ const branchName = args[2];
 const category = args[3];
 const githubSitemapDirectory = process.env.SEARCH_INDEX_DIR + '/sitemaps/github';
 
+function githubAxiosHeaders() {
+  const headers = {
+    Accept: 'application/vnd.github.v3+json',
+    'User-Agent': 'KERISSE-Web-of-Trust-Scraper',
+  };
+  const authorization = authorizationHeader();
+  if (authorization) {
+    headers.Authorization = authorization;
+  }
+  return headers;
+}
+
 async function getRepositoryTree() {
   try {
-    const response = await axios.get(`https://api.github.com/repos/${repositoryOwner}/${repositoryName}/git/trees/${branchName}?recursive=1`, {
-      headers: { 'Authorization': `${process.env.GITHUB_AUTH_TOKEN}` }
-    })
-      ;
+    const response = await axios.get(
+      `https://api.github.com/repos/${repositoryOwner}/${repositoryName}/git/trees/${branchName}?recursive=1`,
+      { headers: githubAxiosHeaders() },
+    );
     return response.data.tree;
   } catch (error) {
     logger.setLogFile('error.log');

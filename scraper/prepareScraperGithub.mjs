@@ -7,6 +7,7 @@ import {
     githubDestinationFile,
     githubSitemapFilename,
 } from './modules/githubEntryPaths.mjs';
+import { authorizationHeader, getFileContent } from './modules/github-API.mjs';
 
 dotenvConfig();
 
@@ -39,11 +40,29 @@ export default async function () {
         'github-repos.json'
     );
 
+    if (!authorizationHeader()) {
+        console.error(
+            'GITHUB_AUTH_TOKEN is not set. GitHub repo scraping needs a valid PAT ' +
+                '(anonymous API is limited to 60 requests/hour and will not finish).',
+        );
+        return;
+    }
+
     let entries;
     try {
         entries = JSON.parse(await fs.readFile(configPath, 'utf-8'));
     } catch (err) {
         console.error(`Error reading GitHub repos config ${configPath}: ${err.message}`);
+        return;
+    }
+
+    // Fail fast if the token is rejected before crawling dozens of repos.
+    try {
+        await getFileContent('WebOfTrust', 'keripy', 'main', 'README.md');
+    } catch (err) {
+        console.error(
+            `GitHub auth check failed — aborting GitHub scrape.\n${err.message}`,
+        );
         return;
     }
 
