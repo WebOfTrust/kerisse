@@ -31,10 +31,52 @@ Current inventory (generated): [`config/scrape-sources.md`](config/scrape-source
 
 ---
 
+#### GitHub API token (required for repo indexing)
+
+Indexing entries in [`config/github-repos.json`](config/github-repos.json) uses the GitHub API (file trees, file contents, issues). Without a valid token, GitHub’s anonymous limit is **60 requests/hour**, so the crawl will fail or write almost nothing — and the **Repository** category will not appear in search.
+
+1. Copy [`.env.example`](.env.example) to `.env` if you do not already have one.
+2. Create a **classic** personal access token:  
+   GitHub → **Settings** → **Developer settings** → **Personal access tokens** → **Tokens (classic)** → **Generate new token**.
+3. Scopes for the public repos in this project:
+
+| Scope | Enough? |
+|-------|---------|
+| **`public_repo`** | Yes — preferred (least privilege) |
+| **`repo`** (full) | Also works, but includes private-repo access you usually do not need |
+
+You do **not** need workflow, gist, admin, or other scopes.
+
+4. Put the **raw** token in `.env` (no `Bearer` / `token` prefix — the scraper adds `Bearer` automatically):
+
+```bash
+GITHUB_AUTH_TOKEN=ghp_yourNewTokenHere
+GITHUB_ISSUE_AUTH_TOKEN=ghp_yourNewTokenHere
+```
+
+| Variable | Used by scraper? | Notes |
+|----------|------------------|--------|
+| `GITHUB_AUTH_TOKEN` | **Yes** — required | Reads repo files and issues for the search index |
+| `GITHUB_ISSUE_AUTH_TOKEN` | No (unused today) | Safe to set to the **same** value for convenience, or leave empty |
+
+5. Re-run scrape, then rebuild the index:
+
+```bash
+npm run scrape
+npm run build:search-index
+```
+
+You should see files like `search-index-entries/WebOfTrust-keripy-main.jsonl` and a **Repository** option under the Category facet.
+
+If the token is invalid, the scraper aborts GitHub crawling early with a clear `401 Bad credentials` message.
+
+---
+
 #### Pick your goal
 
 | I want to… | Sitemap? | Where to edit |
 |------------|----------|---------------|
+| [Set up a GitHub API token](#github-api-token-required-for-repo-indexing) | — | `.env` |
 | [Index a GitHub repository](#i-want-to-index-a-github-repository) | **Automatic** — built during scrape | `config/github-repos.json` |
 | [Index a website that already has `sitemap.xml`](#i-want-to-index-a-website-that-already-has-sitemapxml) | **Use theirs** — point at the URL | `config/generic-sites.mjs` |
 | [Index a website with no sitemap](#i-want-to-index-a-website-with-no-sitemap) | **You create one** | `config/manual-sitemaps/` **and** `config/generic-sites.mjs` |
@@ -47,6 +89,8 @@ Current inventory (generated): [`config/scrape-sources.md`](config/scrape-source
 #### I want to… index a GitHub repository
 
 Indexes **source files + issues** via the GitHub API. You do **not** add a sitemap file — scrape generates it.
+
+**Prerequisite:** a valid [`GITHUB_AUTH_TOKEN`](#github-api-token-required-for-repo-indexing) in `.env`.
 
 1. Open [`config/github-repos.json`](config/github-repos.json).
 2. Append an object:
