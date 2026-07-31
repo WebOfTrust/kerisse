@@ -80,10 +80,6 @@ export async function scrapeDocusaurusWithMeta(page, domQueryForContent, pageUrl
         }
     });
 
-    const hierarchyLevels = await page.$$eval('.breadcrumbs__link', (nodes) =>
-        nodes.map((node) => node.textContent.trim())
-    );
-
     const knowledgeLevel = await page.$eval('article', (element) => {
         return element.getAttribute('data-level');
     });
@@ -93,10 +89,6 @@ export async function scrapeDocusaurusWithMeta(page, domQueryForContent, pageUrl
     return {
         mainContent,
         type,
-        hierarchyLevel0: hierarchyLevels[0],
-        hierarchyLevel1: hierarchyLevels[1],
-        hierarchyLevel2: hierarchyLevels[2],
-        hierarchyLevel3: hierarchyLevels[3],
         knowledgeLevel,
         pageTitle,
     };

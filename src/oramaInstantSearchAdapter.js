@@ -183,7 +183,6 @@ function toInstantSearchHit(hit, query) {
   return {
     ...document,
     objectID: document.id,
-    'hierarchy.lvl1': document.hierarchyLvl1 || '',
     _highlightResult: buildHighlightResult(document, query),
   };
 }
