@@ -4,16 +4,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
 module.exports = {
-    // entry: './src/typesenseInstantSearchInit.js', // Your main JavaScript file
     entry: {
-        main: './src/typesenseInstantSearchInit.js',
-        additional1: './src/typesenseInstantSearch.js',
+        main: './src/instantSearchInit.js',
+        instantSearch: './src/instantSearch.js',
         additional2: './src/scrollHorizontallyToKeyWordInSearchResults.js',
         additional3: './src/backToTop.js'
     },
     output: {
-        // filename: '[name].[contenthash].bundle.js', // Generates main.bundle.js, additional1.bundle.js, etc.
-        filename: '[name].bundle.js', // Generates main.bundle.js, additional1.bundle.js, etc.
+        // filename: '[name].[contenthash].bundle.js',
+        filename: '[name].bundle.js', // main.bundle.js, instantSearch.bundle.js, etc.
         path: path.resolve(__dirname, 'dist'), // Directory for the bundled file
     },
     devServer: {
