@@ -17,7 +17,7 @@ import {
  * 4. Optional: excludeURLs → config/exclude-urls/<name>.json
  * 5. npm run diagram:scrape
  *
- * See config/README.md for all scrape channels.
+ * See README.md (Scraping section) for all scrape channels.
  */
 
 const scrapeSimple = {
