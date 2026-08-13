@@ -2,18 +2,25 @@
  * Build a static Orama search index from scraped JSONL / JSON entries.
  *
  * Usage: node scripts/build-orama-index.mjs
- * Output: output/search-index.orama.json (copied to dist/ by webpack)
+ * Output: output/search-index.orama.msgpack.gz (copied to dist/ by webpack)
+ *
+ * Uses MessagePack instead of JSON.stringify — the serialized Orama dump
+ * exceeds V8's max string length (~512MB) once the corpus grows large enough.
  */
 
 import fs from 'fs/promises';
-import { createReadStream } from 'fs';
-import { gzipSync } from 'zlib';
+import { createReadStream, createWriteStream } from 'fs';
+import { createGzip } from 'zlib';
 import path from 'path';
 import readline from 'readline';
+import { Readable } from 'stream';
+import { pipeline } from 'stream/promises';
 import { fileURLToPath } from 'url';
+import { encode } from '@msgpack/msgpack';
 import { create, insert, save } from '@orama/orama';
 import {
   FACET_ATTRIBUTES,
+  MSGPACK_OPTIONS,
   normalizeDocument,
   ORAMA_INDEX_FILENAME,
   ORAMA_SCHEMA,
@@ -121,12 +128,21 @@ async function main() {
     await insert(db, document);
   }
 
-  const serialized = JSON.stringify(await save(db));
-  const gzipped = gzipSync(Buffer.from(serialized, 'utf8'));
-  await fs.writeFile(outputFile, gzipped);
+  console.log('Serializing index (MessagePack)...');
+  const dbExport = await save(db);
+  // Orama's inverted index nests far deeper than msgpack's default maxDepth (100).
+  const msgpack = encode(dbExport, MSGPACK_OPTIONS);
+  const buffer = Buffer.from(msgpack.buffer, msgpack.byteOffset, msgpack.byteLength);
 
-  const sizeMb = (gzipped.length / (1024 * 1024)).toFixed(2);
-  const rawMb = (Buffer.byteLength(serialized, 'utf8') / (1024 * 1024)).toFixed(2);
+  await pipeline(
+    Readable.from(buffer),
+    createGzip(),
+    createWriteStream(outputFile),
+  );
+
+  const { size: gzippedSize } = await fs.stat(outputFile);
+  const sizeMb = (gzippedSize / (1024 * 1024)).toFixed(2);
+  const rawMb = (buffer.length / (1024 * 1024)).toFixed(2);
   console.log(`Wrote ${outputFile} (${sizeMb} MB gzipped, ${rawMb} MB raw, ${documents.length} documents)`);
 
   const facetSummary = FACET_ATTRIBUTES.join(', ');

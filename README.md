@@ -10,16 +10,16 @@
 
 ### Static search (Orama)
 
-Search runs entirely in the browser. At build time, scraped JSONL entries are compiled into a gzipped Orama index (`output/search-index.orama.json.gz`, copied to `dist/`).
+Search runs entirely in the browser. At build time, scraped JSONL entries are compiled into a gzipped MessagePack Orama index (`output/search-index.orama.msgpack.gz`, copied to `dist/`).
 
 - Rebuild only the index: `npm run build:search-index`
 - Full site build (index + webpack): `npm run build`
-- Requires scraped entries in `search-index-entries/` (`.jsonl` and `.json`), **or** a committed `output/search-index.orama.json.gz` fallback for CI
+- Requires scraped entries in `search-index-entries/` (`.jsonl` and `.json`), **or** a committed `output/search-index.orama.msgpack.gz` fallback for CI
 
 GitHub Actions needs one of these in the repo:
 
 1. **Preferred:** commit `search-index-entries/*.jsonl` after scraping (`.not-split` backups stay gitignored)
-2. **Alternative:** commit `output/search-index.orama.json.gz` (CI reuses it when entries are absent)
+2. **Alternative:** commit `output/search-index.orama.msgpack.gz` (CI reuses it when entries are absent)
 
 ### Scraping (search index)
 

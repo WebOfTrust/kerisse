@@ -2,10 +2,12 @@
  * InstantSearch.js client backed by a static Orama index (GitHub Pages).
  */
 
+import { decode } from '@msgpack/msgpack';
 import { create, load, search as oramaSearch } from '@orama/orama';
 import {
   FACET_ATTRIBUTES,
   groupHitsByUrl,
+  MSGPACK_OPTIONS,
   ORAMA_INDEX_FILENAME,
   SEARCH_PROPERTIES,
 } from '../scripts/orama-shared.mjs';
@@ -41,16 +43,15 @@ export function loadOramaDatabase() {
         }
 
         const compressed = await response.arrayBuffer();
-        const decompressedStream = new Response(
+        const decompressed = await new Response(
           new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip')),
-        );
-        const json = await decompressedStream.text();
+        ).arrayBuffer();
         const db = create({
           schema: {
             __placeholder: 'string',
           },
         });
-        load(db, JSON.parse(json));
+        load(db, decode(new Uint8Array(decompressed), MSGPACK_OPTIONS));
         return db;
       });
   }
