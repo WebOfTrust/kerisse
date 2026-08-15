@@ -1034,13 +1034,28 @@ footer {
   max-width: 34rem;
   margin: 0 auto 1rem;
   padding: 1rem 1.25rem;
-  background-color: rgba(255, 255, 255, 0.92);
+  background-color: #fff;
   border-radius: 0.5rem;
+  text-align: left;
+  color: #212529;
+}
+
+.hero2 .dataset-picker a {
+  color: #62783E;
+}
+
+.hero2 .dataset-picker a:hover {
+  color: #4a5c2e;
+}
+
+.dataset-picker-options {
+  text-align: left;
 }
 
 .dataset-picker-option {
   cursor: pointer;
   line-height: 1.8;
+  text-align: left;
 }
 
 /*
