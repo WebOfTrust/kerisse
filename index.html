@@ -9,6 +9,10 @@
 
     <meta name="description" content="Kerisse search through KERI documentation.">
 
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="custom.css">
     <link rel="stylesheet" href="backToTop.css">
@@ -21,7 +25,7 @@
                 <div class="col text-center">
                     <a href="https://weboftrust.github.io/keridoc/"><img class="hero-image"
                             src="icons/10119973341678815049.svg" alt="">
-                        KERIDoc<br><small>doc.kerisse.org</small></a>
+                        KERI Suite Documentation<br><small>doc.kerisse.org</small></a>
                 </div>
                 <div class="col text-center">
                     <a href="https://weboftrust.github.io/WOT-terms/"><img class="hero-image"
@@ -31,16 +35,35 @@
                 <div class="col text-center">
                     <a href="https://weboftrust.github.io/kerisse/"><img class="hero-image"
                             src="icons/1626701221679047824.svg" alt="">
-                        KERISSE<br><small>search.kerisse.org</small></a>
+                        KERI Suite Search Engine<br><small>search.kerisse.org</small></a>
                 </div>
             </div>
         </div>
 
         <div class="hero2 p-2">
-            <h1 class="search-heading text-center fs-2">KERISSE</h1>
+            <h1 class="search-heading text-center fs-2"><img alt="" class="hero__image"
+                    src="logo-keri-symbol.png" />KERISSE</h1>
             <p class="text-center">KERI Suite Search Engine</p>
 
-            <div id="search-box" class="mt-3 mb-2"></div>
+            <div id="dataset-picker" class="dataset-picker d-none">
+                <p class="mb-2 fw-bold">What do you want to search in?</p>
+                <p class="mb-2"><small>Smaller selections download and search faster. You can change this
+                        later.</small></p>
+                <div id="dataset-picker-options" class="dataset-picker-options mb-2"></div>
+                <button id="dataset-picker-start" type="button" class="btn btn-primary btn-sm" disabled>Start
+                    searching</button>
+            </div>
+
+            <p id="dataset-summary" class="text-center mb-1 d-none"><small>Searching in:
+                    <span id="dataset-summary-list"></span>
+                    <a href="#" id="dataset-change">(change)</a></small></p>
+
+            <div id="search-box" class="mt-3 mb-2">
+                <div id="search-box-loading" class="search-box-loading" role="status" aria-live="polite">
+                    <span class="search-box-spinner" aria-hidden="true"></span>
+                    <span id="search-box-loading-message">Starting engines…</span>
+                </div>
+            </div>
             <div class="alert alert-secondary p-1 mb-2" id="loader">–</div>
             <a href="#search-results"
                 class="to-search-results btn btn-light text-dark btn-sm mt-0 mb-3 d-inline-block d-md-none">
@@ -71,11 +94,6 @@
     -->
 
         <ul class="nav justify-content-center">
-            <li class="nav-item">
-                <a target="_blank" rel="noopener" class="nav-link"
-                    href="https://docs.google.com/presentation/d/1lpzYcPrIox9V4hERtn4Kcf7uq01OVU9u3PuVm1aYzR0/edit#slide=id.ga411be7e84_0_0">KERI
-                    for Muggles</a>
-            </li>
             <li class="nav-item">
                 <a target="_blank" rel="noopener" class="nav-link" href="https://keri.one/keri-resources/">Resources</a>
             </li>
@@ -147,29 +165,23 @@
     <footer class="text-center text-lg-start mt-4">
         <div class="container p-4">
             <div class="row">
-                <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                    <h5 class="text-light text-uppercase">KERISSE</h5>
-                    <p class="text-light">
-                        KERI Suite Search Engine.
-                    </p>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-light text-uppercase">General</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="./" class="text-light">Enter Search</a></li>
+                        <li><a href="https://discord.com/channels/1148629222647148624/1150545417344389230" class="text-light" target="_blank" rel="noopener">Give Feedback on Discord</a></li>
+                    </ul>
                 </div>
 
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <h5 class="text-light">More</h5>
+                    <h5 class="text-light">KERI Suite</h5>
                     <ul class="list-unstyled mb-0">
-                        <li><a target="_blank" rel="noopener" class="text-light"
-                                href="https://github.com/weboftrust/kerisse/">GitHub repo</a></li>
                         <li><a href="https://weboftrust.github.io/keridoc/" class="text-light" target="_blank"
                                 rel="noopener">KERIDoc</a>
                         </li>
                         <li><a href="https://weboftrust.github.io/WOT-terms/" class="text-light" target="_blank"
-                                rel="noopener">KERI Suite
-                                Glossary</a></li>
-                        <li><a href="https://weboftrust.github.io/kerisse/" class="text-light" target="_blank"
-                                rel="noopener">KERISSE</a>
-                        </li>
-                        <li><a href="https://chromewebstore.google.com/detail/kerific/ckbmkbbmnfbeecfmoiohobcdmopekgmp"
-                                class="text-light" target="_blank" rel="noopener">Kerific Browser Extension</a>
+                                rel="noopener">KERIGlos</a></li>
+                        <li><a href="./" class="text-light" target="_blank" rel="noopener">KERISSE</a>
                         </li>
                     </ul>
                 </div>
@@ -186,6 +198,18 @@
 
                     </ul>
                 </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-light">More</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a target="_blank" rel="noopener" class="text-light"
+                                href="https://github.com/weboftrust/kerisse/">GitHub
+                                repo</a></li>
+                        <li><a href="https://chromewebstore.google.com/detail/kerific/ckbmkbbmnfbeecfmoiohobcdmopekgmp"
+                                class="text-light" target="_blank" rel="noopener">Kerific Browser Extension</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -195,7 +219,7 @@
     </footer>
 
     <script src="main.bundle.js"></script>
-    <script src="additional1.bundle.js"></script>
+    <script src="instantSearch.bundle.js"></script>
     <script src="additional2.bundle.js"></script>
     <script src="additional3.bundle.js"></script>
 </body>
