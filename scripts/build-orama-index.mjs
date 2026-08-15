@@ -162,11 +162,12 @@ async function main() {
       console.log(`No scraped entries in ${entriesDir}; using existing shards in ${outputDir}`);
       return;
     }
-    throw new Error(
-      `No scraped entries found in ${entriesDir} and no pre-built shards in ${outputDir}. ` +
-        'Run the scraper locally (npm run scrape), or download the dataset from the hosting ' +
-        'location (see README) so the index can be built.',
+    console.warn(
+      `No scraped entries in ${entriesDir} and no pre-built shards in ${outputDir}. ` +
+        'Skipping index build (CI / webpack-only). Run `npm run scrape` or ' +
+        '`npm run download:search-data` locally, then `npm run build:search-index`.',
     );
+    return;
   }
 
   console.log('Reading scraped entries...');

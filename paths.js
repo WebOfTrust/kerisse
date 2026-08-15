@@ -3,10 +3,9 @@ const paths = {
     baseUrl: "/kerisse/",
     indexedInKERISSE: "indexed-in-KERISSE.html",
     // Where the browser fetches manifest.json and the *.orama.msgpack.gz shards.
-    // - "search-index/" = same origin (webpack copies output/search-index/ into dist/)
-    // - external hosting, e.g. "https://keri.foundation/kerisse/search-index/"
-    //   (requires CORS headers on that server — see hosting/htaccess-search-index)
-    searchIndexBaseUrl: "search-index/"
+    // Override at build time with SEARCH_INDEX_BASE_URL (GitHub Actions sets this
+    // to the Hostinger copy). Local `npm start` keeps same-origin "search-index/".
+    searchIndexBaseUrl: process.env.SEARCH_INDEX_BASE_URL || "search-index/"
 }
 
 module.exports = paths;

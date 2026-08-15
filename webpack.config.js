@@ -1,6 +1,9 @@
 const path = require('path');
+const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const searchIndexBaseUrl = process.env.SEARCH_INDEX_BASE_URL || 'search-index/';
 
 
 module.exports = {
@@ -32,6 +35,9 @@ module.exports = {
         ],
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env.SEARCH_INDEX_BASE_URL': JSON.stringify(searchIndexBaseUrl),
+        }),
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'index.html', to: './' }, // Adjust the 'from' path as necessary

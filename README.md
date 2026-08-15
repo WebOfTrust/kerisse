@@ -24,8 +24,9 @@ output/search-index/
 On the search page the user first picks which categories to search in (choice is remembered in localStorage); only those shards are downloaded and loaded, which keeps both startup and query time fast.
 
 - Rebuild only the index: `npm run build:search-index`
-- Full site build (index + webpack): `npm run build`
+- Full local site build (index + webpack): `npm run build`
 - Requires scraped entries in `search-index-entries/`, **or** already-built shards in `output/search-index/`
+- GitHub Actions runs **webpack only** and sets `SEARCH_INDEX_BASE_URL` so the live site loads shards from `https://keri.foundation/kerisse/search-index/` (override with the repo Actions variable of the same name). The Repository shard is over GitHub’s 100 MB file limit, so the index cannot be deployed on GitHub Pages.
 
 ### Dataset & index hosting (kept out of git)
 
@@ -36,14 +37,7 @@ On the search page the user first picks which categories to search in (choice is
 - **CORS**: the search UI runs on a different domain than the index files, so the remote `search-index/` directory needs the `.htaccess` from [`hosting/htaccess-search-index`](hosting/htaccess-search-index) (the upload script installs it automatically). No PHP required — everything is static files.
 - **Point the frontend at the host**: set `searchIndexBaseUrl` in [`paths.js`](paths.js), e.g. `https://keri.foundation/kerisse/search-index/`. The default `search-index/` serves the shards from the same origin (webpack copies `output/search-index/` into `dist/`), which is what `npm start` uses locally.
 
-**One-time migration:** the old committed data files must be removed from git tracking (they stay on disk):
-
-```bash
-git rm -r --cached search-index-entries output/search-index.orama.json.gz output/search-index.orama.msgpack.gz
-git commit -m "Move scraped dataset and search index out of git"
-```
-
-Note for CI (GitHub Actions): since the entries are no longer committed, a CI build must first fetch the dataset (`npm run download:search-data`) or download pre-built shards — or skip the index build entirely when the shards are hosted externally.
+GitHub Actions does not scrape or build the index. After you upload shards (`npm run upload:search-data`), search on GitHub Pages reads them from `SEARCH_INDEX_BASE_URL`. Local `npm start` still uses `search-index/` on the same origin.
 
 ### Scraping (search index)
 

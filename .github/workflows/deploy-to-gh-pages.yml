@@ -3,23 +3,31 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Set to your default branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      # Do not download Chromium in CI (scraper is not run here).
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+      # Shards are too large for git / GitHub Pages (Repository shard is >100 MB).
+      # Host them on keri.foundation and point the UI there.
+      SEARCH_INDEX_BASE_URL: ${{ vars.SEARCH_INDEX_BASE_URL || 'https://keri.foundation/kerisse/search-index/' }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '21'  # Set to your project's node version
+          node-version: '22'
+          cache: npm
 
-      - name: Install and Build
-        run: |
-          npm install
-          npm run build
+      - name: Install
+        run: npm ci
+
+      - name: Build site (webpack only; index is hosted externally)
+        run: npx webpack
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
