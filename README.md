@@ -8,18 +8,42 @@
 - `/dist` is generated from source via `npm run build`
 - Start local webserver: `npm start`, this will start a server on `http://localhost:8080/`
 
-### Static search (Orama)
+### Static search (Orama, sharded per category)
 
-Search runs entirely in the browser. At build time, scraped JSONL entries are compiled into a gzipped MessagePack Orama index (`output/search-index.orama.msgpack.gz`, copied to `dist/`).
+Search runs entirely in the browser. At build time, scraped JSONL entries are compiled into **one gzipped MessagePack Orama index per category** plus a manifest:
+
+```
+output/search-index/
+  manifest.json                 # shard list: category, slug, file, doc count, size
+  repository.orama.msgpack.gz
+  keridoc.orama.msgpack.gz
+  blogs.orama.msgpack.gz
+  ...
+```
+
+On the search page the user first picks which categories to search in (choice is remembered in localStorage); only those shards are downloaded and loaded, which keeps both startup and query time fast.
 
 - Rebuild only the index: `npm run build:search-index`
 - Full site build (index + webpack): `npm run build`
-- Requires scraped entries in `search-index-entries/` (`.jsonl` and `.json`), **or** a committed `output/search-index.orama.msgpack.gz` fallback for CI
+- Requires scraped entries in `search-index-entries/`, **or** already-built shards in `output/search-index/`
 
-GitHub Actions needs one of these in the repo:
+### Dataset & index hosting (kept out of git)
 
-1. **Preferred:** commit `search-index-entries/*.jsonl` after scraping (`.not-split` backups stay gitignored)
-2. **Alternative:** commit `output/search-index.orama.msgpack.gz` (CI reuses it when entries are absent)
+`search-index-entries/` (the full scraped corpus, ~350 MB) and `output/search-index/` are **gitignored** — they are too large for the repo. They live on an external host (e.g. `https://keri.foundation` on Hostinger) instead:
+
+- **Upload** shards + full dataset: `npm run upload:search-data` (rsync over SSH; set `KERISSE_SSH_HOST`, `KERISSE_SSH_PORT`, `KERISSE_SSH_USER`, `KERISSE_REMOTE_DIR` in `.env`). The full JSONL corpus is uploaded to `…/dataset/` so it stays available as a whole (e.g. for AI training), and the shards to `…/search-index/`.
+- **Download** the corpus on another machine (no re-scrape needed): `npm run download:search-data` (set `KERISSE_DATASET_URL` in `.env`).
+- **CORS**: the search UI runs on a different domain than the index files, so the remote `search-index/` directory needs the `.htaccess` from [`hosting/htaccess-search-index`](hosting/htaccess-search-index) (the upload script installs it automatically). No PHP required — everything is static files.
+- **Point the frontend at the host**: set `searchIndexBaseUrl` in [`paths.js`](paths.js), e.g. `https://keri.foundation/kerisse/search-index/`. The default `search-index/` serves the shards from the same origin (webpack copies `output/search-index/` into `dist/`), which is what `npm start` uses locally.
+
+**One-time migration:** the old committed data files must be removed from git tracking (they stay on disk):
+
+```bash
+git rm -r --cached search-index-entries output/search-index.orama.json.gz output/search-index.orama.msgpack.gz
+git commit -m "Move scraped dataset and search index out of git"
+```
+
+Note for CI (GitHub Actions): since the entries are no longer committed, a CI build must first fetch the dataset (`npm run download:search-data`) or download pre-built shards — or skip the index build entirely when the shards are hosted externally.
 
 ### Scraping (search index)
 

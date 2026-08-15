@@ -9,6 +9,8 @@
     "start": "npm run build:search-index && webpack serve --open",
     "postinstall": "node node_modules/puppeteer/install.js || true",
     "scrape": "sh scraper/main.sh",
+    "upload:search-data": "sh scripts/upload-search-data.sh",
+    "download:search-data": "sh scripts/download-search-data.sh",
     "diagram:scrape": "node scripts/generate-scrape-mermaid.mjs",
     "menu": "sh main.sh"
   },

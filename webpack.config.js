@@ -39,7 +39,9 @@ module.exports = {
                 { from: 'favicon.ico', to: './' },
                 { from: 'favicon.png', to: './' },
                 { from: 'output/indexed-in-KERISSE.html', to: './' },
-                { from: 'output/search-index.orama.msgpack.gz', to: './', noErrorOnMissing: true },
+                // Per-category index shards + manifest.json. Optional: in production
+                // these can live on an external host instead (paths.searchIndexBaseUrl).
+                { from: 'output/search-index', to: 'search-index', noErrorOnMissing: true },
                 { from: 'src/*.css', to: '[name][ext]' },
                 { from: 'src/*.svg', to: 'icons/[name][ext]' },
                 { from: 'src/*.png', to: '[name][ext]' },

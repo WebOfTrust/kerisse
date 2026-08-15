@@ -1,14 +1,22 @@
 /**
- * InstantSearch.js client backed by a static Orama index (GitHub Pages).
+ * InstantSearch.js client backed by static Orama index shards.
+ *
+ * The index is split into one shard per category (see scripts/build-orama-index.mjs).
+ * A manifest lists the shards; the user picks which subsets to load, and only
+ * those shards are downloaded and searched.
+ *
+ * Shards can be hosted on another domain (e.g. https://keri.foundation) —
+ * set `searchIndexBaseUrl` in paths.js.
  */
 
 import { decode } from '@msgpack/msgpack';
 import { create, load, search as oramaSearch } from '@orama/orama';
+import paths from '../paths';
 import {
   FACET_ATTRIBUTES,
   groupHitsByUrl,
+  MANIFEST_FILENAME,
   MSGPACK_OPTIONS,
-  ORAMA_INDEX_FILENAME,
   SEARCH_PROPERTIES,
 } from '../scripts/orama-shared.mjs';
 
@@ -23,23 +31,39 @@ const HIGHLIGHT_FIELDS = [
   'imgMeta',
 ];
 
-let dbPromise = null;
-
-function resolveIndexUrl() {
-  return ORAMA_INDEX_FILENAME;
+function resolveBaseUrl() {
+  const base = paths.searchIndexBaseUrl || 'search-index/';
+  return base.endsWith('/') ? base : `${base}/`;
 }
 
-export function loadOramaDatabase() {
-  if (!dbPromise) {
-    dbPromise = fetch(resolveIndexUrl(), {
+let manifestPromise = null;
+
+export function loadSearchManifest() {
+  if (!manifestPromise) {
+    manifestPromise = fetch(`${resolveBaseUrl()}${MANIFEST_FILENAME}`, {
       headers: {
         'Cache-Control': 'no-cache',
         Pragma: 'no-cache',
       },
-    })
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to load search index manifest (${response.status})`);
+      }
+      return response.json();
+    });
+  }
+
+  return manifestPromise;
+}
+
+const shardPromises = new Map();
+
+function loadShard(file) {
+  if (!shardPromises.has(file)) {
+    const promise = fetch(`${resolveBaseUrl()}${file}`)
       .then(async (response) => {
         if (!response.ok) {
-          throw new Error(`Failed to load search index (${response.status})`);
+          throw new Error(`Failed to load search index shard ${file} (${response.status})`);
         }
 
         const compressed = await response.arrayBuffer();
@@ -54,9 +78,10 @@ export function loadOramaDatabase() {
         load(db, decode(new Uint8Array(decompressed), MSGPACK_OPTIONS));
         return db;
       });
+    shardPromises.set(file, promise);
   }
 
-  return dbPromise;
+  return shardPromises.get(file);
 }
 
 function parseRequestParams(params) {
@@ -188,20 +213,30 @@ function toInstantSearchHit(hit, query) {
   };
 }
 
-function toInstantSearchFacets(oramaFacets) {
-  if (!oramaFacets) {
-    return {};
+/** Sum facet value counts across shard results. */
+function mergeOramaFacets(results) {
+  const merged = {};
+
+  for (const result of results) {
+    if (!result.facets) {
+      continue;
+    }
+
+    for (const [attribute, facet] of Object.entries(result.facets)) {
+      const values = facet.values || {};
+      if (!merged[attribute]) {
+        merged[attribute] = {};
+      }
+      for (const [label, count] of Object.entries(values)) {
+        if (label.trim() === '') {
+          continue;
+        }
+        merged[attribute][label] = (merged[attribute][label] || 0) + count;
+      }
+    }
   }
 
-  return Object.fromEntries(
-    Object.entries(oramaFacets).map(([attribute, facet]) => {
-      const values = facet.values || {};
-      const cleaned = Object.fromEntries(
-        Object.entries(values).filter(([label]) => label.trim() !== ''),
-      );
-      return [attribute, cleaned];
-    }),
-  );
+  return merged;
 }
 
 /**
@@ -230,7 +265,7 @@ function buildFacetConfig(facets) {
   );
 }
 
-async function runSearch(db, request) {
+async function runSearch(dbs, request) {
   const params = parseRequestParams(request.params);
   const query = params.query || '';
   const page = Number.isInteger(params.page) ? params.page : 0;
@@ -242,19 +277,25 @@ async function runSearch(db, request) {
   // Skip collecting hits until the user searches or applies a filter.
   const wantHits = hasQuery || hasFilters;
 
-  const searchResult = await oramaSearch(db, {
-    term: query,
-    properties: SEARCH_PROPERTIES,
-    where,
-    facets: buildFacetConfig(params.facets),
-    limit: wantHits ? MAX_RAW_HITS : 0,
-  });
+  const shardResults = await Promise.all(
+    dbs.map((db) =>
+      oramaSearch(db, {
+        term: query,
+        properties: SEARCH_PROPERTIES,
+        where,
+        facets: buildFacetConfig(params.facets),
+        limit: wantHits ? MAX_RAW_HITS : 0,
+      }),
+    ),
+  );
 
-  const processingTimeMS = searchResult.elapsed?.raw
-    ? Math.round(searchResult.elapsed.raw / 1000)
-    : 1;
+  const processingTimeMS = Math.max(
+    1,
+    ...shardResults.map((result) => (result.elapsed?.raw ? Math.round(result.elapsed.raw / 1000) : 1)),
+  );
   const paramsString =
     typeof request.params === 'string' ? request.params : JSON.stringify(params);
+  const facets = mergeOramaFacets(shardResults);
 
   if (!wantHits) {
     return {
@@ -263,7 +304,7 @@ async function runSearch(db, request) {
       page,
       nbPages: 0,
       hitsPerPage,
-      facets: toInstantSearchFacets(searchResult.facets),
+      facets,
       exhaustiveNbHits: true,
       query,
       params: paramsString,
@@ -271,7 +312,12 @@ async function runSearch(db, request) {
     };
   }
 
-  const groupedHits = groupHitsByUrl(searchResult.hits);
+  const allHits = shardResults
+    .flatMap((result) => result.hits)
+    .sort((a, b) => (b.score || 0) - (a.score || 0));
+  const exhaustive = shardResults.every((result) => result.hits.length < MAX_RAW_HITS);
+
+  const groupedHits = groupHitsByUrl(allHits);
   const nbHits = groupedHits.length;
   const nbPages = Math.max(1, Math.ceil(nbHits / hitsPerPage));
   const start = page * hitsPerPage;
@@ -285,21 +331,31 @@ async function runSearch(db, request) {
     page,
     nbPages,
     hitsPerPage,
-    facets: toInstantSearchFacets(searchResult.facets),
-    exhaustiveNbHits: searchResult.hits.length < MAX_RAW_HITS,
+    facets,
+    exhaustiveNbHits: exhaustive,
     query,
     params: paramsString,
     processingTimeMS,
   };
 }
 
-export async function createOramaInstantSearchAdapter() {
-  const db = await loadOramaDatabase();
+/**
+ * @param {string[]} slugs category slugs (from the manifest) to load and search
+ */
+export async function createOramaInstantSearchAdapter(slugs) {
+  const manifest = await loadSearchManifest();
+  const selected = manifest.shards.filter((shard) => slugs.includes(shard.slug));
+
+  if (!selected.length) {
+    throw new Error('No search index shards selected');
+  }
+
+  const dbs = await Promise.all(selected.map((shard) => loadShard(shard.file)));
 
   return {
     searchClient: {
       search(requests) {
-        return Promise.all(requests.map((request) => runSearch(db, request))).then((results) => ({
+        return Promise.all(requests.map((request) => runSearch(dbs, request))).then((results) => ({
           results,
         }));
       },

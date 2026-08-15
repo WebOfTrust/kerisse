@@ -8,6 +8,13 @@
 .cache-loader
 output/search-index.orama.json
 output/search-index.orama.msgpack
+output/search-index.orama.json.gz
+output/search-index.orama.msgpack.gz
+output/search-index/
+
+# Scraped dataset: too large for git — hosted externally instead.
+# Upload with `npm run upload:search-data`, fetch with `npm run download:search-data`.
+search-index-entries/
 
 # Misc
 .env

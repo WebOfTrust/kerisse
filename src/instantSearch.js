@@ -22,7 +22,7 @@ import {
   currentRefinements,
 } from 'instantsearch.js/es/widgets';
 
-import { createOramaInstantSearchAdapter } from './oramaInstantSearchAdapter';
+import { createOramaInstantSearchAdapter, loadSearchManifest } from './oramaInstantSearchAdapter';
 
 // import { connectSearchBox } from 'instantsearch.js/es/connectors'
 import { connectRefinementList } from 'instantsearch.js/es/connectors';
@@ -87,8 +87,136 @@ function stopSearchBoxLoading() {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Dataset picker: the index is sharded per category; the user chooses which
+// subsets to download and search. Selection is remembered in localStorage.
+// ---------------------------------------------------------------------------
+
+const DATASET_STORAGE_KEY = 'kerisse-selected-datasets';
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function formatSize(bytes) {
+  const mb = bytes / (1024 * 1024);
+  if (mb >= 1) {
+    return `${mb.toFixed(mb >= 10 ? 0 : 1)} MB`;
+  }
+  return `${Math.max(1, Math.round(bytes / 1024))} kB`;
+}
+
+function getStoredDatasetSelection(manifest) {
+  try {
+    const stored = JSON.parse(localStorage.getItem(DATASET_STORAGE_KEY));
+    if (!Array.isArray(stored)) {
+      return null;
+    }
+    const valid = stored.filter((slug) => manifest.shards.some((shard) => shard.slug === slug));
+    return valid.length ? valid : null;
+  } catch {
+    return null;
+  }
+}
+
+function promptDatasetSelection(manifest) {
+  const picker = document.querySelector('#dataset-picker');
+  const optionsContainer = document.querySelector('#dataset-picker-options');
+  const startButton = document.querySelector('#dataset-picker-start');
+
+  optionsContainer.innerHTML = `
+    <p class="mb-2">
+      <a href="#" id="dataset-picker-all">Select all</a> ·
+      <a href="#" id="dataset-picker-none">Select none</a>
+    </p>
+    ${manifest.shards
+      .map(
+        (shard) => `
+      <label class="dataset-picker-option d-block">
+        <input type="checkbox" class="form-check-input me-2" value="${escapeHtml(shard.slug)}">
+        ${escapeHtml(shard.category)}
+        <small class="text-body-secondary">
+          (${shard.documents.toLocaleString('en-US')} items, ${formatSize(shard.bytes)})
+        </small>
+      </label>`,
+      )
+      .join('')}
+  `;
+
+  const checkboxes = () => Array.from(optionsContainer.querySelectorAll('input[type="checkbox"]'));
+
+  return new Promise((resolve) => {
+    const updateStartButton = () => {
+      startButton.disabled = !checkboxes().some((checkbox) => checkbox.checked);
+    };
+
+    optionsContainer.addEventListener('change', updateStartButton);
+    optionsContainer.querySelector('#dataset-picker-all').addEventListener('click', (event) => {
+      event.preventDefault();
+      checkboxes().forEach((checkbox) => (checkbox.checked = true));
+      updateStartButton();
+    });
+    optionsContainer.querySelector('#dataset-picker-none').addEventListener('click', (event) => {
+      event.preventDefault();
+      checkboxes().forEach((checkbox) => (checkbox.checked = false));
+      updateStartButton();
+    });
+
+    startButton.addEventListener('click', () => {
+      const slugs = checkboxes()
+        .filter((checkbox) => checkbox.checked)
+        .map((checkbox) => checkbox.value);
+      picker.classList.add('d-none');
+      resolve(slugs);
+    });
+
+    updateStartButton();
+    picker.classList.remove('d-none');
+  });
+}
+
+function renderDatasetSummary(manifest, slugs) {
+  const summary = document.querySelector('#dataset-summary');
+  const list = document.querySelector('#dataset-summary-list');
+  const change = document.querySelector('#dataset-change');
+
+  const names = manifest.shards
+    .filter((shard) => slugs.includes(shard.slug))
+    .map((shard) => shard.category);
+  list.textContent = names.join(', ');
+
+  change.addEventListener('click', (event) => {
+    event.preventDefault();
+    localStorage.removeItem(DATASET_STORAGE_KEY);
+    window.location.reload();
+  });
+
+  summary.classList.remove('d-none');
+}
+
 const initKerisseSearch = async () => {
   const loader = document.querySelector('#loader');
+  const searchBoxLoading = document.querySelector('#search-box-loading');
+
+  loader.textContent = 'Loading…';
+
+  const manifest = await loadSearchManifest();
+
+  let selectedSlugs = getStoredDatasetSelection(manifest);
+  if (!selectedSlugs) {
+    searchBoxLoading.classList.add('d-none');
+    loader.textContent = 'Choose what to search in';
+    selectedSlugs = await promptDatasetSelection(manifest);
+    localStorage.setItem(DATASET_STORAGE_KEY, JSON.stringify(selectedSlugs));
+    searchBoxLoading.classList.remove('d-none');
+  }
+
+  renderDatasetSummary(manifest, selectedSlugs);
+
   const stopLoadingMessages = startSearchBoxLoadingMessages();
   loader.textContent = 'Loading search index…';
 
@@ -106,7 +234,7 @@ const initKerisseSearch = async () => {
 
   let searchClient;
   try {
-    ({ searchClient } = await createOramaInstantSearchAdapter());
+    ({ searchClient } = await createOramaInstantSearchAdapter(selectedSlugs));
     stopLoadingMessages();
     loader.textContent = 'Search index loaded';
   } catch (error) {

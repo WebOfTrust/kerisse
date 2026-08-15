@@ -1,0 +1,32 @@
+# Upload this file as ".htaccess" into the directory on keri.foundation (Hostinger)
+# that holds the search index, e.g. public_html/kerisse/search-index/.htaccess
+#
+# It does three things:
+# 1. Allows the search UI on another domain (search.kerisse.org / GitHub Pages)
+#    to fetch the index files (CORS).
+# 2. Serves the pre-gzipped shards as opaque binary. The browser code
+#    decompresses them itself (DecompressionStream), so the server must NOT
+#    add "Content-Encoding: gzip" — that would make the browser decompress
+#    them twice and fail.
+# 3. Sets sensible cache headers (shards change only after a re-scrape).
+
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+  Header set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+</IfModule>
+
+RemoveEncoding .gz
+RemoveType .gz
+AddType application/octet-stream .gz
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Shards are immutable between scrapes; manifest is the freshness anchor.
+  ExpiresByType application/octet-stream "access plus 1 day"
+  ExpiresByType application/json "access plus 5 minutes"
+</IfModule>
+
+# Prevent Hostinger/LiteSpeed from re-compressing already gzipped files.
+<IfModule mod_deflate.c>
+  SetEnvIfNoCase Request_URI \.gz$ no-gzip
+</IfModule>

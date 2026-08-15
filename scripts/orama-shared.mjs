@@ -2,7 +2,21 @@
  * Shared Orama schema and document helpers for build + browser search.
  */
 
-export const ORAMA_INDEX_FILENAME = 'search-index.orama.msgpack.gz';
+export const SEARCH_INDEX_DIRNAME = 'search-index';
+export const MANIFEST_FILENAME = 'manifest.json';
+
+/** Stable slug for a category, used in shard filenames and the picker UI. */
+export function categorySlug(category) {
+  const slug = String(category || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return slug || 'uncategorized';
+}
+
+export function shardFilename(slug) {
+  return `${slug}.orama.msgpack.gz`;
+}
 
 /** Orama's inverted index nests deeper than msgpack's default maxDepth (100). */
 export const MSGPACK_OPTIONS = { maxDepth: 10_000 };

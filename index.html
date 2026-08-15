@@ -45,6 +45,19 @@
                     src="logo-keri-symbol.png" />KERISSE</h1>
             <p class="text-center">KERI Suite Search Engine</p>
 
+            <div id="dataset-picker" class="dataset-picker d-none">
+                <p class="mb-2 fw-bold">What do you want to search in?</p>
+                <p class="mb-2"><small>Smaller selections download and search faster. You can change this
+                        later.</small></p>
+                <div id="dataset-picker-options" class="dataset-picker-options mb-2"></div>
+                <button id="dataset-picker-start" type="button" class="btn btn-primary btn-sm" disabled>Start
+                    searching</button>
+            </div>
+
+            <p id="dataset-summary" class="text-center mb-1 d-none"><small>Searching in:
+                    <span id="dataset-summary-list"></span>
+                    <a href="#" id="dataset-change">(change)</a></small></p>
+
             <div id="search-box" class="mt-3 mb-2">
                 <div id="search-box-loading" class="search-box-loading" role="status" aria-live="polite">
                     <span class="search-box-spinner" aria-hidden="true"></span>
