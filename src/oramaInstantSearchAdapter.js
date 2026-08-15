@@ -41,10 +41,7 @@ let manifestPromise = null;
 export function loadSearchManifest() {
   if (!manifestPromise) {
     manifestPromise = fetch(`${resolveBaseUrl()}${MANIFEST_FILENAME}`, {
-      headers: {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-      },
+      cache: 'no-store',
     }).then((response) => {
       if (!response.ok) {
         throw new Error(`Failed to load search index manifest (${response.status})`);
@@ -60,7 +57,9 @@ const shardPromises = new Map();
 
 function loadShard(file) {
   if (!shardPromises.has(file)) {
-    const promise = fetch(`${resolveBaseUrl()}${file}`)
+    const promise = fetch(`${resolveBaseUrl()}${file}`, {
+      cache: 'no-store',
+    })
       .then(async (response) => {
         if (!response.ok) {
           throw new Error(`Failed to load search index shard ${file} (${response.status})`);

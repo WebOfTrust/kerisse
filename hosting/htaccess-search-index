@@ -11,8 +11,17 @@
 # 3. Sets sensible cache headers (shards change only after a re-scrape).
 
 <IfModule mod_headers.c>
-  Header set Access-Control-Allow-Origin "*"
-  Header set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+  Header always set Access-Control-Allow-Origin "*"
+  Header always set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+  Header always set Access-Control-Allow-Headers "Cache-Control, Pragma, Expires"
+  Header always set Access-Control-Max-Age "86400"
+</IfModule>
+
+# Answer CORS preflight without a body.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_METHOD} OPTIONS
+  RewriteRule .* - [R=204,L]
 </IfModule>
 
 RemoveEncoding .gz
