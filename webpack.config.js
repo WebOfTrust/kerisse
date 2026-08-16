@@ -41,6 +41,7 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'index.html', to: './' }, // Adjust the 'from' path as necessary
+                { from: 'bookmarks/index.html', to: 'bookmarks/' },
                 { from: 'favicon.svg', to: './' },
                 { from: 'favicon.ico', to: './' },
                 { from: 'favicon.png', to: './' },
