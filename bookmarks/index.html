@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KERISSE Bookmarks</title>
+
+    <meta name="description" content="Curated bookmarks: the most important KERI Suite repositories, blog posts and whitepapers.">
+
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        :root {
+            --keri-dark: #62783E;
+            --keri-light: #B4D070;
+            --keri-mid: #A1C64D;
+            --keri-accent: #C18F46;
+            --keri-wash: #eef4e1;
+            --keri-ink: #3d4a28;
+        }
+
+        body {
+            background:
+                radial-gradient(ellipse 80% 50% at 10% -10%, rgba(180, 208, 112, 0.35), transparent 50%),
+                radial-gradient(ellipse 60% 40% at 90% 0%, rgba(161, 198, 77, 0.25), transparent 45%),
+                linear-gradient(180deg, #f3f7ea 0%, #f8faf4 40%, #eef4e1 100%);
+            min-height: 100vh;
+        }
+
+        .bookmarks-page {
+            width: 100%;
+            max-width: none;
+            padding: 1.25rem 1.5rem 2rem;
+        }
+
+        @media (min-width: 992px) {
+            .bookmarks-page {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+
+        .bookmarks-hero {
+            background:
+                linear-gradient(135deg, var(--keri-dark) 0%, #4f6232 40%, var(--keri-mid) 100%);
+            color: #fff;
+            border-radius: 14px;
+            padding: 2.25rem 1.75rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 28px rgba(98, 120, 62, 0.35);
+        }
+
+        .bookmarks-hero::before {
+            content: '';
+            position: absolute;
+            inset: -40% auto auto 55%;
+            width: 28rem;
+            height: 28rem;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(180, 208, 112, 0.45), transparent 70%);
+            pointer-events: none;
+        }
+
+        .bookmarks-hero::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--keri-accent), var(--keri-light), var(--keri-mid), var(--keri-dark));
+        }
+
+        .bookmarks-hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .bookmarks-hero a {
+            color: #f0f7d8;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .bookmarks-hero a:hover {
+            color: #fff;
+        }
+
+        .bookmarks-hero .hero__image {
+            max-width: 2em;
+            margin-right: 0.5em;
+            animation: rotation 12s infinite linear;
+        }
+
+        @keyframes rotation {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(359deg); }
+        }
+
+        .page-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .page-toolbar .hint {
+            color: var(--keri-ink);
+            opacity: 0.75;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Collapsible category */
+        details.bookmark-category {
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(98, 120, 62, 0.18);
+            border-left: 5px solid var(--keri-mid);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(98, 120, 62, 0.08);
+        }
+
+        details.bookmark-category:nth-child(5n+1) { border-left-color: var(--keri-dark); }
+        details.bookmark-category:nth-child(5n+2) { border-left-color: var(--keri-mid); }
+        details.bookmark-category:nth-child(5n+3) { border-left-color: var(--keri-light); }
+        details.bookmark-category:nth-child(5n+4) { border-left-color: var(--keri-accent); }
+        details.bookmark-category:nth-child(5n+5) { border-left-color: #7a9548; }
+
+        details.bookmark-category>summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 1.1rem 1.35rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--keri-ink);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+            background: linear-gradient(90deg, var(--keri-wash), transparent 55%);
+            transition: background 0.2s ease-in-out;
+        }
+
+        details.bookmark-category>summary:hover {
+            background: linear-gradient(90deg, #e4efd0, transparent 60%);
+        }
+
+        details.bookmark-category>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /* Chevron that rotates when open */
+        details.bookmark-category>summary::before {
+            content: '';
+            width: 0.7em;
+            height: 0.7em;
+            flex-shrink: 0;
+            border-right: 3px solid var(--keri-dark);
+            border-bottom: 3px solid var(--keri-dark);
+            transform: rotate(-45deg);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        details.bookmark-category[open]>summary::before {
+            transform: rotate(45deg);
+        }
+
+        .bookmark-category .category-count {
+            margin-left: auto;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: var(--keri-dark);
+            color: #fff;
+            border-radius: 999px;
+            padding: 0.25em 0.85em;
+        }
+
+        .bookmark-category .category-description {
+            padding: 0 1.35rem;
+            color: #5a6b45;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Horizontal card grid */
+        .bookmark-list {
+            list-style: none;
+            margin: 0;
+            padding: 0.5rem 1.1rem 1.25rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            align-items: stretch;
+        }
+
+        @media (min-width: 640px) {
+            .bookmark-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 992px) {
+            .bookmark-list {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .bookmark-list {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
+        .bookmark-list > li {
+            display: flex;
+            min-width: 0;
+        }
+
+        /* One bookmark = one big clickable card */
+        .bookmark-list a.bookmark-link {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            text-decoration: none;
+            padding: 1.25rem 1.35rem;
+            border: 1px solid rgba(98, 120, 62, 0.15);
+            border-top: 3px solid var(--keri-mid);
+            border-radius: 10px;
+            background: #fff;
+            min-height: 10.5rem;
+            transition: background 0.15s ease-in-out, border-color 0.15s ease-in-out, transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .bookmark-list li:nth-child(4n+1) a.bookmark-link { border-top-color: var(--keri-dark); }
+        .bookmark-list li:nth-child(4n+2) a.bookmark-link { border-top-color: var(--keri-mid); }
+        .bookmark-list li:nth-child(4n+3) a.bookmark-link { border-top-color: var(--keri-light); }
+        .bookmark-list li:nth-child(4n+4) a.bookmark-link { border-top-color: var(--keri-accent); }
+
+        .bookmark-list a.bookmark-link:hover,
+        .bookmark-list a.bookmark-link:focus-visible {
+            background: linear-gradient(165deg, #f7fbef 0%, #fff 55%);
+            border-color: var(--keri-light);
+            box-shadow: 0 8px 22px rgba(98, 120, 62, 0.16);
+            transform: translateY(-3px);
+            outline: none;
+        }
+
+        .bookmark-title {
+            font-weight: 700;
+            color: var(--keri-dark);
+            font-size: 1.08rem;
+            line-height: 1.3;
+        }
+
+        /* External-link icon after the title */
+        .bookmark-title::after {
+            content: '';
+            width: 0.8em;
+            height: 0.8em;
+            margin-left: 0.4em;
+            display: inline-block;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2362783E' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z'/%3E%3Cpath fill-rule='evenodd' d='M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .bookmark-description {
+            color: #55613f;
+            margin-top: 0.55rem;
+            margin-bottom: 0;
+            font-size: 0.94rem;
+            line-height: 1.45;
+            flex: 1;
+        }
+
+        .bookmark-url {
+            display: block;
+            color: #8a9a72;
+            font-size: 0.78rem;
+            word-break: break-all;
+            margin-top: 0.85rem;
+            padding-top: 0.65rem;
+            border-top: 1px dashed rgba(98, 120, 62, 0.25);
+        }
+
+        .expand-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .expand-controls button {
+            background: var(--keri-wash);
+            border: 1px solid rgba(98, 120, 62, 0.25);
+            border-radius: 999px;
+            padding: 0.35rem 0.9rem;
+            color: var(--keri-dark);
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .expand-controls button:hover {
+            background: var(--keri-dark);
+            border-color: var(--keri-dark);
+            color: #fff;
+        }
+
+        .edit-hint a {
+            color: var(--keri-dark);
+            font-weight: 500;
+        }
+
+        .edit-hint a:hover {
+            color: var(--keri-mid);
+        }
+
+        footer {
+            background: linear-gradient(90deg, #2a3320, #313846 40%, #3d4a28);
+        }
+
+        footer a:hover {
+            color: var(--keri-light) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bookmarks-page">
+
+        <div class="bookmarks-hero">
+            <h1 class="fs-2"><img alt="" class="hero__image" src="../logo-keri-symbol.png" />Bookmarks</h1>
+            <p class="mb-1">A curated collection of the most important KERI Suite resources:<br>
+                repositories, blog posts and whitepapers.</p>
+            <p class="mb-0"><small><a href="../">&larr; Back to KERISSE search</a></small></p>
+        </div>
+
+        <div class="page-toolbar">
+            <p class="hint">Click a card to open the link in a new tab.</p>
+            <div class="expand-controls">
+                <button type="button" id="expand-all">Expand all</button>
+                <button type="button" id="collapse-all">Collapse all</button>
+            </div>
+        </div>
+
+        <div id="bookmark-categories">
+            <noscript>
+                <div class="alert alert-warning">This page needs JavaScript to render the bookmark collection.</div>
+            </noscript>
+        </div>
+
+        <p class="text-center text-secondary mt-4 edit-hint"><small>Missing a link? Edit
+                <a target="_blank" rel="noopener" href="https://github.com/WebOfTrust/kerisse/blob/main/bookmarks/index.html">bookmarks/index.html</a>
+                — the collection is a plain JavaScript list at the bottom of the file.</small></p>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="text-center mt-4">
+        <div class="container p-4">
+            <ul class="list-unstyled mb-0">
+                <li><a href="../" class="text-light">KERISSE Search</a></li>
+                <li><a href="https://weboftrust.github.io/keridoc/" class="text-light" target="_blank" rel="noopener">KERIDoc</a></li>
+                <li><a href="https://weboftrust.github.io/WOT-terms/" class="text-light" target="_blank" rel="noopener">KERIGlos</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        /* ============================================================
+         * BOOKMARK COLLECTION — edit below
+         * ============================================================
+         * How to add a bookmark:
+         *   1. Find the category (or add a new one, same shape).
+         *   2. Add an object with:
+         *        title:       short name shown in bold
+         *        url:         full URL (opens in a new tab)
+         *        description: one or two sentences shown under the title
+         *
+         * Keep the trailing commas — they make future edits easier.
+         * ============================================================ */
+        const bookmarkCategories = [
+            {
+                category: "Core repositories",
+                description: "The reference implementations of the KERI Suite protocols.",
+                open: true, // this category starts expanded
+                bookmarks: [
+                    {
+                        title: "keripy",
+                        url: "https://github.com/WebOfTrust/keripy",
+                        description: "The Python reference implementation of KERI: agents, witnesses and the kli command-line tool.",
+                    },
+                    {
+                        title: "keria",
+                        url: "https://github.com/WebOfTrust/keria",
+                        description: "KERI Agent in the cloud: multi-tenant agent server used together with Signify clients.",
+                    },
+                    {
+                        title: "signify-ts",
+                        url: "https://github.com/WebOfTrust/signify-ts",
+                        description: "TypeScript client library implementing 'signing at the edge' against a KERIA agent.",
+                    },
+                    {
+                        title: "signifypy",
+                        url: "https://github.com/WebOfTrust/signifypy",
+                        description: "Python Signify client library for edge signing with a remote KERIA agent.",
+                    },
+                    {
+                        title: "cesride",
+                        url: "https://github.com/WebOfTrust/cesride",
+                        description: "Rust library for CESR: composable event streaming representation primitives.",
+                    },
+                    {
+                        title: "parside",
+                        url: "https://github.com/WebOfTrust/parside",
+                        description: "Rust parser for CESR streams, companion to cesride.",
+                    },
+                    {
+                        title: "hio",
+                        url: "https://github.com/ioflo/hio",
+                        description: "Hierarchical asynchronous I/O framework in Python; the async foundation underneath keripy.",
+                    },
+                ],
+            },
+            {
+                category: "Ecosystem & tooling repositories",
+                description: "Applications, wallets, and infrastructure built on the core stack.",
+                bookmarks: [
+                    {
+                        title: "vLEI",
+                        url: "https://github.com/WebOfTrust/vLEI",
+                        description: "Schema and code for GLEIF's verifiable Legal Entity Identifier ecosystem, the flagship ACDC use case.",
+                    },
+                    {
+                        title: "signify-browser-extension",
+                        url: "https://github.com/WebOfTrust/signify-browser-extension",
+                        description: "Browser extension bringing Signify edge signing to web applications.",
+                    },
+                    {
+                        title: "keri (meta repo)",
+                        url: "https://github.com/WebOfTrust/keri",
+                        description: "Community home of KERI resources, issues and cross-project discussion.",
+                    },
+                    {
+                        title: "kerisse",
+                        url: "https://github.com/WebOfTrust/kerisse",
+                        description: "The KERI Suite Search Engine you are looking at: scraper, index and front end.",
+                    },
+                    {
+                        title: "keridoc",
+                        url: "https://github.com/WebOfTrust/keridoc",
+                        description: "KERI Suite documentation site (doc.kerisse.org).",
+                    },
+                    {
+                        title: "WOT-terms",
+                        url: "https://github.com/WebOfTrust/WOT-terms",
+                        description: "KERI Suite glossary: terminology of the Web of Trust ecosystem (glossary.kerisse.org).",
+                    },
+                    {
+                        title: "did-webs (ToIP)",
+                        url: "https://github.com/trustoverip/tswg-did-method-webs-specification",
+                        description: "Specification of did:webs, a web-based DID method secured by KERI.",
+                    },
+                ],
+            },
+            {
+                category: "Specifications",
+                description: "The normative specifications of the KERI Suite, maintained at Trust over IP.",
+                bookmarks: [
+                    {
+                        title: "KERI Specification",
+                        url: "https://trustoverip.github.io/tswg-keri-specification/",
+                        description: "Key Event Receipt Infrastructure: the core protocol specification.",
+                    },
+                    {
+                        title: "ACDC Specification",
+                        url: "https://trustoverip.github.io/tswg-acdc-specification/",
+                        description: "Authentic Chained Data Containers: KERI's verifiable credential format.",
+                    },
+                    {
+                        title: "CESR Specification",
+                        url: "https://trustoverip.github.io/tswg-cesr-specification/",
+                        description: "Composable Event Streaming Representation: the text/binary encoding used throughout the KERI Suite.",
+                    },
+                ],
+            },
+            {
+                category: "Whitepapers",
+                description: "Foundational papers, mostly by Samuel M. Smith.",
+                bookmarks: [
+                    {
+                        title: "KERI Whitepaper",
+                        url: "https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/KERI_WP_2.x.web.pdf",
+                        description: "The original, comprehensive KERI paper: key event receipt infrastructure explained from first principles.",
+                    },
+                    {
+                        title: "Universal Identifier Theory",
+                        url: "https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/IdentifierTheory_web.pdf",
+                        description: "Why autonomic identifiers are the universal trust basis for any identifier system.",
+                    },
+                    {
+                        title: "ACDC Whitepaper (IIW)",
+                        url: "https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/ACDC.web.pdf",
+                        description: "Authentic Chained Data Containers: provenanced, chained and verifiable data containers.",
+                    },
+                    {
+                        title: "Sustainable Privacy",
+                        url: "https://github.com/SmithSamuelM/Papers/blob/master/whitepapers/SustainablePrivacy.pdf",
+                        description: "On balancing privacy, security and convenience in decentralized identity systems.",
+                    },
+                    {
+                        title: "Papers collection (SmithSamuelM)",
+                        url: "https://github.com/SmithSamuelM/Papers",
+                        description: "The full repository of whitepapers and presentations behind KERI, ACDC and CESR.",
+                    },
+                ],
+            },
+            {
+                category: "Blog posts & introductions",
+                description: "Good starting points and deep dives written by the community.",
+                bookmarks: [
+                    {
+                        title: "KERI for Muggles",
+                        url: "https://docs.google.com/presentation/d/1lpzYcPrIox9V4hERtn4Kcf7uq01OVU9u3PuVm1aYzR0/edit#slide=id.ga411be7e84_0_0",
+                        description: "A non-technical introduction to KERI, presented at IIW #31 (October 2020).",
+                    },
+                    {
+                        title: "The Hitchhiker's Guide to KERI, part 1",
+                        url: "https://medium.com/finema/the-hitchhikers-guide-to-keri-part-1-51371f655bba",
+                        description: "Nuttawut Kongsuwan's accessible three-part introduction: what KERI is and why it matters.",
+                    },
+                    {
+                        title: "The Hitchhiker's Guide to KERI, part 2",
+                        url: "https://medium.com/finema/the-hitchhikers-guide-to-keri-part-2-what-exactly-is-keri-e46a649ac53f",
+                        description: "Part 2: key event logs, witnesses and watchers explained.",
+                    },
+                    {
+                        title: "The Hitchhiker's Guide to KERI, part 3",
+                        url: "https://medium.com/finema/the-hitchhikers-guide-to-keri-part-3-how-do-you-use-keri-2d1a4ef73d5f",
+                        description: "Part 3: how KERI is used in practice.",
+                    },
+                    {
+                        title: "KERI tutorials by Kent Bull",
+                        url: "https://kentbull.com",
+                        description: "Hands-on tutorial series covering keripy, KERIA, Signify and the wider KERI stack.",
+                    },
+                    {
+                        title: "KERI Resources (keri.one)",
+                        url: "https://keri.one/keri-resources/",
+                        description: "The official collection of KERI articles, presentations and videos.",
+                    },
+                ],
+            },
+        ];
+
+        /* ============================================================
+         * Rendering — no need to edit below this line
+         * ============================================================ */
+        (function renderBookmarks() {
+            const container = document.getElementById('bookmark-categories');
+
+            bookmarkCategories.forEach(function (cat) {
+                const details = document.createElement('details');
+                details.className = 'bookmark-category';
+                if (cat.open) details.open = true;
+
+                const summary = document.createElement('summary');
+                summary.appendChild(document.createTextNode(cat.category));
+                const count = document.createElement('span');
+                count.className = 'category-count';
+                count.textContent = cat.bookmarks.length + (cat.bookmarks.length === 1 ? ' link' : ' links');
+                summary.appendChild(count);
+                details.appendChild(summary);
+
+                if (cat.description) {
+                    const desc = document.createElement('p');
+                    desc.className = 'category-description';
+                    desc.textContent = cat.description;
+                    details.appendChild(desc);
+                }
+
+                const list = document.createElement('ul');
+                list.className = 'bookmark-list';
+
+                cat.bookmarks.forEach(function (bm) {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.className = 'bookmark-link';
+                    a.href = bm.url;
+                    a.target = '_blank';
+                    a.rel = 'noopener';
+
+                    const title = document.createElement('span');
+                    title.className = 'bookmark-title';
+                    title.textContent = bm.title;
+                    a.appendChild(title);
+
+                    const desc = document.createElement('p');
+                    desc.className = 'bookmark-description';
+                    desc.textContent = bm.description;
+                    a.appendChild(desc);
+
+                    const url = document.createElement('span');
+                    url.className = 'bookmark-url';
+                    url.textContent = bm.url;
+                    a.appendChild(url);
+
+                    li.appendChild(a);
+                    list.appendChild(li);
+                });
+
+                details.appendChild(list);
+                container.appendChild(details);
+            });
+
+            function setAll(open) {
+                container.querySelectorAll('details').forEach(function (d) { d.open = open; });
+            }
+            document.getElementById('expand-all').addEventListener('click', function () { setAll(true); });
+            document.getElementById('collapse-all').addEventListener('click', function () { setAll(false); });
+        })();
+    </script>
+</body>
+
+</html>
