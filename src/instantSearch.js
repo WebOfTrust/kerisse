@@ -177,19 +177,28 @@ function promptDatasetSelection(manifest) {
 function renderDatasetSummary(manifest, slugs) {
   const summary = document.querySelector('#dataset-summary');
   const list = document.querySelector('#dataset-summary-list');
+  const meta = document.querySelector('#dataset-summary-meta');
   const change = document.querySelector('#dataset-change');
 
-  const names = manifest.shards
-    .filter((shard) => slugs.includes(shard.slug))
-    .map((shard) => shard.category);
-  list.textContent = names.join(', ');
+  const selected = manifest.shards.filter((shard) => slugs.includes(shard.slug));
+  const total = manifest.shards.length;
+  const selectedCount = selected.length;
 
-  change.addEventListener('click', (event) => {
-    event.preventDefault();
+  meta.textContent =
+    selectedCount === total
+      ? `All ${total} sources selected`
+      : `${selectedCount} of ${total} sources selected`;
+
+  list.innerHTML = selected
+    .map((shard) => `<span class="dataset-summary__chip">${escapeHtml(shard.category)}</span>`)
+    .join('');
+
+  change.addEventListener('click', () => {
     localStorage.removeItem(DATASET_STORAGE_KEY);
     window.location.reload();
   });
 
+  summary.hidden = false;
   summary.classList.remove('d-none');
 }
 
