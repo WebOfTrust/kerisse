@@ -50,19 +50,14 @@ const refinementListImageToggle = connectRefinementList((renderOptions, isFirstR
 });
 
 const SEARCH_LOADING_MESSAGES = [
-  'Starting engines…',
-  'Warming up the KELs…',
-  'Untangling the key event log…',
-  'Consulting the witnesses…',
-  'Polishing the AIDs…',
-  'Asking the controllers politely…',
-  'Herding cryptographic cats…',
-  'Dusting off the whitepaper…',
-  'Counting endorsements…',
-  'Brewing fresh search results…',
-  'Reticulating splines…',
-  'Loading identifiers of identifiers…',
-  'Almost there — promise!',
+  'This is a local search engine — the index runs in your browser, not on a remote server.',
+  'Unlike Google or Algolia, no queries are sent to a cloud search API.',
+  'We download the search index to your device so everything stays private.',
+  'That first download takes a moment; afterwards searching is instant and offline-friendly.',
+  'Your browser builds the search index itself — that is why startup feels slower.',
+  'Smaller dataset selections download faster; you can change them anytime.',
+  'Once loaded, every keystroke is searched locally on this machine.',
+  'Hang tight — finishing the local index load…',
 ];
 
 function startSearchBoxLoadingMessages() {
@@ -75,7 +70,7 @@ function startSearchBoxLoadingMessages() {
   const intervalId = setInterval(() => {
     index = (index + 1) % SEARCH_LOADING_MESSAGES.length;
     messageEl.textContent = SEARCH_LOADING_MESSAGES[index];
-  }, 2200);
+  }, 3500);
 
   return () => clearInterval(intervalId);
 }
